@@ -3,7 +3,7 @@
 	import Chart from './Chart.svelte'
 
 	/Function initial values/ 
-	var S0=700000;
+	let S0=700000;
 	let E0=11800;
 	let I0=1000;
 	let A0=1000;
@@ -38,15 +38,15 @@
 
 	$:{
 
-			let vanderpol = function(dydt, y, t) {
-			dydt[0] = -(beta*c0+c0*q0*(1-beta))*y[0]*(y[2]+theta*y[3])+lambda*y[4]
-			dydt[1] = beta*c0*(1-q0)*y[0]*(y[2]+theta*y[3])
-			dydt[2] = sigma*eps*y[1]-(deltaI+gammaI)*y[2]
-			dydt[3]= sigma*(1-eps)*y[1]-gammaA*y[3]+gammaR*y[7]
-			dydt[4]= (1-beta)*c0*q0*y[0]*(y[2]+theta*y[3])-lambda*y[4]
-			dydt[5]= beta*c0*q0*y[0]*(y[2]+theta*y[3])-lambda*y[4]
-			dydt[6]= deltaI*y[2]+deltaq*y[5]-gammaH*y[6]
-			dydt[7]= gammaI*y[2]+gammaA*y[3]+gammaH*y[6]-gammaR*y[7]
+			let func = function(dydt, y, t) {
+				dydt[0] = -(beta*c0+c0*q0*(1-beta))*y[0]*(y[2]+theta*y[3])+lambda*y[4]
+				dydt[1] = beta*c0*(1-q0)*y[0]*(y[2]+theta*y[3])
+				dydt[2] = sigma*eps*y[1]-(deltaI+gammaI)*y[2]
+				dydt[3]= sigma*(1-eps)*y[1]-gammaA*y[3]+gammaR*y[7]
+				dydt[4]= (1-beta)*c0*q0*y[0]*(y[2]+theta*y[3])-lambda*y[4]
+				dydt[5]= beta*c0*q0*y[0]*(y[2]+theta*y[3])-lambda*y[4]
+				dydt[6]= deltaI*y[2]+deltaq*y[5]-gammaH*y[6]
+				dydt[7]= gammaI*y[2]+gammaA*y[3]+gammaH*y[6]-gammaR*y[7]
 			// dydt[2] = y[3]
 			}
 			
@@ -54,7 +54,7 @@
 			let y0 = [S0,E0,I0, A0,Sq0,Eq0,H0,R0],
 				t0 = 0.1,
 				dt0 = 1,
-				integrator = ode45( y0, vanderpol, t0, dt0 )
+				integrator = ode45( y0, func, t0, dt0 )
 			
 			// Integrate up to tmax:
 			let tmax = 256, t = [], y = []
@@ -65,7 +65,7 @@
 			}
 
 			result=[t,y];
-			console.log(result)
+			// console.log(result)
 		
 				
 	}
@@ -74,7 +74,7 @@
 <main>
 	
 <div class="container">
-<Chart />
+<Chart chartData={result} />
   <h3>Initial conditions for the functions</h3>            
   <table class="table table-bordered">
     <thead>

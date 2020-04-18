@@ -4,6 +4,9 @@
 <script>
 import {onMount} from 'svelte';
 
+export let chartData;
+console.log("Ok")
+console.log(chartData)
 function createTestChart(){
     var ctx = document.getElementById('myChart').getContext('2d');
     var myChart = new Chart(ctx, {
