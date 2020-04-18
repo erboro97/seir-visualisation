@@ -1,6 +1,6 @@
 <script>
 	import ode45 from 'ode45-cash-karp'
-	// ode45 = require('ode45-cash-karp');
+	import Chart from './Chart.svelte'
 
 	/Function initial values/ 
 	var S0=700000;
@@ -33,6 +33,8 @@
 	let b=1/2;
 	let c2=35.162037286751705;
 
+	let result=[];
+
 
 	$:{
 
@@ -45,26 +47,25 @@
 			dydt[5]= beta*c0*q0*y[0]*(y[2]+theta*y[3])-lambda*y[4]
 			dydt[6]= deltaI*y[2]+deltaq*y[5]-gammaH*y[6]
 			dydt[7]= gammaI*y[2]+gammaA*y[3]+gammaH*y[6]-gammaR*y[7]
-	
-			
 			// dydt[2] = y[3]
-			// test
 			}
 			
 			// Initialize:
 			let y0 = [S0,E0,I0, A0,Sq0,Eq0,H0,R0],
 				t0 = 0.1,
-				dt0 = 0.1,
+				dt0 = 1,
 				integrator = ode45( y0, vanderpol, t0, dt0 )
 			
 			// Integrate up to tmax:
-			let tmax = 1, t = [], y = []
+			let tmax = 256, t = [], y = []
 			while( integrator.step( tmax ) ) {
 			// Store the solution at this timestep:
 			t.push( integrator.t )
 			y.push( integrator.y )
 			}
 
+			result=[t,y];
+			console.log(result)
 		
 				
 	}
@@ -73,6 +74,7 @@
 <main>
 	
 <div class="container">
+<Chart />
   <h3>Initial conditions for the functions</h3>            
   <table class="table table-bordered">
     <thead>
