@@ -58,7 +58,7 @@
 				integrator = ode45( y0, func, t0, dt0 )
 			
 			// Integrate up to tmax:
-			let tmax = 256, t = [], y = []
+			let tmax = 40, t = [], y = []
 			while( integrator.step( tmax ) ) {
 			// Store the solution at this timestep:
 			t.push( integrator.t )
