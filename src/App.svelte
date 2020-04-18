@@ -37,6 +37,7 @@
 
 
 	$:{
+			
 
 			let func = function(dydt, y, t) {
 				dydt[0] = -(beta*c0+c0*q0*(1-beta))*y[0]*(y[2]+theta*y[3])+lambda*y[4]

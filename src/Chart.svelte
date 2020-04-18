@@ -1,12 +1,11 @@
-<canvas id="myChart" width="400" height="400"></canvas>
+<canvas id="myChart" width="1" height="3"></canvas>
 
 
 <script>
-import {onMount} from 'svelte';
+import {afterUpdate} from 'svelte';
 
 export let chartData;
-console.log("Ok")
-console.log(chartData)
+
 function createTestChart(){
     var ctx = document.getElementById('myChart').getContext('2d');
     var myChart = new Chart(ctx, {
@@ -47,5 +46,5 @@ function createTestChart(){
     });
 }
 
-onMount(createTestChart)
+afterUpdate(createTestChart)
 </script>
