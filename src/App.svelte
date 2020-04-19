@@ -58,22 +58,36 @@
 			// Initialize:
 			let y0 = [S0, E0, I0,A0,Sq0,Eq0,H0, R0],
 				t0 = 1,
-				dt0 = 0.001,
-				integrator = ode45( y0, func, t0, dt0 )
+				dt0 = 1,
+				integrator = ode45( y0, func, t0, dt0, {tol: 5e-5, maxIncreaseFactor: 2} )
 			
-			// Integrate up to tmax:
-			let tmax = 40, t = [], y = [], newElement;
-			while( integrator.step( tmax ) ) {
-			// Store the solution at this timestep:
-			
+			// // Integrate up to tmax:
+			// let tmax = 40, t = [], y = [], newElement;
+			// //integrator.dtMinMag=0.5
+			// while( integrator.step( tmax ) ) {
+			// // Store the solution at this timestep:
+			// 	integrator.dt=1
+			// 	newElement=clone(integrator.y);
+			// 	t.push( integrator.t )
+			// 	y.push( newElement )
+
+			// }
+			let ev=1, newElement, y=[], t=[];
+
+			while (ev<100){
+				integrator.steps(10, ev);
+				ev+=1;
 				newElement=clone(integrator.y);
-				t.push( integrator.t )
 				y.push( newElement )
-
+				t.push(integrator.t)
 			}
+			//console.log(t)
+			//console.log(integrator.y[0]);
+	
 
-			console.log(t.length)
-			result=[t,y];
+			//console.log(integrator )
+			 result=[t,y];
+			 console.log(result)
 		
 				
 	}
