@@ -1,6 +1,7 @@
 <script>
-	import ode45 from 'ode45-cash-karp';
-	import Chart from './Chart.svelte';
+	import ode45 from 'ode45-cash-karp'
+	import Chart from './Chart.svelte'
+	import clone from 'clone'
 
 	/Function initial values/ 
 	let S0=700000;
@@ -38,6 +39,7 @@
 
 	$:{
 
+
 			let func = function(dydt, y, t) {
 				dydt[0] = -(beta*c0+c0*q0*(1-beta))*y[0]*(y[2]+theta*y[3])+lambda*y[4]
 				dydt[1] = beta*c0*(1-q0)*y[0]*(y[2]+theta*y[3])
@@ -47,25 +49,31 @@
 				dydt[5]= beta*c0*q0*y[0]*(y[2]+theta*y[3])-lambda*y[4]
 				dydt[6]= deltaI*y[2]+deltaq*y[5]-gammaH*y[6]
 				dydt[7]= gammaI*y[2]+gammaA*y[3]+gammaH*y[6]-gammaR*y[7]
+
+				// dydt[0] = y[1]
+  				// dydt[1] = 4 * (1-y[0]*y[0])*y[1] - y[0]
 			// dydt[2] = y[3]
 			}
 
 			// Initialize:
-			let y0 = [S0,E0,I0, A0,Sq0,Eq0,H0,R0],
-				t0 = 0.1,
-				dt0 = 1,
+			let y0 = [S0, E0, I0,A0,Sq0,Eq0,H0, R0],
+				t0 = 1,
+				dt0 = 0.001,
 				integrator = ode45( y0, func, t0, dt0 )
 
 			// Integrate up to tmax:
-			let tmax = 100, t = [], y = []
+			let tmax = 40, t = [], y = [], newElement;
 			while( integrator.step( tmax ) ) {
 			// Store the solution at this timestep:
-			t.push( integrator.t )
-			y.push( integrator.y )
+
+				newElement=clone(integrator.y);
+				t.push( integrator.t )
+				y.push( newElement )
+
 			}
 
+			console.log(t.length)
 			result=[t,y];
-			//console.log(result)
 
 				
 	}
