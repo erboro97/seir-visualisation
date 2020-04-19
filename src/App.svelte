@@ -1,7 +1,7 @@
 <script>
-	import ode45 from 'ode45-cash-karp'
-	import Chart from './Chart.svelte'
-	import clone from 'clone'
+	import ode45 from 'ode45-cash-karp';
+	import Chart from './Chart.svelte';
+	import clone from 'clone';
 
 	/Function initial values/ 
 	let S0=700000;
