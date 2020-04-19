@@ -5,13 +5,15 @@
 import {afterUpdate} from 'svelte';
 
 export let chartData;
+
+// console.log(chartData[1])
 function getData(index){
     return chartData[1].map(function (arr){
         return arr[index];
     });
 }
 // console.log("ok");
-// console.log(getData(0));
+//console.log(getData(0));
 function createTestChart(){
 
     new Chart(document.getElementById("myChart"), {
@@ -29,21 +31,37 @@ function createTestChart(){
         borderColor: "#8e5ea2",
         fill: false
       }, { 
-        data: getData(1),
-        label: "Europe",
+        data: getData(2),
+        label: "Symptomatic infected",
         borderColor: "#3cba9f",
         fill: false
       }, { 
-        data: getData(2),
-        label: "Latin America",
+        data: getData(3),
+        label: "Asymptomatic infected",
         borderColor: "#e8c3b9",
         fill: false
       }, { 
-        data: getData(3),
-        label: "North America",
+        data: getData(4),
+        label: "Quarantined susceptible",
         borderColor: "#c45850",
         fill: false
+      },{ 
+        data: getData(5),
+        label: "Quarantined exposed",
+        borderColor: "#ff7f50",
+        fill: false
+      },{ 
+        data: getData(6),
+        label: "Quarantined infected",
+        borderColor: "#b8860b",
+        fill: false
+      },{ 
+        data: getData(7),
+        label: "Recovered",
+        borderColor: "#006400",
+        fill: false
       }
+
     ]
   },
   options: {
