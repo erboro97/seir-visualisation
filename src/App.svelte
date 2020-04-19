@@ -1,7 +1,7 @@
 <script>
-	import ode45 from 'ode45-cash-karp'
-	import Chart from './Chart.svelte'
-	import clone from 'clone'
+	import ode45 from 'ode45-cash-karp';
+	import Chart from './Chart.svelte';
+	import clone from 'clone';
 
 	/Function initial values/ 
 	let S0=700000;
@@ -38,7 +38,7 @@
 
 
 	$:{
-			
+
 
 			let func = function(dydt, y, t) {
 				dydt[0] = -(beta*c0+c0*q0*(1-beta))*y[0]*(y[2]+theta*y[3])+lambda*y[4]
@@ -54,7 +54,7 @@
   				// dydt[1] = 4 * (1-y[0]*y[0])*y[1] - y[0]
 			// dydt[2] = y[3]
 			}
-			
+
 			// Initialize:
 			let y0 = [S0, E0, I0,A0,Sq0,Eq0,H0, R0],
 				t0 = 1,
@@ -85,10 +85,9 @@
 			//console.log(integrator.y[0]);
 	
 
-			//console.log(integrator )
-			 result=[t,y];
-			 console.log(result)
-		
+			console.log(t.length)
+			result=[t,y];
+
 				
 	}
 </script>
@@ -96,7 +95,7 @@
 <main>
 	
 <div class="container">
-<Chart chartData={result} /> 
+<Chart chartData={result} />
   <h3>Initial conditions for the functions</h3>            
   <table class="table table-bordered">
     <thead>
@@ -110,7 +109,7 @@
       <tr>
 	  	<td>Susceptible</td>
         <td class="slidecontainer">
-  		<input type="range" min="10" max="8000000000" bind:value={S0} class="slider" id="myRange">
+  		<input type="range" min="10" max="8000000000" step="800000000" bind:value={S0} class="slider" id="myRange">
 		</td>
 		<td>{S0}</td>
      </tr>
@@ -118,7 +117,7 @@
       <tr>
         <td>Exposed</td>
         <td class="slidecontainer">
-  		<input type="range" min="10" max="1000000" bind:value={E0} class="slider" id="myRange">
+  		<input type="range" min="10" max="1000000" step="10000" bind:value={E0} class="slider" id="myRange">
 		</td>
 		<td>{E0}</td>
       </tr>
@@ -126,7 +125,7 @@
 	  <tr>
         <td>Infected</td>
         <td class="slidecontainer">
-  		<input type="range" min="10" max="100000" bind:value={I0} class="slider" id="myRange">
+  		<input type="range" min="10" max="100000" step="1000" bind:value={I0} class="slider" id="myRange">
 		</td>
 		<td>{I0}</td>
       </tr>
@@ -134,7 +133,7 @@
 	  <tr>
         <td>Asymptomatic infected</td>
         <td class="slidecontainer">
-  		<input type="range" min="10" max="100000" bind:value={A0} class="slider" id="myRange">
+  		<input type="range" min="10" max="100000" step="1000" bind:value={A0} class="slider" id="myRange">
 		</td>
 		<td>{A0}</td>
       </tr>
@@ -142,7 +141,7 @@
 	  <tr>
         <td>Quarantined susceptible</td>
         <td class="slidecontainer">
-  		<input type="range" min="10" max="100000" bind:value={Sq0} class="slider" id="myRange">
+  		<input type="range" min="10" max="100000" step="1000" bind:value={Sq0} class="slider" id="myRange">
 		</td>
 		<td>{Sq0}</td>
       </tr>
@@ -150,7 +149,7 @@
 	  <tr>
         <td>Quarantined exposed</td>
         <td class="slidecontainer">
-  		<input type="range" min="10" max="100000" bind:value={Eq0} class="slider" id="myRange">
+  		<input type="range" min="10" max="100000" step="1000" bind:value={Eq0} class="slider" id="myRange">
 		</td>
 		<td>{Eq0}</td>
       </tr>
@@ -158,7 +157,7 @@
 	  <tr>
         <td>Hospitalized</td>
         <td class="slidecontainer">
-  		<input type="range" min="10" max="100000" bind:value={H0} class="slider" id="myRange">
+  		<input type="range" min="10" max="100000" step="1000" bind:value={H0} class="slider" id="myRange">
 		</td>
 		<td>{H0}</td>
       </tr>
@@ -166,7 +165,7 @@
 	   <tr>
         <td>Recovered</td>
         <td class="slidecontainer">
-  		<input type="range" min="10" max="100000" bind:value={R0} class="slider" id="myRange">
+  		<input type="range" min="10" max="100000" step="1000" bind:value={R0} class="slider" id="myRange">
 		</td>
 		<td>{R0}</td>
       </tr>
@@ -189,7 +188,7 @@
       <tr>
 	  	<td>Initial contact rate</td>
         <td class="slidecontainer">
-  		<input type="range" min="12.48" max="45" step="0.01" bind:value={c0} class="slider" id="myRange">
+  		<input type="range" min="12.48" max="45" step="0.3252" bind:value={c0} class="slider" id="myRange">
 		</td>
 		<td>{c0}</td>
      </tr>
@@ -197,7 +196,7 @@
       <tr>
         <td>Minimum contact rate under control strategies</td>
         <td class="slidecontainer">
-  		<input type="range" min="1.0" max="6.0" step="0.001" bind:value={ca} class="slider" id="myRange">
+  		<input type="range" min="1.0" max="6.0" step="0.05" bind:value={ca} class="slider" id="myRange">
 		</td>
 		<td>{ca}</td>
       </tr>
@@ -205,7 +204,7 @@
 	  <tr>
         <td>Maximum contact rate under control strategies</td>
         <td class="slidecontainer">
-  		<input type="range" min="0" max="1" step="0.0001" bind:value={q1} class="slider" id="myRange">
+  		<input type="range" min="0" max="1" step="0.01" bind:value={q1} class="slider" id="myRange">
 		</td>
 		<td>{q1}</td>
       </tr>
@@ -213,7 +212,7 @@
 	  <tr>
         <td>Probability of transmission per contact</td>
         <td class="slidecontainer">
-  		<input type="range" min="0" max="0.001" step="0.000000001" bind:value={beta} class="slider" id="myRange">
+  		<input type="range" min="0" max="0.001" step="0.0001" bind:value={beta} class="slider" id="myRange">
 		</td>
 		<td>{beta}</td>
       </tr>
@@ -221,7 +220,7 @@
 	  <tr>
         <td>Initial quarantined rate of exposed individuals</td>
         <td class="slidecontainer">
-  		<input type="range" min="0" max="0.01" step="0.000000001" bind:value={q0} class="slider" id="myRange">
+  		<input type="range" min="0" max="0.01" step="0.0001" bind:value={q0} class="slider" id="myRange">
 		</td>
 		<td>{q0}</td>
       </tr>
@@ -229,7 +228,7 @@
 	  <tr>
         <td>Transition rate of exposed individuals to the infected class</td>
         <td class="slidecontainer">
-  		<input type="range" min="0" max="1" step="0.000001" bind:value={sigma} class="slider" id="myRange">
+  		<input type="range" min="0" max="1" step="0.01" bind:value={sigma} class="slider" id="myRange">
 		</td>
 		<td>{sigma}</td>
       </tr>
@@ -237,7 +236,7 @@
 	  <tr>
         <td>Rate at which quarantined uninfects were released into the wider community</td>
         <td class="slidecontainer">
-  		<input type="range" min="0" max="1" step="0.000001" bind:value={lambda} class="slider" id="myRange">
+  		<input type="range" min="0" max="1" step="0.01" bind:value={lambda} class="slider" id="myRange">
 		</td>
 		<td>{lambda}</td>
       </tr>
@@ -245,7 +244,7 @@
 	   <tr>
         <td>Probability of having symptoms among infected individuals</td>
         <td class="slidecontainer">
-  		<input type="range" min="0.6" max="0.89" step="0.00000001" bind:value={eps} class="slider" id="myRange">
+  		<input type="range" min="0.6" max="0.89" step="0.0029" bind:value={eps} class="slider" id="myRange">
 		</td>
 		<td>{eps}</td>
       </tr>
@@ -253,7 +252,7 @@
 	 <tr>
         <td>Transition rate of symptomatic infected individuals to the quarantined infected class</td>
         <td class="slidecontainer">
-  		<input type="range" min="0.01" max="0.95" step="0.000001" bind:value={deltaI} class="slider" id="myRange">
+  		<input type="range" min="0.01" max="0.95" step="0.0094" bind:value={deltaI} class="slider" id="myRange">
 		</td>
 		<td>{deltaI}</td>
       </tr>
@@ -261,7 +260,7 @@
 	  <tr>
         <td>Transition rate of quarantined exposed individuals to the quarantined infected class</td>
         <td class="slidecontainer">
-  		<input type="range" min="0.01" max="0.4" step="0.00000001"  bind:value={deltaq} class="slider" id="myRange">
+  		<input type="range" min="0.01" max="0.4" step="0.0039"  bind:value={deltaq} class="slider" id="myRange">
 		</td>
 		<td>{deltaq}</td>
       </tr>
@@ -269,7 +268,7 @@
 	  <tr>
         <td>Recovery rate of symptomatic infected individuals</td>
         <td class="slidecontainer">
-  		<input type="range" min="0.01" max="0.75" step="0.00000001" bind:value={gammaI} class="slider" id="myRange">
+  		<input type="range" min="0.01" max="0.75" step="0.0074" bind:value={gammaI} class="slider" id="myRange">
 		</td>
 		<td>{gammaI}</td>
       </tr>
@@ -277,7 +276,7 @@
 	  <tr>
         <td>Recovery rate of asymptomatic infected individuals</td>
         <td class="slidecontainer">
-  		<input type="range" min="0.01" max="0.36" step="0.00000001"  bind:value={gammaA} class="slider" id="myRange">
+  		<input type="range" min="0.01" max="0.36" step="0.0035"  bind:value={gammaA} class="slider" id="myRange">
 		</td>
 		<td>{gammaA}</td>
       </tr>
@@ -285,7 +284,7 @@
 	  <tr>
         <td>Recovery rate of quarantined infected individuals</td>
         <td class="slidecontainer">
-  		<input type="range" min="0.01" max="0.1" step="0.000001" bind:value={gammaH} class="slider" id="myRange">
+  		<input type="range" min="0.01" max="0.1" step="0.001" bind:value={gammaH} class="slider" id="myRange">
 		</td>
 		<td>{gammaH}</td>
       </tr>
@@ -293,7 +292,7 @@
 	  <tr>
         <td>Rate at which recovered individuals move into the pre-symptomatic class</td>
         <td class="slidecontainer">
-  		<input type="range" min="0" max="0.001" step="0.00000001" bind:value={gammaR} class="slider" id="myRange">
+  		<input type="range" min="0" max="0.001" step="0.00001" bind:value={gammaR} class="slider" id="myRange">
 		</td>
 		<td>{gammaR}</td>
       </tr>
@@ -301,7 +300,7 @@
 	  <tr>
         <td>Relative transmission probability of A compared with I</td>
         <td class="slidecontainer">
-  		<input type="range" min="0" max="0.1" step="0.00000001" bind:value={theta} class="slider" id="myRange">
+  		<input type="range" min="0" max="0.1" step="0.001" bind:value={theta} class="slider" id="myRange">
 		</td>
 		<td>{theta}</td>
       </tr>
@@ -309,7 +308,7 @@
 	  <tr>
         <td>Governmental action strength</td>
         <td class="slidecontainer">
-  		<input type="range" min="0" max="1" step="0.00000001" bind:value={alfab} class="slider" id="myRange">
+  		<input type="range" min="0" max="1" step="0.001" bind:value={alfab} class="slider" id="myRange">
 		</td>
 		<td>{alfab}</td>
       </tr>
@@ -317,7 +316,7 @@
 	  <tr>
         <td>The intensity of the effect of tempreture variation</td>
         <td class="slidecontainer">
-  		<input type="range" min="0.001" max="0.999"  step="0.00000001" bind:value={xi} class="slider" id="myRange">
+  		<input type="range" min="0.001" max="0.999"  step="0.00998" bind:value={xi} class="slider" id="myRange">
 		</td>
 		<td>{xi}</td>
       </tr>
@@ -325,7 +324,7 @@
 	  <tr>
         <td>Coefficient for contact rate function</td>
         <td class="slidecontainer">
-  		<input type="range" min="0.5" max="1" step="0.00000001" bind:value={b} class="slider" id="myRange">
+  		<input type="range" min="0.5" max="1" step="0.005" bind:value={b} class="slider" id="myRange">
 		</td>
 		<td>{b}</td>
       </tr>
