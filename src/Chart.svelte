@@ -13,13 +13,12 @@ function getData(index){
     });
 }
 // console.log("ok");
-//console.log(getData(0));
 function createTestChart(){
 
     new Chart(document.getElementById("myChart"), {
   type: 'line',
   data: {
-    labels: chartData[0],
+    labels: chartData[2],
     datasets: [{ 
         data: getData(0),
         label: "Susceptible",
@@ -67,7 +66,7 @@ function createTestChart(){
   options: {
     title: {
       display: true,
-      text: 'World population per region (in millions)'
+      text: 'Epidemiological model'
     }
   }
 });
