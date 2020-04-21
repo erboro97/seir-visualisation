@@ -3,6 +3,7 @@
 	import Chart from './Chart.svelte';
 	import Cubic from './Cubic_interpolation.svelte';
 	import clone from 'clone';
+	import Spline from 'cubic-spline';
 
 	/Function initial values/ 
 	let N=7000000;
@@ -36,8 +37,28 @@
 	let result=[];
 	let points=[];
 
+	
+
 
 	$:{
+
+		// Cubic interpolation ---- https://www.npmjs.com/package/cubic-spline
+		let xCoord = [];
+		let yCoord = [];
+		points.forEach(point => {
+			xCoord.push(point.x);
+			yCoord.push(point.y);
+		});
+
+		if (Array.isArray(xCoord) && xCoord.length) {
+			const spline = new Spline(xCoord, yCoord);
+			console.log("Cubic");
+			for (let i = 0; i < 6; i++) {
+ 				console.log(spline.at(i * 0.1));
+			}
+		}
+		
+		// Differential equation solver
 			S0=N*0.9;
 			let func = function(dydt, y, t) {
 				// dydt[0] = -(beta*c0+c0*q0*(1-beta))*y[0]*(y[2]+theta*y[3])+lambda*y[4]
@@ -95,8 +116,6 @@
 	
 
 			result=[t,y,days];
-			console.log(result)
-
 
 
 				
@@ -104,8 +123,6 @@
 
 const myClick = (e) =>{
 	points=e.detail;
-	console.log("tuti itt")
-	console.log(points)
 }
 </script>
 
