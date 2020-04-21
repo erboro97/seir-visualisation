@@ -1,6 +1,7 @@
 <script>
 	import ode45 from 'ode45-cash-karp';
 	import Chart from './Chart.svelte';
+	import Cubic from './Cubic_interpolation.svelte';
 	import clone from 'clone';
 
 	/Function initial values/ 
@@ -33,11 +34,11 @@
 	
 
 	let result=[];
+	let points=[];
 
 
 	$:{
-			S0=N*0.9
-			console.log(S0)
+			S0=N*0.9;
 			let func = function(dydt, y, t) {
 				// dydt[0] = -(beta*c0+c0*q0*(1-beta))*y[0]*(y[2]+theta*y[3])+lambda*y[4]
 				// dydt[1] = beta*c0*(1-q0)*y[0]*(y[2]+theta*y[3])
@@ -79,10 +80,11 @@
 			// 	y.push( newElement )
 
 			// }
-			let ev=1, newElement, y=[], t=[];
+			let ev=1, newElement, y=[], t=[],days=[];
 
 			while (ev<100){
 				integrator.steps(10, ev);
+				days.push(ev);
 				ev+=1;
 				newElement=clone(integrator.y);
 				y.push( newElement )
@@ -92,17 +94,26 @@
 			//console.log(integrator.y[0]);
 	
 
-			console.log(t.length)
-			result=[t,y];
+			result=[t,y,days];
+			console.log(result)
+
+
 
 				
 	}
+
+const myClick = (e) =>{
+	points=e.detail;
+	console.log("tuti itt")
+	console.log(points)
+}
 </script>
 
 <main>
 	
 <div class="container">
 <Chart chartData={result} />
+<Cubic on:myClick={myClick}/>
   <h3>Initial conditions for the functions</h3>            
   <table class="table table-bordered">
     <thead>
