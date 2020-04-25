@@ -10,7 +10,8 @@ let dispatch = createEventDispatcher();
 let globalChartRef;
 let avoidDublication=0;
 let points = [];
-
+let mySet=[];
+let step=10;
 
 
 
@@ -34,33 +35,42 @@ function click(element, dataAtClick, myChart){
                     }
                 }
                 myChart.data.datasets.forEach((dataset) => {
-                    dataset.data.push({
-                        x: valueX,
-                        y: valueY
-                    });
+                    dataset.data.forEach((element) => {
+                            if(Math.ceil(valueX / 10) * 10===element.x){
+                                element.y=valueY;
+                            }
+
+                           
+                     })
+                      points=dataset.data;
                 });
                
-                     points.push({
-                        x: valueX,
-                        y: valueY
-                    });
-                
                 avoidDublication+=1;
                 myChart.update();
 
 }
 
-   const myClick = () =>{
+const linearPoints = () =>{
+    for (var i=0;i<100;i+=step){
+        mySet.push({x:i,y:6});
+    }
+    return mySet
+}
+
+// points=linearPoints();
+
+const myClick = () =>{
    setTimeout(() =>{dispatch('myClick', points);});
 }
 
 function createGraph() {
     var config = {
         type: 'scatter',
+        labels: ['10','20','30','40','50','60'],
         data: {
             datasets: [{
                 label: "Dataset Made of Clicked Points",
-                data: [],
+                data:  linearPoints(),               
                 fill: false,
                 showLine: true,
                 cubicInterpolationMode: 'monotone'
@@ -83,8 +93,8 @@ function createGraph() {
                         labelString: 'X-Axis'
                     },
                     ticks: {
-                        min: -10,
-                        suggestedMax: 5
+                        min: 0,
+                        suggestedMax: 90
                     }
                 }, ],
                 yAxes: [{

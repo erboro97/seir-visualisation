@@ -45,6 +45,8 @@
 		// Cubic interpolation ---- https://www.npmjs.com/package/cubic-spline
 		let xCoord = [];
 		let yCoord = [];
+		console.log(points)
+
 		points.forEach(point => {
 			xCoord.push(point.x);
 			yCoord.push(point.y);
@@ -52,9 +54,9 @@
 
 		if (Array.isArray(xCoord) && xCoord.length) {
 			const spline = new Spline(xCoord, yCoord);
-			console.log("Cubic");
-			for (let i = 0; i < 6; i++) {
- 				console.log(spline.at(i * 0.1));
+			// console.log("Cubic");
+			for (let i = 0; i < 90; i++) {
+ 				// console.log(spline.at(i ));
 			}
 		}
 		

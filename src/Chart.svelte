@@ -12,63 +12,102 @@ function getData(index){
         return arr[index];
     });
 }
-// console.log("ok");
+
+window.chartColors = {
+      red: 'rgb(255, 99, 132)',
+      orange: 'rgb(255, 159, 64)',
+      yellow: 'rgb(255, 205, 86)',
+      green: 'rgb(75, 192, 192)',
+      blue: 'rgb(54, 162, 235)',
+      purple: 'rgb(153, 102, 255)',
+      grey: 'rgb(201, 203, 207)',
+      aqua: '#7FFFD4'
+};
+
+
 function createTestChart(){
+  
+  var barChartData = {
+      labels: chartData[2],
+			datasets: [{
+        label: 'Dataset 1',
+        backgroundColor: window.chartColors.red,
+				data: 
+          getData(0)
+				
+			}, {
+        label: 'Dataset 2',
+         backgroundColor: window.chartColors.yellow,
+				data: 
+					getData(1)
+				
+			}, {
+        label: 'Dataset 3',
+        backgroundColor: window.chartColors.green,
+				data: 
+					getData(2)
+				
+      },
+      {
+        label: 'Dataset 3',
+        backgroundColor: window.chartColors.orange,
+				data: 
+					getData(3)
+				
+      },
+      {
+        label: 'Dataset 3',
+        backgroundColor: window.chartColors.blue,
+				data: 
+					getData(4)
+				
+      },
+      {
+        label: 'Dataset 3',
+        backgroundColor: window.chartColors.purple,
+				data: 
+					getData(5)
+				
+      },
+
+      {
+        label: 'Dataset 3',
+        backgroundColor: window.chartColors.grey,
+				data: 
+					getData(6)
+				
+      },
+      {
+        label: 'Dataset 3',
+        backgroundColor: window.chartColors.aqua,
+				data: 
+					getData(7)
+				
+      }]
+
+		};
 
     new Chart(document.getElementById("myChart"), {
-  type: 'line',
-  data: {
-    labels: chartData[2],
-    datasets: [{ 
-        data: getData(0),
-        label: "Susceptible",
-        borderColor: "#3e95cd",
-        fill: false
-      }, { 
-        data: getData(1),
-        label: "Expsed",
-        borderColor: "#8e5ea2",
-        fill: false
-      }, { 
-        data: getData(2),
-        label: "Symptomatic infected",
-        borderColor: "#3cba9f",
-        fill: false
-      }, { 
-        data: getData(3),
-        label: "Asymptomatic infected",
-        borderColor: "#e8c3b9",
-        fill: false
-      }, { 
-        data: getData(4),
-        label: "Quarantined susceptible",
-        borderColor: "#c45850",
-        fill: false
-      },{ 
-        data: getData(5),
-        label: "Quarantined exposed",
-        borderColor: "#ff7f50",
-        fill: false
-      },{ 
-        data: getData(6),
-        label: "Quarantined infected",
-        borderColor: "#b8860b",
-        fill: false
-      },{ 
-        data: getData(7),
-        label: "Recovered",
-        borderColor: "#006400",
-        fill: false
-      }
-
-    ]
-  },
-  options: {
-    title: {
-      display: true,
-      text: 'Epidemiological model'
-    }
-  }
+ 	      type: 'bar',
+				data: barChartData,
+				options: {
+					title: {
+						display: true,
+						text: 'Chart.js Bar Chart - Stacked'
+					},
+					tooltips: {
+						mode: 'index',
+						intersect: false
+					},
+					scales: {
+						xAxes: [{
+							stacked: true,
+						}],
+						yAxes: [{
+							stacked: true
+						}]
+					}
+				}
 });
 }
 
