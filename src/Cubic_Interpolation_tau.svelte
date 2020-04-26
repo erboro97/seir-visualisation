@@ -15,7 +15,16 @@ let step=10;
 
 
 
-
+window.chartColors = {
+      red: 'rgb(255, 99, 132)',
+      orange: 'rgb(255, 159, 64)',
+      yellow: 'rgb(255, 205, 86)',
+      green: 'rgb(75, 192, 192)',
+      blue: 'rgb(54, 162, 235)',
+      purple: 'rgb(153, 102, 255)',
+      grey: 'rgb(201, 203, 207)',
+      aqua: '#7FFFD4'
+};
 
 
 function randomColor(alpha) {
@@ -23,9 +32,10 @@ function randomColor(alpha) {
 }
 
 function click(element, dataAtClick, myChart){
-    let scaleRef,
+    let scaleRef, dataset, 
     valueX,
     valueY;
+   
     for (var scaleKey in myChart.scales) {
                     scaleRef = myChart.scales[scaleKey];
                     if (scaleRef.isHorizontal() && scaleKey == 'x-axis-1') {
@@ -34,23 +44,37 @@ function click(element, dataAtClick, myChart){
                         valueY = scaleRef.getValueForPixel(element.offsetY);
                     }
                 }
-                myChart.data.datasets.forEach((dataset) => {
-                    dataset.data.forEach((element) => {
-                            if(Math.ceil(valueX / 10) * 10===element.x){
+    myChart.data.datasets.forEach((dat) => {
+                  dataset=dat;
+                });
+
+                dataset.data.forEach((element) => {
+                            if(Math.ceil(valueX / step) * step===element.x){
                                 element.y=valueY;
                             }
 
                            
                      })
                       points=dataset.data;
-                });
                
                 avoidDublication+=1;
-                myChart.update();
+                
+                myChart.update()
+
+                //clearTimeout(myVar);
+               
+
+}
+
+
+const changeStep = (e) =>{
+    step=parseInt(e.target.value)
 
 }
 
 const linearPoints = () =>{
+    mySet=[];
+
     for (var i=0;i<100;i+=step){
         mySet.push({x:i,y:6});
     }
@@ -115,18 +139,27 @@ function createGraph() {
     };
     
     config.data.datasets.forEach(function (dataset) {
-        dataset.borderColor = randomColor(0.8);
-        dataset.backgroundColor = randomColor(0.7);
-        dataset.pointBorderColor = randomColor(1);
-        dataset.pointBackgroundColor = randomColor(1);
+       dataset.borderColor = window.chartColors.orange;
+        dataset.backgroundColor = window.chartColors.orange;
+        dataset.pointBorderColor = window.chartColors.orange;
+        dataset.pointBackgroundColor = window.chartColors.orange;
         dataset.pointRadius = 7;
         dataset.pointBorderWidth = 2;
         dataset.pointHoverRadius = 8;
     });
     
     var ctx = document.getElementById('Cubic').getContext('2d');
+
+    if (globalChartRef) {
+        console.log("megmenekitett")
+        globalChartRef.destroy();
+      }
     globalChartRef = new Chart(ctx, config);    
  
 }
 afterUpdate(createGraph)
 </script>
+
+<main>
+    <input type="number" name="tau" on:change|stopPropagation ={changeStep} value={step}>
+</main>

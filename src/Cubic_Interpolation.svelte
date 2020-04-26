@@ -1,4 +1,6 @@
 <canvas id="ChartCnvs"  width="3" height="2" on:click|preventDefault={myClick}></canvas>
+
+
 <!-- https://steemit.com/utopian-io/@loshcat/chart-js-tutorial-1-click-to-add-datapoints -->
 <script>
 
@@ -14,7 +16,16 @@ let mySet=[];
 let step=10;
 
 
-
+window.chartColors = {
+      red: 'rgb(255, 99, 132)',
+      orange: 'rgb(255, 159, 64)',
+      yellow: 'rgb(255, 205, 86)',
+      green: 'rgb(75, 192, 192)',
+      blue: 'rgb(54, 162, 235)',
+      purple: 'rgb(153, 102, 255)',
+      grey: 'rgb(201, 203, 207)',
+      aqua: '#7FFFD4'
+};
 
 
 
@@ -23,9 +34,10 @@ function randomColor(alpha) {
 }
 
 function click(element, dataAtClick, myChart){
-    let scaleRef,
+    let scaleRef, dataset, 
     valueX,
     valueY;
+   
     for (var scaleKey in myChart.scales) {
                     scaleRef = myChart.scales[scaleKey];
                     if (scaleRef.isHorizontal() && scaleKey == 'x-axis-1') {
@@ -34,29 +46,42 @@ function click(element, dataAtClick, myChart){
                         valueY = scaleRef.getValueForPixel(element.offsetY);
                     }
                 }
-                myChart.data.datasets.forEach((dataset) => {
-                    dataset.data.forEach((element) => {
-                            if(Math.ceil(valueX / 10) * 10===element.x){
+    myChart.data.datasets.forEach((dat) => {
+                  dataset=dat;
+                });
+
+                dataset.data.forEach((element) => {
+                            if(Math.ceil(valueX / step) * step===element.x){
                                 element.y=valueY;
                             }
 
                            
                      })
                       points=dataset.data;
-                });
                
                 avoidDublication+=1;
-                myChart.update();
+                
+                myChart.update()
+
+                //clearTimeout(myVar);
+               
+
+}
+
+
+
+const changeStep = (e) =>{
+    step=parseInt(e.target.value)
 
 }
 
 const linearPoints = () =>{
+    mySet=[];
     for (var i=0;i<100;i+=step){
         mySet.push({x:i,y:6});
     }
     return mySet
 }
-
 // points=linearPoints();
 
 const myClick = () =>{
@@ -115,18 +140,25 @@ function createGraph() {
     };
     
     config.data.datasets.forEach(function (dataset) {
-        dataset.borderColor = randomColor(0.8);
-        dataset.backgroundColor = randomColor(0.7);
-        dataset.pointBorderColor = randomColor(1);
-        dataset.pointBackgroundColor = randomColor(1);
+        dataset.borderColor = window.chartColors.red;
+        dataset.backgroundColor = window.chartColors.red;
+        dataset.pointBorderColor = window.chartColors.red;
+        dataset.pointBackgroundColor = window.chartColors.red;
         dataset.pointRadius = 7;
         dataset.pointBorderWidth = 2;
         dataset.pointHoverRadius = 8;
     });
     
     var ctx = document.getElementById('ChartCnvs').getContext('2d');
+     if (globalChartRef) {
+        globalChartRef.destroy();
+      }
     globalChartRef = new Chart(ctx, config);    
  
 }
 afterUpdate(createGraph)
 </script>
+
+<main>
+<input type="number" name="c" on:change|stopPropagation ={changeStep} value={step}>
+</main>

@@ -39,7 +39,7 @@
 	let pointsC=[];
 	let pointsTau=[];
 
-	
+	let cStep=10;
 
 
 	$:{
@@ -62,17 +62,17 @@
 		});
 		if (Array.isArray(xCoordC) && xCoordC.length) {
 			const spline = new Spline(xCoordC, yCoordC);
-			// console.log("Cubic");
+			console.log("Cubic C");
 			for (let i = 0; i < 90; i++) {
- 				// console.log(spline.at(i ));
+ 				console.log(spline.at(i ));
 			}
 		}
 
 		if (Array.isArray(xCoordTau) && xCoordTau.length) {
 			const spline = new Spline(xCoordTau, yCoordTau);
-			// console.log("Cubic");
+			console.log("Cubic Tau");
 			for (let i = 0; i < 90; i++) {
- 				// console.log(spline.at(i ));
+ 				console.log(spline.at(i ));
 			}
 		}
 		
@@ -140,11 +140,10 @@
 	}
 
 const myClickC = (e) =>{
-	pointsC=e.detail;
+		pointsC=e.detail;
 }
 
 const myClickTau = (e) =>{
-	console.log("ok")
 	pointsTau=e.detail;
 }
 </script>
