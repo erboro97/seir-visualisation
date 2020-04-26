@@ -1,4 +1,4 @@
-<canvas id="ChartCnvs"  width="3" height="2" on:click|preventDefault={myClick}></canvas>
+<canvas id="Cubic"  width="3" height="2" on:click|preventDefault={myClick}></canvas>
 <!-- https://steemit.com/utopian-io/@loshcat/chart-js-tutorial-1-click-to-add-datapoints -->
 <script>
 
@@ -82,7 +82,7 @@ function createGraph() {
             },
             title: {
                 display: true,
-                text: "C Interpolation"
+                text: "Tau Interpolation"
             },
             scales: {
                  xAxes: [{
@@ -124,7 +124,7 @@ function createGraph() {
         dataset.pointHoverRadius = 8;
     });
     
-    var ctx = document.getElementById('ChartCnvs').getContext('2d');
+    var ctx = document.getElementById('Cubic').getContext('2d');
     globalChartRef = new Chart(ctx, config);    
  
 }
