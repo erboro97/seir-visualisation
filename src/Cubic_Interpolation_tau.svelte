@@ -161,5 +161,7 @@ afterUpdate(createGraph)
 </script>
 
 <main>
-    <input type="number" name="tau" on:change|stopPropagation ={changeStep} value={step}>
+    <div class="form-group">
+        <input type="number" name="tau" class="form-control" on:change|stopPropagation ={changeStep} value={step}>
+    </div>
 </main>

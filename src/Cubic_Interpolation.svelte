@@ -160,5 +160,7 @@ afterUpdate(createGraph)
 </script>
 
 <main>
-<input type="number" name="c" on:change|stopPropagation ={changeStep} value={step}>
+    <div class="form-group">
+        <input type="number" name="c" class="form-control" on:change|stopPropagation ={changeStep} value={step}>
+    </div>
 </main>

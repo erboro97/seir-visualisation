@@ -29,13 +29,9 @@ function createTestChart(){
   
   var barChartData = {
       labels: chartData[2],
-			datasets: [{
-        label: 'Dataset 1',
-        backgroundColor: window.chartColors.red,
-				data: 
-          getData(0)
-				
-			}, {
+			datasets: [
+        
+      {
         label: 'Dataset 2',
          backgroundColor: window.chartColors.yellow,
 				data: 
@@ -83,7 +79,15 @@ function createTestChart(){
 				data: 
 					getData(7)
 				
-      }]
+      },
+      {
+        label: 'Dataset 1',
+        backgroundColor: window.chartColors.red,
+				data: 
+          getData(0)
+				
+      }
+      ]
 
 		};
 
