@@ -1,8 +1,8 @@
 <script>
 	import ode45 from 'ode45-cash-karp';
 	import Chart from './Chart.svelte';
-	import Cubic from './Cubic_interpolation.svelte';
-	import CubicTau from './Cubic_interpolation_tau.svelte';
+	import Cubic from './Cubic_Interpolation.svelte';
+	import CubicTau from './Cubic_Interpolation_tau.svelte';
 	import clone from 'clone';
 	import Spline from 'cubic-spline';
 
