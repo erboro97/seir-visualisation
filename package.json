@@ -17,6 +17,8 @@
   },
   "dependencies": {
     "bootstrap": "^4.4.1",
+    "clone": "^2.1.2",
+    "cubic-spline": "^3.0.3",
     "ode45-cash-karp": "^1.1.0",
     "sirv-cli": "^0.4.4",
     "uniq": "^1.0.1"
