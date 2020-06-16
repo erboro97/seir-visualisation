@@ -6,9 +6,11 @@
 	import clone from 'clone';
 	import Spline from 'cubic-spline';
 
+	let days=90;
+
 	/Function initial values/ 
 	let N=7000000;
-	let S0=N*0.9;
+	let S0=7000000;
 	let E0=11800;
 	let I0=1000;
 	let A0=1000;
@@ -33,9 +35,18 @@
 	let alfa=0.4239; //!
 	let deltaI=0.5 //!
 
-	
+	let w=1.2;
+	let lambda=1.2;
+	let f=1.2;
+	let gammaR=1.2;
+	let g=1.2;
+	let deltaq=1.2;
+	let h=1.2;
+	let q1=1.2; // nem fog kelleni
+	let theta=1.2;
 
 	let result=[];
+	let ct=Array.apply(null, Array(99)).map(Number.prototype.valueOf,0);;
 	let pointsC=[];
 	let pointsTau=[];
 
@@ -43,7 +54,6 @@
 
 
 	$:{
-
 		// Cubic interpolation ---- https://www.npmjs.com/package/cubic-spline
 		let xCoordC = [];
 		let yCoordC = [];
@@ -64,10 +74,12 @@
 			const spline = new Spline(xCoordC, yCoordC);
 			console.log("Cubic C");
 			for (let i = 0; i < 90; i++) {
- 				console.log(spline.at(i ));
+				 ct[i]=spline.at(i);
+				 if (ct[i]==NaN && ct[i]==undefined){
+					 ct[i]=0;
+				 }
 			}
 		}
-
 		if (Array.isArray(xCoordTau) && xCoordTau.length) {
 			const spline = new Spline(xCoordTau, yCoordTau);
 			console.log("Cubic Tau");
@@ -77,7 +89,24 @@
 		}
 		
 		// Differential equation solver
-			S0=N*0.9;
+			let wFunct = function(y,t){
+				if (ct[t]!=undefined){
+					console.log("ok")
+					return [beta1*ct[t]+ct[t]*q1*(1-beta1)]*y[0]*(y[2]+theta*y[3]);
+				}
+				return [beta1*c1+c1*q1*(1-beta1)]*y[0]*(y[2]+theta*y[3]);
+			}
+
+			let fFunct= function(y){
+				return beta1*c1*(1-q1)*y[0]*(y[2]+theta*y[3]);
+			}
+
+			let gFunct=function(y){
+				return (1-beta1)*c1*q1*y[0]*(y[2]+theta*y[3]);
+			}
+			let hFunct=function(y){
+				return beta1*c1*q1*y[0]*(y[2]+theta*y[3]);
+			}
 			let func = function(dydt, y, t) {
 				// dydt[0] = -(beta*c0+c0*q0*(1-beta))*y[0]*(y[2]+theta*y[3])+lambda*y[4]
 				// dydt[1] = beta*c0*(1-q0)*y[0]*(y[2]+theta*y[3])
@@ -88,14 +117,25 @@
 				// dydt[6]= deltaI*y[2]+deltaq*y[5]-gammaH*y[6]
 				// dydt[7]= gammaI*y[2]+gammaA*y[3]+gammaH*y[6]-gammaR*y[7]
 
-				dydt[0] = -beta1*c1*y[0]*y[3]/N-beta2*c2*y[0]*y[2]/N-beta3*c3*y[0]*y[4]/N
-				dydt[1] = beta1*c1*y[0]*y[3]/N+beta2*c2*y[0]*y[2]/N+beta3*c3*y[0]*y[4]/N-sigma*y[1]
-				dydt[2] = sigma*(1-rho)*y[1]-(gammaA+tau)*y[2]
-				dydt[3]= sigma*rho*y[1]+tau*y[2]-(gammaI+deltaI)*y[3]
-				dydt[4]= gammaI*y[3]-(alfa+gammaH)*y[4]
-				dydt[5]= gammaH*y[4]
-				dydt[6]= alfa*y[4]
-				dydt[7]= gammaA*y[2]
+				// dydt[0] = -beta1*c1*y[0]*y[3]/N-beta2*c2*y[0]*y[2]/N-beta3*c3*y[0]*y[4]/N
+				// dydt[1] = beta1*c1*y[0]*y[3]/N+beta2*c2*y[0]*y[2]/N+beta3*c3*y[0]*y[4]/N-sigma*y[1]
+				// dydt[2] = sigma*(1-rho)*y[1]-(gammaA+tau)*y[2]
+				// dydt[3]= sigma*rho*y[1]+tau*y[2]-(gammaI+deltaI)*y[3]
+				// dydt[4]= gammaI*y[3]-(alfa+gammaH)*y[4]
+				// dydt[5]= gammaH*y[4]
+				// dydt[6]= alfa*y[4]
+				// dydt[7]= gammaA*y[2]
+
+				
+				dydt[0] = -wFunct(y,t)+lambda*y[4];
+				dydt[1] = fFunct(y)-sigma*y[1];
+				dydt[2] = sigma*rho*y[1]-(deltaI+alfa+gammaI)*y[2];
+				dydt[3]= sigma*(1-rho)*y[1]-gammaA*y[3]+gammaR*y[7]
+				dydt[4]= gFunct(y)-lambda*y[4]
+				dydt[5]= hFunct(y)-y[4]*y[5]
+				dydt[6]= deltaI*y[2]+deltaq*y[5]-(alfa+gammaH)*y[6];
+				dydt[7]= gammaI*y[2]+gammaA*y[3]+gammaH*y[6]-gammaR*y[7];
+
 
 				// dydt[0] = y[1]
   				// dydt[1] = 4 * (1-y[0]*y[0])*y[1] - y[0]
