@@ -6,7 +6,8 @@
 	import clone from 'clone';
 	import Spline from 'cubic-spline';
 
-	let days=90;
+	let days=99;
+	let ev=1;
 
 	/Function initial values/ 
 	let N=7000000;
@@ -46,33 +47,35 @@
 	let theta=1.2;
 
 	let result=[];
-	let ct=Array.apply(null, Array(99)).map(Number.prototype.valueOf,0);;
+	let ct=Array.apply(null, Array(days)).map(Number.prototype.valueOf,0);;
+	let qt=Array.apply(null, Array(days)).map(Number.prototype.valueOf,0);;
 	let pointsC=[];
-	let pointsTau=[];
+	let pointsq=[];
 
 	let cStep=10;
 
 
 	$:{
+		ev=1
 		// Cubic interpolation ---- https://www.npmjs.com/package/cubic-spline
 		let xCoordC = [];
 		let yCoordC = [];
 
-		let xCoordTau = [];
-		let yCoordTau = [];
+
+		let xCoordq = [];
+		let yCoordq = [];
 
 		pointsC.forEach(point => {
 			xCoordC.push(point.x);
 			yCoordC.push(point.y);
 		});
 
-		pointsTau.forEach(point => {
-			xCoordTau.push(point.x);
-			yCoordTau.push(point.y);
+		pointsq.forEach(point => {
+			xCoordq.push(point.x);
+			yCoordq.push(point.y);
 		});
 		if (Array.isArray(xCoordC) && xCoordC.length) {
 			const spline = new Spline(xCoordC, yCoordC);
-			console.log("Cubic C");
 			for (let i = 0; i < 90; i++) {
 				 ct[i]=spline.at(i);
 				 if (ct[i]==NaN && ct[i]==undefined){
@@ -80,31 +83,44 @@
 				 }
 			}
 		}
-		if (Array.isArray(xCoordTau) && xCoordTau.length) {
-			const spline = new Spline(xCoordTau, yCoordTau);
-			console.log("Cubic Tau");
+		if (Array.isArray(xCoordq) && xCoordq.length) {
+			const spline = new Spline(xCoordq, yCoordq);
 			for (let i = 0; i < 90; i++) {
- 				console.log(spline.at(i ));
+ 				qt[i]=spline.at(i);
+				 if (qt[i]==NaN && qt[i]==undefined){
+					 qt[i]=0;
+				 }
 			}
 		}
 		
 		// Differential equation solver
-			let wFunct = function(y,t){
-				if (ct[t]!=undefined){
-					console.log("ok")
-					return [beta1*ct[t]+ct[t]*q1*(1-beta1)]*y[0]*(y[2]+theta*y[3]);
+			let wFunct = function(y){
+				if (ct[ev]!=undefined || qt[ev]!=undefined){
+					console.log(ev)
+					return [beta1*ct[ev]+ct[ev]*qt[ev]*(1-beta1)]*y[0]*(y[2]+theta*y[3]);
 				}
 				return [beta1*c1+c1*q1*(1-beta1)]*y[0]*(y[2]+theta*y[3]);
 			}
 
 			let fFunct= function(y){
+				if (ct[ev]!=undefined || qt[ev]!=undefined){
+					return beta1*ct[ev]*(1-qt[ev])*y[0]*(y[2]+theta*y[3]);
+				}
+
 				return beta1*c1*(1-q1)*y[0]*(y[2]+theta*y[3]);
 			}
 
 			let gFunct=function(y){
+				if (ct[ev]!=undefined || qt[ev]!=undefined){
+					return (1-beta1)*ct[ev]*qt[ev]*y[0]*(y[2]+theta*y[3]);
+				}
+
 				return (1-beta1)*c1*q1*y[0]*(y[2]+theta*y[3]);
 			}
 			let hFunct=function(y){
+				if (ct[ev]!=undefined || qt[ev]!=undefined){
+					return beta1*ct[ev]*qt[ev]*y[0]*(y[2]+theta*y[3]);
+				}
 				return beta1*c1*q1*y[0]*(y[2]+theta*y[3]);
 			}
 			let func = function(dydt, y, t) {
@@ -126,7 +142,6 @@
 				// dydt[6]= alfa*y[4]
 				// dydt[7]= gammaA*y[2]
 
-				
 				dydt[0] = -wFunct(y,t)+lambda*y[4];
 				dydt[1] = fFunct(y)-sigma*y[1];
 				dydt[2] = sigma*rho*y[1]-(deltaI+alfa+gammaI)*y[2];
@@ -159,10 +174,11 @@
 			// 	y.push( newElement )
 
 			// }
-			let ev=1, newElement, y=[], t=[],days=[];
+			let newElement, y=[], t=[],days=[];
 
 			while (ev<100){
-				integrator.steps(10, ev);
+
+				integrator.steps(1, ev);
 				days.push(ev);
 				ev+=1;
 				newElement=clone(integrator.y);
@@ -184,7 +200,7 @@ const myClickC = (e) =>{
 }
 
 const myClickTau = (e) =>{
-	pointsTau=e.detail;
+	pointsq=e.detail;
 }
 </script>
 
