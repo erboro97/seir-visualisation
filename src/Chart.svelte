@@ -29,7 +29,6 @@ window.chartColors = {
 
 function createTestChart(){
   if(globalChartRef){
-      console.log("itt")
       globalChartRef.destroy();
     } 
   
