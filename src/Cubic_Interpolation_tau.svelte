@@ -106,7 +106,7 @@ function createGraph() {
             },
             title: {
                 display: true,
-                text: "Tau Interpolation"
+                text: "Humidity"
             },
             scales: {
                  xAxes: [{
@@ -152,8 +152,8 @@ function createGraph() {
 
     if (globalChartRef) {
         console.log("megmenekitett")
-        globalChartRef.destroy();
-      }
+    }
+    
     globalChartRef = new Chart(ctx, config);    
  
 }

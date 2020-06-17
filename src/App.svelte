@@ -10,15 +10,15 @@
 	let ev=1;
 
 	/Function initial values/ 
-	let N=7000000;
-	let S0=7000000;
+	let N=52740000;
+	let S0=52740000;
 	let E0=11800;
-	let I0=1000;
-	let A0=1000;
-	let F0=0;
-	let Rv0=0;
-	let H0=400;
-	let R0=400;
+	let I0=2220;
+	let A0=2220;
+	let Sq0=0;
+	let Eq0=0;
+	let H0=444;
+	let R0=28;
 
 	/Parameter initial values/ 
 	let c1=14.781;  //!
@@ -31,20 +31,28 @@
 	let gammaA=0.13978;
 	let gammaH=0.11624;
 	let sigma=1/10;
-	let rho =0.5; //!
+	let rho =0.86834; //!
 	let tau = 0.5 //!
 	let alfa=0.4239; //!
-	let deltaI=0.5 //!
+	let deltaI=0.13266 //!
 
 	let w=1.2;
-	let lambda=1.2;
+	let lambda=1/14;
 	let f=1.2;
-	let gammaR=1.2;
+	let gammaR=3*Math.pow(10,-5);;
 	let g=1.2;
-	let deltaq=1.2;
+	let deltaq=0.12589;
 	let h=1.2;
-	let q1=1.2; // nem fog kelleni
-	let theta=1.2;
+	let q1=1.28*Math.pow(10,-5); // nem fog kelleni
+	let theta=0.001;
+	let ca=1.5;
+	let c0=14.781;
+	let b=0.25;
+	let q0=5.631*Math.pow(10,-6);;
+	let alfab=0.4239;
+	let beta0=1.57*Math.pow(10,-8);;
+	let eps=0.001;
+
 
 	let result=[];
 	let ct=Array.apply(null, Array(days)).map(Number.prototype.valueOf,0);;
@@ -56,6 +64,7 @@
 
 
 	$:{
+		console.log(S0)
 		ev=1
 		// Cubic interpolation ---- https://www.npmjs.com/package/cubic-spline
 		let xCoordC = [];
@@ -92,73 +101,66 @@
 				 }
 			}
 		}
-		
+			let AH=function(){
+				if (ct[ev]!=undefined || qt[ev]!=undefined){
+					return 6.112*Math.exp(17.67*ct[ev]/(ct[ev]+243.5))*qt[ev]*2.1674/(273.15+ct[ev]);
+				}
+				return 6.112*Math.exp(17.67*c1/(c1+243.5))*q1*2.1674/(273.15+c1);
+			}
+
+			let betaFunc = function(y){
+				return (1-alfab)*beta0*(1+eps*AH())*Math.pow((1-(y[2]+y[3])/(y[0]+y[7])),2);
+			}
+			let cFunc = function(){
+				return ca+3*(c0-ca)/(1+Math.pow(b,-ev));
+			}
+			let qFunc = function(){
+				return (q1*ev+q0)/(ev+1);
+			}
 		// Differential equation solver
 			let wFunct = function(y){
-				if (ct[ev]!=undefined || qt[ev]!=undefined){
-					console.log(ev)
-					return [beta1*ct[ev]+ct[ev]*qt[ev]*(1-beta1)]*y[0]*(y[2]+theta*y[3]);
-				}
-				return [beta1*c1+c1*q1*(1-beta1)]*y[0]*(y[2]+theta*y[3]);
+				// if (ct[ev]!=undefined || qt[ev]!=undefined){
+				// 	return [beta1*ct[ev]+ct[ev]*qt[ev]*(1-beta1)]*y[0]*(y[2]+theta*y[3]);
+				// }
+				// return [beta1*c1+c1*q1*(1-beta1)]*y[0]*(y[2]+theta*y[3]);
+				return (betaFunc(y)*cFunc()+cFunc()*qFunc()*(1-betaFunc(y)))*y[0]*(y[2]+theta*y[3]);
+				//return (betaFunc(y)*c0+c0*qFunc()*(1-betaFunc(y)))*y[0]*(y[2]+theta*y[3]);
 			}
 
 			let fFunct= function(y){
-				if (ct[ev]!=undefined || qt[ev]!=undefined){
-					return beta1*ct[ev]*(1-qt[ev])*y[0]*(y[2]+theta*y[3]);
-				}
-
-				return beta1*c1*(1-q1)*y[0]*(y[2]+theta*y[3]);
+				
+				return betaFunc(y)*cFunc()*(1-qFunc())*y[0]*(y[2]+theta*y[3]);
+				//return betaFunc(y)*c0*(1-qFunc())*y[0]*(y[2]+theta*y[3]);
 			}
 
 			let gFunct=function(y){
-				if (ct[ev]!=undefined || qt[ev]!=undefined){
-					return (1-beta1)*ct[ev]*qt[ev]*y[0]*(y[2]+theta*y[3]);
-				}
 
-				return (1-beta1)*c1*q1*y[0]*(y[2]+theta*y[3]);
+				return (1-betaFunc(y))*cFunc()*qFunc()*y[0]*(y[2]+theta*y[3]);
+				//return (1-betaFunc(y))*c0*qFunc()*y[0]*(y[2]+theta*y[3]);
 			}
 			let hFunct=function(y){
-				if (ct[ev]!=undefined || qt[ev]!=undefined){
-					return beta1*ct[ev]*qt[ev]*y[0]*(y[2]+theta*y[3]);
-				}
-				return beta1*c1*q1*y[0]*(y[2]+theta*y[3]);
+				
+				return betaFunc(y)*cFunc()*qFunc()*y[0]*(y[2]+theta*y[3]);
+				//return betaFunc(y)*c0*qFunc()*y[0]*(y[2]+theta*y[3]);
 			}
+
+			
 			let func = function(dydt, y, t) {
-				// dydt[0] = -(beta*c0+c0*q0*(1-beta))*y[0]*(y[2]+theta*y[3])+lambda*y[4]
-				// dydt[1] = beta*c0*(1-q0)*y[0]*(y[2]+theta*y[3])
-				// dydt[2] = sigma*eps*y[1]-(deltaI+gammaI)*y[2]
-				// dydt[3]= sigma*(1-eps)*y[1]-gammaA*y[3]+gammaR*y[7]
-				// dydt[4]= (1-beta)*c0*q0*y[0]*(y[2]+theta*y[3])-lambda*y[4]
-				// dydt[5]= beta*c0*q0*y[0]*(y[2]+theta*y[3])-lambda*y[4]
-				// dydt[6]= deltaI*y[2]+deltaq*y[5]-gammaH*y[6]
-				// dydt[7]= gammaI*y[2]+gammaA*y[3]+gammaH*y[6]-gammaR*y[7]
-
-				// dydt[0] = -beta1*c1*y[0]*y[3]/N-beta2*c2*y[0]*y[2]/N-beta3*c3*y[0]*y[4]/N
-				// dydt[1] = beta1*c1*y[0]*y[3]/N+beta2*c2*y[0]*y[2]/N+beta3*c3*y[0]*y[4]/N-sigma*y[1]
-				// dydt[2] = sigma*(1-rho)*y[1]-(gammaA+tau)*y[2]
-				// dydt[3]= sigma*rho*y[1]+tau*y[2]-(gammaI+deltaI)*y[3]
-				// dydt[4]= gammaI*y[3]-(alfa+gammaH)*y[4]
-				// dydt[5]= gammaH*y[4]
-				// dydt[6]= alfa*y[4]
-				// dydt[7]= gammaA*y[2]
-
-				dydt[0] = -wFunct(y,t)+lambda*y[4];
-				dydt[1] = fFunct(y)-sigma*y[1];
-				dydt[2] = sigma*rho*y[1]-(deltaI+alfa+gammaI)*y[2];
-				dydt[3]= sigma*(1-rho)*y[1]-gammaA*y[3]+gammaR*y[7]
-				dydt[4]= gFunct(y)-lambda*y[4]
-				dydt[5]= hFunct(y)-y[4]*y[5]
-				dydt[6]= deltaI*y[2]+deltaq*y[5]-(alfa+gammaH)*y[6];
-				dydt[7]= gammaI*y[2]+gammaA*y[3]+gammaH*y[6]-gammaR*y[7];
-
-
-				// dydt[0] = y[1]
-  				// dydt[1] = 4 * (1-y[0]*y[0])*y[1] - y[0]
-			// dydt[2] = y[3]
+				if (y[4]<-0.000001){
+					console.log(y[4])
+				}
+				dydt[0] =-wFunct(y)+lambda*y[4]; //S
+				dydt[1] = fFunct(y)+sigma*y[1];  //E
+				dydt[2] = sigma*rho*y[1]-(deltaI+alfa+gammaI)*y[2]; //I
+				dydt[3]= sigma*(1-rho)*y[1]-gammaA*y[3]+gammaR*y[7] //A
+				dydt[4]= gFunct(y)-lambda*y[4] //Sq
+				dydt[5]= hFunct(y)-y[4]*y[5] //Eq
+				dydt[6]= deltaI*y[2]+deltaq*y[5]-(alfa+gammaH)*y[6]; //H
+				dydt[7]= gammaI*y[2]+gammaA*y[3]+gammaH*y[6]-gammaR*y[7]; //R
 			}
 
 			// Initialize:
-			let y0 = [S0, E0,A0,I0,H0,R0,F0,Rv0],
+			let y0 = [S0, E0,I0,A0,Sq0,Eq0,H0,R0],
 				t0 = 1,
 				dt0 = 1,
 				integrator = ode45( y0, func, t0, dt0, {tol: 5e-5, maxIncreaseFactor: 2} )
@@ -172,8 +174,7 @@
 			// 	newElement=clone(integrator.y);
 			// 	t.push( integrator.t )
 			// 	y.push( newElement )
-
-			// }
+// }
 			let newElement, y=[], t=[],days=[];
 
 			while (ev<100){
@@ -229,11 +230,11 @@ const myClickTau = (e) =>{
 					</thead>
 					<tbody>
 						<tr>
-							<td>Population</td>
+							<td>Susceptible</td>
 							<td class="slidecontainer">
-								<input type="range" min="10" max="8000000000" step="8000000" bind:value={N} class="slider" id="myRange">
+								<input type="range" min="10" max="800000000" step="800000" bind:value={S0} class="slider" id="myRange">
 							</td>
-							<td>{N}</td>
+							<td>{S0}</td>
 						</tr>
 						<tr>
 							<td>Exposed</td>
@@ -258,19 +259,19 @@ const myClickTau = (e) =>{
 						</tr>
 
 						<tr>
-							<td>F</td>
+							<td>Quarantined susceptible</td>
 							<td class="slidecontainer">
-								<input type="range" min="10" max="100000" step="1000" bind:value={F0} class="slider" id="myRange">
+								<input type="range" min="10" max="100000" step="1000" bind:value={Sq0} class="slider" id="myRange">
 							</td>
-							<td>{F0}</td>
+							<td>{Sq0}</td>
 						</tr>
 
 						<tr>
-							<td>Rv</td>
+							<td>Quarantined exposed</td>
 							<td class="slidecontainer">
-							<input type="range" min="10" max="100000" step="1000" bind:value={Rv0} class="slider" id="myRange">
+							<input type="range" min="10" max="100000" step="1000" bind:value={Eq0} class="slider" id="myRange">
 							</td>
-							<td>{Rv0}</td>
+							<td>{Eq0}</td>
 						</tr>
 
 						<tr>
@@ -305,60 +306,60 @@ const myClickTau = (e) =>{
 					</thead>
 					<tbody>
 						<tr>
-							<td>c1</td>
+							<td>Initial contact rate</td>
 							<td class="slidecontainer">
-								<input type="range" min="12.48" max="45" step="0.3252" bind:value={c1} class="slider" id="myRange">
+								<input type="range" min="12.48" max="45" step="0.3252" bind:value={c0} class="slider" id="myRange">
 							</td>
-							<td>{c1}</td>
+							<td>{c0}</td>
 						</tr>
 
 						<tr>
-							<td>c2</td>
+							<td>Min. contact rate under control strategies</td>
 							<td class="slidecontainer">
-								<input type="range" min="1.0" max="6.0" step="0.05" bind:value={c2} class="slider" id="myRange">
+								<input type="range" min="1.0" max="6.0" step="0.05" bind:value={ca} class="slider" id="myRange">
 							</td>
-							<td>{c2}</td>
+							<td>{ca}</td>
 						</tr>
 
 						<tr>
-							<td>c3</td>
+							<td>Max. quarantined rate under control strategies</td>
 							<td class="slidecontainer">
-								<input type="range" min="1.0" max="6.0" step="0.05" bind:value={c3} class="slider" id="myRange">
+								<input type="range" min="0.00000000000015" max="0.000012" step="0.00000000005" bind:value={q1} class="slider" id="myRange">
 							</td>
-							<td>{c3}</td>
+							<td>{q1}</td>
 						</tr>
 
 						<tr>
-							<td>beta1</td>
+							<td>Probability of transmission per contact</td>
 							<td class="slidecontainer">
-								<input type="range" min="0" max="0.001" step="0.0001" bind:value={beta1} class="slider" id="myRange">
+								<input type="range" min="0.00000000000015" max="0.000012" step="0.00000000005" bind:value={beta0} class="slider" id="myRange">
 							</td>
-							<td>{beta1}</td>
+							<td>{beta0}</td>
 						</tr>
 
 						<tr>
-							<td>beta2</td>
+							<td>Initial quarantined rate of exposed individuals</td>
 							<td class="slidecontainer">
-								<input type="range" min="0" max="0.001" step="0.0001" bind:value={beta2} class="slider" id="myRange">
+								<input type="range"  min="0.000000000015" max="0.0012" step="0.000000005" bind:value={q0} class="slider" id="myRange">
 							</td>
-							<td>{beta2}</td>
+							<td>{q0}</td>
 						</tr>
-
-						<tr>
-							<td>beta3</td>
-							<td class="slidecontainer">
-								<input type="range" min="0" max="0.001" step="0.0001" bind:value={beta3} class="slider" id="myRange">
-							</td>
-							<td>{beta3}</td>
-						</tr>
-
 
 						<tr>
 							<td>Transition rate of exposed individuals to the infected class</td>
 							<td class="slidecontainer">
-								<input type="range" min="0" max="1" step="0.01" bind:value={sigma} class="slider" id="myRange">
+								<input type="range" min="0.0666" max="0.333" step="0.02" bind:value={sigma} class="slider" id="myRange">
 							</td>
 							<td>{sigma}</td>
+						</tr>
+
+
+						<tr>
+							<td>Rate at which the quarantined uninfects were released into the wider community</td>
+							<td class="slidecontainer">
+								<input type="range" min="0.02" max="1" step="0.1" bind:value={lambda} class="slider" id="myRange">
+							</td>
+							<td>{lambda}</td>
 						</tr>
 
 				
@@ -368,6 +369,13 @@ const myClickTau = (e) =>{
 								<input type="range" min="0.01" max="0.95" step="0.0094" bind:value={deltaI} class="slider" id="myRange">
 							</td>
 							<td>{deltaI}</td>
+						</tr>
+						<tr>
+							<td>Transition rate of quarantined exposed individuals to the quarantined infected class</td>
+							<td class="slidecontainer">
+								<input type="range" min="0.01" max="0.4" step="0.0074" bind:value={deltaq} class="slider" id="myRange">
+							</td>
+							<td>{deltaq}</td>
 						</tr>
 
 						<tr>
@@ -393,7 +401,28 @@ const myClickTau = (e) =>{
 							</td>
 							<td>{gammaH}</td>
 						</tr>
+						<tr>
+							<td>Rate at which recovered individuals move into pre-symptomatic class</td>
+							<td class="slidecontainer">
+								<input type="range" min="0.0000003" max="0.00001" step="0.001" bind:value={gammaR} class="slider" id="myRange">
+							</td>
+							<td>{gammaR}</td>
+						</tr>
+						<tr>
+							<td>Relative transmission probability of A compared with I</td>
+							<td class="slidecontainer">
+								<input type="range" min="0.0000003" max="0.1" step="0.0001" bind:value={theta} class="slider" id="myRange">
+							</td>
+							<td>{theta}</td>
+						</tr>
 
+						<tr>
+							<td>Governmental action strength</td>
+							<td class="slidecontainer">
+								<input type="range" min="0" max="1" step="0.001" bind:value={alfab} class="slider" id="myRange">
+							</td>
+							<td>{alfab}</td>
+						</tr>
 						<tr>
 							<td>Alfa</td>
 							<td class="slidecontainer">
@@ -401,20 +430,15 @@ const myClickTau = (e) =>{
 							</td>
 							<td>{alfa}</td>
 						</tr>
+
 						<tr>
-							<td>Rho</td>
+							<td>The intensity of the eddect of tempreture variation</td>
 							<td class="slidecontainer">
-								<input type="range" min="0" max="1" step="0.001" bind:value={rho} class="slider" id="myRange">
+								<input type="range" min="0.001" max="0.9999" step="0.001" bind:value={eps} class="slider" id="myRange">
 							</td>
-							<td>{rho}</td>
+							<td>{eps}</td>
 						</tr>
-						<tr>
-							<td>tau</td>
-							<td class="slidecontainer">
-								<input type="range" min="0" max="1" step="0.001" bind:value={tau} class="slider" id="myRange">
-							</td>
-							<td>{tau}</td>
-						</tr>
+						
 
 					</tbody>
 				</table>

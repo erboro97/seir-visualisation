@@ -107,7 +107,7 @@ function createGraph() {
             },
             title: {
                 display: true,
-                text: "C Interpolation"
+                text: "Tempreture"
             },
             scales: {
                  xAxes: [{
