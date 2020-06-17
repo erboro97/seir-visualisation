@@ -6,6 +6,8 @@ import {afterUpdate} from 'svelte';
 
 export let chartData;
 
+let globalChartRef;
+
 // console.log(chartData[1])
 function getData(index){
     return chartData[1].map(function (arr){
@@ -26,40 +28,42 @@ window.chartColors = {
 
 
 function createTestChart(){
+  if(globalChartRef){
+      console.log("itt")
+      globalChartRef.destroy();
+    } 
   
   var barChartData = {
       labels: chartData[2],
-			datasets: [
-        
+			datasets: [   
       {
-        label: 'Dataset 2',
+        label: 'E',
          backgroundColor: window.chartColors.yellow,
 				data: 
-					getData(1)
-				
+					getData(1)				
 			}, {
-        label: 'Dataset 3',
+        label: 'I',
         backgroundColor: window.chartColors.green,
 				data: 
 					getData(2)
 				
       },
       {
-        label: 'Dataset 3',
+        label: 'A',
         backgroundColor: window.chartColors.orange,
 				data: 
 					getData(3)
 				
       },
       {
-        label: 'Dataset 3',
+        label: 'Sq',
         backgroundColor: window.chartColors.blue,
 				data: 
 					getData(4)
 				
       },
       {
-        label: 'Dataset 3',
+        label: 'Eq',
         backgroundColor: window.chartColors.purple,
 				data: 
 					getData(5)
@@ -67,21 +71,21 @@ function createTestChart(){
       },
 
       {
-        label: 'Dataset 3',
+        label: 'H',
         backgroundColor: window.chartColors.grey,
 				data: 
 					getData(6)
 				
       },
       {
-        label: 'Dataset 3',
+        label: 'R',
         backgroundColor: window.chartColors.aqua,
 				data: 
 					getData(7)
 				
       },
       {
-        label: 'Dataset 1',
+        label: 'S',
         backgroundColor: window.chartColors.red,
 				data: 
           getData(0)
@@ -89,20 +93,18 @@ function createTestChart(){
       }
       ]
 
-		};
-
-    new Chart(document.getElementById("myChart"), {
+	};
+    
+    
+   globalChartRef = new Chart(document.getElementById("myChart"), {
  	      type: 'bar',
-				data: barChartData,
+        data: barChartData,
 				options: {
 					title: {
 						display: true,
-						text: 'Chart.js Bar Chart - Stacked'
+						text: 'Data Visualization'
 					},
-					tooltips: {
-						mode: 'index',
-						intersect: false
-					},
+			
 					scales: {
 						xAxes: [{
 							stacked: true,
@@ -110,9 +112,13 @@ function createTestChart(){
 						yAxes: [{
 							stacked: true
 						}]
-					}
-				}
+          },
+       
+        },
+
 });
+
+
 }
 
 afterUpdate(createTestChart)
