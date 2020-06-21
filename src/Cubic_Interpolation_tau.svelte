@@ -106,7 +106,7 @@ function createGraph() {
             },
             title: {
                 display: true,
-                text: "Humidity"
+                text: "Relative humidity"
             },
             scales: {
                  xAxes: [{

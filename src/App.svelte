@@ -1,10 +1,12 @@
 <script>
 	import ode45 from 'ode45-cash-karp';
 	import Chart from './Chart.svelte';
+	import RRChart from './RR.svelte';
 	import Cubic from './Cubic_Interpolation.svelte';
 	import CubicTau from './Cubic_Interpolation_tau.svelte';
 	import clone from 'clone';
 	import Spline from 'cubic-spline';
+
 
 	let days=99;
 	let ev=1;
@@ -51,7 +53,8 @@
 	let q0=5.631*Math.pow(10,-6);;
 	let alfab=0.4239;
 	let beta0=1.57*Math.pow(10,-8);;
-	let eps=0.001;
+	let eps=0.82;
+	let xi=0.0000000000001
 
 
 	let result=[];
@@ -61,6 +64,8 @@
 	let pointsq=[];
 
 	let cStep=10;
+
+	let RR=[];
 
 
 	$:{
@@ -109,13 +114,16 @@
 			}
 
 			let betaFunc = function(y){
-				return (1-alfab)*beta0*(1+eps*AH())*Math.pow((1-(y[2]+y[3])/(y[0]+y[7])),2);
+				return (1-alfab)*beta0*(1+xi*AH())*Math.pow((1-(y[2]+y[3])/(y[0]+y[7])),2);
 			}
 			let cFunc = function(){
 				return ca+3*(c0-ca)/(1+Math.pow(b,-ev));
 			}
 			let qFunc = function(){
 				return (q1*ev+q0)/(ev+1);
+			}
+			let RRFunc = function(y){
+				return (betaFunc(y)*eps*cFunc()*(1-qFunc())/(deltaI+alfa+gammaI)+betaFunc(y)*cFunc()*theta*(1-eps)*(1-qFunc())/gammaA)*y[0];
 			}
 		// Differential equation solver
 			let wFunct = function(y){
@@ -146,6 +154,7 @@
 
 			
 			let func = function(dydt, y, t) {
+				RR[ev]=RRFunc(y);
 				if (y[4]<-0.000001){
 					console.log(y[4])
 				}
@@ -164,7 +173,6 @@
 				t0 = 1,
 				dt0 = 1,
 				integrator = ode45( y0, func, t0, dt0, {tol: 5e-5, maxIncreaseFactor: 2} )
-			
 			// // Integrate up to tmax:
 			// let tmax = 40, t = [], y = [], newElement;
 			// //integrator.dtMinMag=0.5
@@ -209,6 +217,8 @@ const myClickTau = (e) =>{
 	
 	<div class="container">
 		<Chart chartData={result} />
+
+		<RRChart RRdata={RR}/>
 		<div class="row">
 			<div class="col-sm">
 				<Cubic on:myClick={myClickC}/>
@@ -432,7 +442,7 @@ const myClickTau = (e) =>{
 						</tr>
 
 						<tr>
-							<td>The intensity of the eddect of tempreture variation</td>
+							<td>The intensity of the effect of tempreture variation</td>
 							<td class="slidecontainer">
 								<input type="range" min="0.001" max="0.9999" step="0.001" bind:value={eps} class="slider" id="myRange">
 							</td>
