@@ -15,10 +15,11 @@ let getLabels= function(){
     }
     return labels;
 }
-
-console.log(getLabels());
 function createChart(){
-    new Chart(document.getElementById("myChartRR"), {
+    if(globalChartRef){
+        globalChartRef.destroy();
+    }
+    globalChartRef=new Chart(document.getElementById("myChartRR"), {
     type: 'line',
     data: {
         labels: getLabels(),

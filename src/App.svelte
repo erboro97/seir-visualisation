@@ -66,7 +66,7 @@
 	let cStep=10;
 
 	let RR=[];
-
+	let betam=[];
 
 	$:{
 		console.log(S0)
@@ -155,6 +155,7 @@
 			
 			let func = function(dydt, y, t) {
 				RR[ev]=RRFunc(y);
+				betam[ev]=betaFunc(y);
 				if (y[4]<-0.000001){
 					console.log(y[4])
 				}
@@ -211,14 +212,16 @@ const myClickC = (e) =>{
 const myClickTau = (e) =>{
 	pointsq=e.detail;
 }
+console.log(betam)
 </script>
 
 <main>
 	
 	<div class="container">
 		<Chart chartData={result} />
-
+		<betaChart/>
 		<RRChart RRdata={RR}/>
+		
 		<div class="row">
 			<div class="col-sm">
 				<Cubic on:myClick={myClickC}/>
