@@ -129,7 +129,8 @@ function createGraph() {
                     },
                     ticks: {
                         beginAtZero: true,
-                        suggestedMax: 15
+                        suggestedMax: 100
+                        
                     }
                 }]
             },

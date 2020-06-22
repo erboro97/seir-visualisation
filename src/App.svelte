@@ -1,3 +1,5 @@
+
+
 <script>
 	import ode45 from 'ode45-cash-karp';
 	import Chart from './Chart.svelte';
@@ -7,7 +9,7 @@
 	import CubicTau from './Cubic_Interpolation_tau.svelte';
 	import clone from 'clone';
 	import Spline from 'cubic-spline';
-
+	import SvelteTooltip from 'svelte-tooltip';
 
 	let days=99;
 	let ev=1;
@@ -224,14 +226,24 @@ const myClickTau = (e) =>{
 	pointsq=e.detail;
 }
 
+
+
 </script>
+
+
 
 <main>
 
 	<div class="container">
+	<div class="row">
+	<div class="col-sm">
 		<Chart chartData={result} />
+		</div>
+			<div class="col-sm">
+
 		<RRChart data={data}/>
-		
+		</div>
+		</div>
 		<div class="row">
 			<div class="col-sm">
 				<Cubic on:myClick={myClickC}/>
@@ -253,28 +265,29 @@ const myClickTau = (e) =>{
 					</thead>
 					<tbody>
 						<tr>
-							<td>Susceptible</td>
+							
+							<SvelteTooltip tip="Susceptible" left ><td>$$S$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="10" max="800000000" step="800000" bind:value={S0} class="slider" id="myRange">
 							</td>
 							<td>{S0}</td>
 						</tr>
 						<tr>
-							<td>Exposed</td>
+							<SvelteTooltip tip="Exposed" left ><td>$$E$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="10" max="1000000" step="10000" bind:value={E0} class="slider" id="myRange">
 							</td>
 							<td>{E0}</td>
 						</tr>
 						<tr>
-							<td>Infected</td>
+							<SvelteTooltip tip="Infected" left ><td>$$I$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="10" max="100000" step="1000" bind:value={I0} class="slider" id="myRange">
 							</td>
 							<td>{I0}</td>
 						</tr>
 						<tr>
-							<td>Asymptomatic infected</td>
+							<SvelteTooltip tip="Asymptomatic infected" left ><td>$$A$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="10" max="100000" step="1000" bind:value={A0} class="slider" id="myRange">
 							</td>
@@ -282,7 +295,7 @@ const myClickTau = (e) =>{
 						</tr>
 
 						<tr>
-							<td>Quarantined susceptible</td>
+							<SvelteTooltip tip="Quarantined susceptible" left ><td>$$S_q$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="10" max="100000" step="1000" bind:value={Sq0} class="slider" id="myRange">
 							</td>
@@ -290,7 +303,7 @@ const myClickTau = (e) =>{
 						</tr>
 
 						<tr>
-							<td>Quarantined exposed</td>
+							<SvelteTooltip tip="Quarantined exposed" left ><td>$$E_q$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 							<input type="range" min="10" max="100000" step="1000" bind:value={Eq0} class="slider" id="myRange">
 							</td>
@@ -298,7 +311,7 @@ const myClickTau = (e) =>{
 						</tr>
 
 						<tr>
-							<td>Hospitalized</td>
+						<SvelteTooltip tip="Hospitalized" left ><td>$$H$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="10" max="100000" step="1000" bind:value={H0} class="slider" id="myRange">
 							</td>
@@ -306,7 +319,7 @@ const myClickTau = (e) =>{
 						</tr>
 
 						<tr>
-							<td>Recovered</td>
+						<SvelteTooltip tip="Recovered" left ><td>$$R$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="10" max="100000" step="1000" bind:value={R0} class="slider" id="myRange">
 							</td>
@@ -329,7 +342,7 @@ const myClickTau = (e) =>{
 					</thead>
 					<tbody>
 						<tr>
-							<td>Initial contact rate</td>
+							<SvelteTooltip tip="Initial contact rate" left ><td>$$c_0$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="12.48" max="45" step="0.3252" bind:value={c0} class="slider" id="myRange">
 							</td>
@@ -337,7 +350,7 @@ const myClickTau = (e) =>{
 						</tr>
 
 						<tr>
-							<td>Min. contact rate under control strategies</td>
+							<SvelteTooltip tip="Min. contact rate under control strategies" left ><td>$$c_a$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="1.0" max="6.0" step="0.05" bind:value={ca} class="slider" id="myRange">
 							</td>
@@ -345,7 +358,7 @@ const myClickTau = (e) =>{
 						</tr>
 
 						<tr>
-							<td>Max. quarantined rate under control strategies</td>
+							<SvelteTooltip tip="Max. quarantined rate under control strategies" left ><td>$$q_1$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.00000000000015" max="0.000012" step="0.00000000005" bind:value={q1} class="slider" id="myRange">
 							</td>
@@ -353,7 +366,7 @@ const myClickTau = (e) =>{
 						</tr>
 
 						<tr>
-							<td>Probability of transmission per contact</td>
+							<SvelteTooltip tip="Probability of transmission per contact" left ><td>$$\beta_0$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.00000000000015" max="0.000012" step="0.00000000005" bind:value={beta0} class="slider" id="myRange">
 							</td>
@@ -361,7 +374,7 @@ const myClickTau = (e) =>{
 						</tr>
 
 						<tr>
-							<td>Initial quarantined rate of exposed individuals</td>
+							<SvelteTooltip tip="Initial quarantined rate of exposed individuals" left ><td>$$q_0$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range"  min="0.000000000015" max="0.0012" step="0.000000005" bind:value={q0} class="slider" id="myRange">
 							</td>
@@ -369,7 +382,7 @@ const myClickTau = (e) =>{
 						</tr>
 
 						<tr>
-							<td>Transition rate of exposed individuals to the infected class</td>
+							<SvelteTooltip tip="Transition rate of exposed individuals to the infected class" left ><td>$$\sigma$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.0666" max="0.333" step="0.02" bind:value={sigma} class="slider" id="myRange">
 							</td>
@@ -378,7 +391,7 @@ const myClickTau = (e) =>{
 
 
 						<tr>
-							<td>Rate at which the quarantined uninfects were released into the wider community</td>
+							<SvelteTooltip tip="Rate at which the quarantined uninfects were released into the wider community" left ><td>$$\lambda$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.02" max="1" step="0.1" bind:value={lambda} class="slider" id="myRange">
 							</td>
@@ -387,14 +400,14 @@ const myClickTau = (e) =>{
 
 				
 						<tr>
-							<td>Transition rate of symptomatic infected individuals to the quarantined infected class</td>
+							<SvelteTooltip tip="Transition rate of symptomatic infected individuals to the quarantined infected class" left ><td>$$\delta_I$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.01" max="0.95" step="0.0094" bind:value={deltaI} class="slider" id="myRange">
 							</td>
 							<td>{deltaI}</td>
 						</tr>
 						<tr>
-							<td>Transition rate of quarantined exposed individuals to the quarantined infected class</td>
+							<SvelteTooltip tip="Transition rate of quarantined exposed individuals to the quarantined infected class" left ><td>$$\delta_q$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.01" max="0.4" step="0.0074" bind:value={deltaq} class="slider" id="myRange">
 							</td>
@@ -402,7 +415,7 @@ const myClickTau = (e) =>{
 						</tr>
 
 						<tr>
-							<td>Recovery rate of symptomatic infected individuals</td>
+							<SvelteTooltip tip="Recovery rate of symptomatic infected individuals" left ><td>$$\gamma_I$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.01" max="0.75" step="0.0074" bind:value={gammaI} class="slider" id="myRange">
 							</td>
@@ -410,7 +423,7 @@ const myClickTau = (e) =>{
 						</tr>
 
 						<tr>
-							<td>Recovery rate of asymptomatic infected individuals</td>
+							<SvelteTooltip tip="Recovery rate of asymptomatic infected individuals" left ><td>$$\gamma_A$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.01" max="0.36" step="0.0035"  bind:value={gammaA} class="slider" id="myRange">
 							</td>
@@ -418,21 +431,21 @@ const myClickTau = (e) =>{
 						</tr>
 
 						<tr>
-							<td>Recovery rate of quarantined infected individuals</td>
+							<SvelteTooltip tip="Gamma h" left ><td>$$\gamma_H$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.01" max="0.1" step="0.001" bind:value={gammaH} class="slider" id="myRange">
 							</td>
 							<td>{gammaH}</td>
 						</tr>
 						<tr>
-							<td>Rate at which recovered individuals move into pre-symptomatic class</td>
+						<SvelteTooltip tip="Rate at which recovered individuals move into pre-symptomatic class" left ><td>$$\gamma_R$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.0000003" max="0.00001" step="0.001" bind:value={gammaR} class="slider" id="myRange">
 							</td>
 							<td>{gammaR}</td>
 						</tr>
 						<tr>
-							<td>Relative transmission probability of A compared with I</td>
+						<SvelteTooltip tip="Relative transmission probability of A compared with I" left ><td>$$\theta$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.0000003" max="0.1" step="0.0001" bind:value={theta} class="slider" id="myRange">
 							</td>
@@ -440,14 +453,14 @@ const myClickTau = (e) =>{
 						</tr>
 
 						<tr>
-							<td>Governmental action strength</td>
+						<SvelteTooltip tip="Governmental action strength" left ><td>$$\alpha_b$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0" max="1" step="0.001" bind:value={alfab} class="slider" id="myRange">
 							</td>
 							<td>{alfab}</td>
 						</tr>
 						<tr>
-							<td>Alfa</td>
+						<SvelteTooltip tip="Alfa" left ><td>$$\alpha$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0" max="1" step="0.001" bind:value={alfa} class="slider" id="myRange">
 							</td>
@@ -455,7 +468,7 @@ const myClickTau = (e) =>{
 						</tr>
 
 						<tr>
-							<td>The intensity of the effect of tempreture variation</td>
+						<SvelteTooltip tip="The intensity of the effect of tempreture variation" left ><td>$$\epsilon$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.001" max="0.9999" step="0.001" bind:value={eps} class="slider" id="myRange">
 							</td>
