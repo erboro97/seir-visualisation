@@ -1,6 +1,7 @@
 <script>
 	import ode45 from 'ode45-cash-karp';
 	import Chart from './Chart.svelte';
+	import betaCh from './betaChart.svelte';
 	import RRChart from './RR.svelte';
 	import Cubic from './Cubic_Interpolation.svelte';
 	import CubicTau from './Cubic_Interpolation_tau.svelte';
@@ -58,8 +59,8 @@
 
 
 	let result=[];
-	let ct=Array.apply(null, Array(days)).map(Number.prototype.valueOf,0);;
-	let qt=Array.apply(null, Array(days)).map(Number.prototype.valueOf,0);;
+	let ct=Array.apply(null, Array(days)).map(Number.prototype.valueOf,0);; // tempreture
+	let qt=Array.apply(null, Array(days)).map(Number.prototype.valueOf,0);; // humidity
 	let pointsC=[];
 	let pointsq=[];
 
@@ -67,6 +68,10 @@
 
 	let RR=[];
 	let betam=[];
+	let q=[];
+	let c=[];
+
+	let data={};
 
 	$:{
 		console.log(S0)
@@ -156,6 +161,8 @@
 			let func = function(dydt, y, t) {
 				RR[ev]=RRFunc(y);
 				betam[ev]=betaFunc(y);
+				c[ev]=cFunc();
+				q[ev]=qFunc();
 				if (y[4]<-0.000001){
 					console.log(y[4])
 				}
@@ -201,7 +208,11 @@
 
 			result=[t,y,days];
 
-
+			data.RR=RR;
+			data.beta=betam;
+			data.c=c;
+			data.q=q;
+			console.log(data)
 				
 	}
 
@@ -212,15 +223,14 @@ const myClickC = (e) =>{
 const myClickTau = (e) =>{
 	pointsq=e.detail;
 }
-console.log(betam)
+
 </script>
 
 <main>
-	
+
 	<div class="container">
 		<Chart chartData={result} />
-		<betaChart/>
-		<RRChart RRdata={RR}/>
+		<RRChart data={data}/>
 		
 		<div class="row">
 			<div class="col-sm">

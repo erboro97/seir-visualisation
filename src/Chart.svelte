@@ -1,3 +1,5 @@
+
+
 <canvas id="myChart" width="3" height="1"></canvas>
 
 
