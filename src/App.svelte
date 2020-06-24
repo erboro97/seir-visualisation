@@ -268,40 +268,69 @@ const changeInitialValue=()=>{
 
 
 <main>
-
 	<div class="container">
-	<div class="row">
-	<div class="col-sm">
-		<select bind:value={selectedCountry} on:click={changeInitialValue}>
-		{#each countries as country}
-			<option value={country}>
-				{country.text}
-			</option>
-		{/each}
-	</select>
-	</div>
-	</div>
-	<div class="row">
-	<div class="col-sm">
-		<Chart chartData={result} />
+		<div class="panel-group ">
+			<div class="panel panel-danger" style="display:inline-block;">
+				 <div class="panel-heading">Select a template:</div>
+				 <div class="panel-body">
+					<select bind:value={selectedCountry} on:click={changeInitialValue}>
+						{#each countries as country}
+							<option value={country}>
+								{country.text}
+							</option>
+						{/each}
+					</select>
+				</div>
+			</div>
 		</div>
-			<div class="col-sm">
 
+	<div class="panel-group "  >
+	<div class="panel panel-success  col-md-6 p-2" style="display:inline-block;">
+	 <div class="panel-heading">Data visualization</div>
+	 <div class="panel-body">
+				<Chart chartData={result} />
+
+	</div>
+	</div>
+	</div>
+
+	<div class="panel-group col-md-6 p-2 "  style="display:inline-block;">
+	<div class="panel panel-success">
+	 <div class="panel-heading">Data visualization</div>
+	 <div class="panel-body">
 		<RRChart data={data}/>
-		</div>
-		</div>
-		<div class="row">
-			<div class="col-sm">
-				<Cubic temp={tempreture} on:myClick={myClickC}/>
-			</div>
-			<div class="col-sm">
+
+	</div>
+	</div>
+	</div>
+
+
+		<div class="panel-group col-md-6 p-2 "  style="display:inline-block;">
+	<div class="panel panel-warning">
+	 <div class="panel-heading">Select values of tempreture!</div>
+	 <div class="panel-body">
+<Cubic temp={tempreture} on:myClick={myClickC}/>
+	</div>
+	</div>
+	</div>
+
+		<div class="panel-group col-md-6 p-2 "  style="display:inline-block;">
+	<div class="panel panel-warning">
+	 <div class="panel-heading">Select values of absolute humid!</div>
+	 <div class="panel-body">
 				<CubicTau humidity={relativeHumidity} on:myClick={myClickTau}/>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm">
-				<h3>Initial conditions for the functions</h3>            
-				<table class="table table-bordered">
+
+	</div>
+	</div>
+	</div>
+
+				
+
+		<div class="panel-group col-md-6 p-2 "  style="display:inline-block;">
+	<div class="panel panel-info">
+	 <div class="panel-heading">Change initial conditions!</div>
+	 <div class="panel-body">
+<table class="table table-bordered">
 					<thead>
 						<tr>
 							<th>Definition:</th>
@@ -311,7 +340,7 @@ const changeInitialValue=()=>{
 					</thead>
 					<tbody>
 						<tr>
-							
+	
 							<SvelteTooltip tip="Susceptible" left ><td>$$S$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="10" max="800000000" step="800000" bind:value={S0} class="slider" id="myRange">
@@ -374,11 +403,16 @@ const changeInitialValue=()=>{
 		
 					</tbody>
 				</table>
-			</div>
+	</div>
+	</div>
+	</div>
+		
+					<div class="panel-group col-md-6 p-2 "  style="display:inline-block;">
+	<div class="panel panel-info">
+	 <div class="panel-heading">Modify values of parameters!</div>
+	 <div class="panel-body">
 
-			<div class="col-sm">
-				<h3>Initial values for the parameters</h3>            
-				<table class="table table-bordered">
+			<table class="table table-bordered">
 					<thead>
 					<tr>
 						<th>Definition:</th>
@@ -524,13 +558,27 @@ const changeInitialValue=()=>{
 
 					</tbody>
 				</table>
-			</div>
-		</div>
 	</div>
+	</div>
+	</div>
+		
+
+			
+				
+
+
+				</div>
+
+
+
 
 </main>
 
 <style>
+  
+   
+        
+
 	main {
 		text-align: center;
 		padding: 1em;

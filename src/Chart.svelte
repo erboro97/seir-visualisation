@@ -1,6 +1,6 @@
 
 
-<canvas id="myChart" width="3" height="1"></canvas>
+<canvas id="myChart"></canvas>
 
 
 <script>
@@ -101,10 +101,7 @@ function createTestChart(){
  	      type: 'bar',
         data: barChartData,
 				options: {
-					title: {
-						display: true,
-						text: 'Data Visualization'
-					},
+				
 			
 					scales: {
 						xAxes: [{

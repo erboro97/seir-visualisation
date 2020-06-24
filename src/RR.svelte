@@ -1,42 +1,32 @@
-<div class="container">
-    <div class="col">
-        <div class="row-sm">
-            <div class="form-check">
+         
+            <div class="form-check col-md-3 p-2"  style="display:inline-block;">
                 <label class="form-check-label">
                     <input type="radio" bind:group={selectDiagram} value={1} class="form-check-input" name="optradio">$$R_0$$
                 </label>
             </div>
-        </div>
-        <div class="row-sm">
-            <div class="form-check">
+
+            <div class="form-check col-md-3 p-2"  style="display:inline-block;">
                  <label class="form-check-label">
                     <input type="radio" bind:group={selectDiagram} value={2} class="form-check-input" name="optradio">$$\beta$$
                 </label>
             </div>
-        </div>
-        <div class="row-sm">
-            <div class="form-check disabled">
+
+            <div class="form-check col-md-3 p-2"  style="display:inline-block;">
                  <label class="form-check-label">
                      <input type="radio" bind:group={selectDiagram} value={3} class="form-check-input" name="optradio">$$q$$
                 </label>
             </div>
-        </div>
-        <div class="row-sm">
-            <div class="form-check disabled">
+
+            <div class="form-check col-md-3 p-2"  style="display:inline-block;">
                 <label class="form-check-label">
                     <input type="radio" bind:group={selectDiagram} value={4} class="form-check-input" name="optradio">$$c$$
                 </label>
-            </div>
         </div>
-    </div>
-    <div class="col">
-        <div class="row-sm">
-            <canvas id="myChartRadio" width="3" height="1"></canvas>
+           <canvas id="myChartRadio" width="3" height="1"></canvas>
+         
     
          
-         </div>
-    </div>
-</div>
+
 
 
 <script>
