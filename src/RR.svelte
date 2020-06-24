@@ -3,28 +3,28 @@
         <div class="row-sm">
             <div class="form-check">
                 <label class="form-check-label">
-                    <input type="radio" bind:group={selectDiagram} value={1} class="form-check-input" name="optradio">Reproduction rate
+                    <input type="radio" bind:group={selectDiagram} value={1} class="form-check-input" name="optradio">$$R_0$$
                 </label>
             </div>
         </div>
         <div class="row-sm">
             <div class="form-check">
                  <label class="form-check-label">
-                    <input type="radio" bind:group={selectDiagram} value={2} class="form-check-input" name="optradio">Transmission probability
+                    <input type="radio" bind:group={selectDiagram} value={2} class="form-check-input" name="optradio">$$\beta$$
                 </label>
             </div>
         </div>
         <div class="row-sm">
             <div class="form-check disabled">
                  <label class="form-check-label">
-                     <input type="radio" bind:group={selectDiagram} value={3} class="form-check-input" name="optradio">Quarantine rate
+                     <input type="radio" bind:group={selectDiagram} value={3} class="form-check-input" name="optradio">$$q$$
                 </label>
             </div>
         </div>
         <div class="row-sm">
             <div class="form-check disabled">
                 <label class="form-check-label">
-                    <input type="radio" bind:group={selectDiagram} value={4} class="form-check-input" name="optradio">Contact rate
+                    <input type="radio" bind:group={selectDiagram} value={4} class="form-check-input" name="optradio">$$c$$
                 </label>
             </div>
         </div>
@@ -49,6 +49,8 @@ let selectDiagram=1;
 
 
 import {afterUpdate} from 'svelte';
+import SvelteTooltip from 'svelte-tooltip';
+
 
 export let data;
 

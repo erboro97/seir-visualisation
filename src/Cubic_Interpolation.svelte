@@ -7,7 +7,7 @@
 import {afterUpdate} from 'svelte';
 import {createEventDispatcher} from 'svelte';
 let dispatch = createEventDispatcher();
-
+export let temp;
 
 let globalChartRef;
 let avoidDublication=0;
@@ -28,10 +28,6 @@ window.chartColors = {
 };
 
 
-
-function randomColor(alpha) {
-    return String('rgba(' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ',' + alpha + ')');
-}
 
 function click(element, dataAtClick, myChart){
     let scaleRef, dataset, 
@@ -59,8 +55,6 @@ function click(element, dataAtClick, myChart){
                      })
                       points=dataset.data;
                
-                avoidDublication+=1;
-                
                 myChart.update()
 
                 //clearTimeout(myVar);
@@ -77,21 +71,21 @@ const changeStep = (e) =>{
 
 const linearPoints = () =>{
     mySet=[];
-    for (var i=0;i<100;i+=step){
-        mySet.push({x:i,y:6});
+    for (var i=0;i<=100;i+=step){
+        mySet.push({x:i,y:temp[i]});
     }
+    console.log(mySet.length)
     return mySet
 }
-// points=linearPoints();
 
+console.log(linearPoints())
 const myClick = () =>{
    setTimeout(() =>{dispatch('myClick', points);});
 }
-
 function createGraph() {
     var config = {
         type: 'scatter',
-        labels: ['10','20','30','40','50','60'],
+        labels: ['10','20','30','40','50','60','70'],
         data: {
             datasets: [{
                 label: "Dataset Made of Clicked Points",
@@ -119,7 +113,7 @@ function createGraph() {
                     },
                     ticks: {
                         min: 0,
-                        suggestedMax: 90
+                        suggestedMax: 100
                     }
                 }, ],
                 yAxes: [{

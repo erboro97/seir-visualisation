@@ -5,14 +5,13 @@
 import {afterUpdate} from 'svelte';
 import {createEventDispatcher} from 'svelte';
 let dispatch = createEventDispatcher();
-
+export let humidity;
 
 let globalChartRef;
 let avoidDublication=0;
 let points = [];
 let mySet=[];
 let step=10;
-
 
 
 window.chartColors = {
@@ -75,8 +74,8 @@ const changeStep = (e) =>{
 const linearPoints = () =>{
     mySet=[];
 
-    for (var i=0;i<100;i+=step){
-        mySet.push({x:i,y:6});
+    for (var i=0;i<=100;i+=step){
+        mySet.push({x:i,y:humidity[i]});
     }
     return mySet
 }
@@ -118,7 +117,7 @@ function createGraph() {
                     },
                     ticks: {
                         min: 0,
-                        suggestedMax: 90
+                        suggestedMax: 100
                     }
                 }, ],
                 yAxes: [{

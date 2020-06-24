@@ -74,9 +74,14 @@
 	let c=[];
 
 	let data={};
-
+	let countries = [
+		{ id: 1, text: 'North-Italy' },
+		{ id: 2, text: 'Hubei' }
+	];
+	let selectedCountry={};
+	let tempreture=[6, 7, 7, 10, 10, 9, 8, 5, 4, 3, 7, 10, 8, 8, 3, 4, 6, 8, 10, 11, 9, 7, 7, 7, 6, 5, 4, 8, 9, 13, 11, 12, 13, 12, 14, 14, 7, 8, 10, 14, 11, 11, 16, 17, 17, 2, 7, 11, 12, 14, 15, 15, 17, 17, 22, 20, 17, 11, 9, 14, 15, 10, 9, 13, 14, 13, 17, 18, 13, 16, 17, 17, 16, 18, 20, 18, 20, 21, 22, 24, 22, 21, 22, 23, 23, 24, 10, 10, 9, 13, 13, 16, 17, 18, 19, 20, 20, 21, 22, 26, 17]
+	let relativeHumidity=[68, 78, 82, 75, 88, 92, 78, 77, 89, 93, 77, 65, 68, 63, 84, 79, 69, 64, 54, 50, 77, 84, 87, 87, 83, 85, 74, 63, 63, 53, 51, 59, 62, 57, 59, 57, 81, 76, 68, 62, 69, 83, 76, 83, 82, 84, 50, 41, 44, 54, 55, 58, 59, 56, 64, 68, 78, 83, 86, 69, 65, 78, 77, 62, 60, 76, 73, 81, 82, 58, 52, 65, 67, 54, 43, 50, 57, 56, 51, 43, 71, 71, 65, 65, 77, 74, 78, 74, 83, 69, 71, 67, 66, 55, 53, 48, 48, 48, 49, 45, 70]
 	$:{
-		console.log(S0)
 		ev=1
 		// Cubic interpolation ---- https://www.npmjs.com/package/cubic-spline
 		let xCoordC = [];
@@ -165,9 +170,6 @@
 				betam[ev]=betaFunc(y);
 				c[ev]=cFunc();
 				q[ev]=qFunc();
-				if (y[4]<-0.000001){
-					console.log(y[4])
-				}
 				dydt[0] =-wFunct(y)+lambda*y[4]; //S
 				dydt[1] = fFunct(y)+sigma*y[1];  //E
 				dydt[2] = sigma*rho*y[1]-(deltaI+alfa+gammaI)*y[2]; //I
@@ -204,8 +206,6 @@
 				y.push( newElement )
 				t.push(integrator.t)
 			}
-			//console.log(t)
-			//console.log(integrator.y[0]);
 	
 
 			result=[t,y,days];
@@ -214,7 +214,6 @@
 			data.beta=betam;
 			data.c=c;
 			data.q=q;
-			console.log(data)
 				
 	}
 
@@ -226,7 +225,43 @@ const myClickTau = (e) =>{
 	pointsq=e.detail;
 }
 
+const changeInitialValue=()=>{
+	if (selectedCountry.id==1){
 
+	}
+	else{
+			S0=52740000.0;
+			E0=19.220820541214668;
+			I0=16.925617788469424;
+			A0=17.99157876590649;
+			Sq0=15.538827852131071;
+			Eq0=1.7173986822830976;
+			H0=46.0107243219873;
+			R0=3.0748316104908433;
+			c0=41.852549488391446;
+			beta0=2.1031894440837713*Math.pow(10,-12);
+			q0=1.484170130317585*Math.pow(10,-7);
+			sigma=0.3333;
+			lambda=0.071428;
+			eps=0.88;
+			deltaI=0.121;
+			deltaq=0.03363;
+			gammaI=0.1351146;
+			gammaA=0.0117950;
+			gammaH=0.028635;
+			alfa=0.0021171;
+			theta=0.00016357;
+			c2=1.712150*Math.pow(10,-7);
+			b=0.908;
+			alfab=0.0012209;
+			xi=0.1127126;
+			gammaR=1.714578192*Math.pow(10,-6);
+			ca=1.287039726
+			tempreture=[6, 7, 7, 10, 10, 9, 8, 5, 4, 3, 7, 10, 8, 8, 3, 4, 6, 8, 10, 11, 9, 7, 7, 7, 6, 5, 4, 8, 9, 13, 11, 12, 13, 12, 14, 14, 7, 8, 10, 14, 11, 11, 16, 17, 17, 2, 7, 11, 12, 14, 15, 15, 17, 17, 22, 20, 17, 11, 9, 14, 15, 10, 9, 13, 14, 13, 17, 18, 13, 16, 17, 17, 16, 18, 20, 18, 20, 21, 22, 24, 22, 21, 22, 23, 23, 24, 10, 10, 9, 13, 13, 16, 17, 18, 19, 20, 20, 21, 22, 26,17]
+			relativeHumidity=[68, 78, 82, 75, 88, 92, 78, 77, 89, 93, 77, 65, 68, 63, 84, 79, 69, 64, 54, 50, 77, 84, 87, 87, 83, 85, 74, 63, 63, 53, 51, 59, 62, 57, 59, 57, 81, 76, 68, 62, 69, 83, 76, 83, 82, 84, 50, 41, 44, 54, 55, 58, 59, 56, 64, 68, 78, 83, 86, 69, 65, 78, 77, 62, 60, 76, 73, 81, 82, 58, 52, 65, 67, 54, 43, 50, 57, 56, 51, 43, 71, 71, 65, 65, 77, 74, 78, 74, 83, 69, 71, 67, 66, 55, 53, 48, 48, 48, 49, 45, 70]
+
+	}
+}
 
 </script>
 
@@ -235,6 +270,17 @@ const myClickTau = (e) =>{
 <main>
 
 	<div class="container">
+	<div class="row">
+	<div class="col-sm">
+		<select bind:value={selectedCountry} on:click={changeInitialValue}>
+		{#each countries as country}
+			<option value={country}>
+				{country.text}
+			</option>
+		{/each}
+	</select>
+	</div>
+	</div>
 	<div class="row">
 	<div class="col-sm">
 		<Chart chartData={result} />
@@ -246,10 +292,10 @@ const myClickTau = (e) =>{
 		</div>
 		<div class="row">
 			<div class="col-sm">
-				<Cubic on:myClick={myClickC}/>
+				<Cubic temp={tempreture} on:myClick={myClickC}/>
 			</div>
 			<div class="col-sm">
-				<CubicTau on:myClick={myClickTau}/>
+				<CubicTau humidity={relativeHumidity} on:myClick={myClickTau}/>
 			</div>
 		</div>
 		<div class="row">
