@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "bootstrap": "^4.4.1",
+    "chartjs-chart-treemap": "^0.2.3",
     "clone": "^2.1.2",
     "cubic-spline": "^3.0.3",
     "mathjax": "^3.0.5",
