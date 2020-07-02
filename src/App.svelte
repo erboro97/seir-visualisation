@@ -548,9 +548,25 @@ const changeInitialValue=()=>{
 	</div>
 	</div>
 		
+	<div class="panel-group col-md-6 p-2 "  style="display:inline-block;">
+	<div class="panel panel-warning">
+	 <div class="panel-heading">Information about model</div>
+	 <div class="panel-body">
+	 <SvelteTooltip tip=$$w()$$ left ><td>$$S'=-w(S,I,A)+\lambda S_q$$
+			$$E'=f(S,I,A)-\sigma E$$
+			$$I'=\sigma\varrho E-\left(\delta_I+\alpha+\gamma_I\right)I$$
+			$$A'=\sigma\left(1-\varrho\right)E-\gamma_A A+\gamma_R R$$
+			$$S_q'=g(S,I,A)-\lambda S_q$$
+			$$E_q'=h(S,I,A)-S_q E_q$$
+			$$H'=\delta_I I+\delta_q E_q -\left(\alpha+\gamma_H \right)H$$
+			$$R'=\gamma_I I+\gamma_A A+\gamma_H H-\gamma_R R$$</td></SvelteTooltip>
+</div>
+	</div>
+	</div>
 
+		
 			
-				
+		
 
 
 				</div>
