@@ -59,7 +59,6 @@ let color;
 let myLabel;
 
 $:{
-    console.log(selectDiagram);
     if (selectDiagram==1){
         chartData=RRdata;
         title='Reproduction number';

@@ -151,7 +151,7 @@ function createGraph() {
     var ctx = document.getElementById('Cubic').getContext('2d');
 
     if (globalChartRef) {
-        console.log("megmenekitett")
+        globalChartRef.destroy()
     }
     
     globalChartRef = new Chart(ctx, config);    

@@ -74,11 +74,9 @@ const linearPoints = () =>{
     for (var i=0;i<=100;i+=step){
         mySet.push({x:i,y:temp[i]});
     }
-    console.log(mySet.length)
     return mySet
 }
 
-console.log(linearPoints())
 const myClick = () =>{
    setTimeout(() =>{dispatch('myClick', points);});
 }

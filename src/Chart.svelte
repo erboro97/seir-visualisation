@@ -153,11 +153,15 @@ function createTestChart(){
 				
 			
 					scales: {
+
 						xAxes: [{
 							stacked: true,
 						}],
 						yAxes: [{
-							stacked: true
+              stacked: true,
+              ticks: {
+                    suggestedMin: 0
+                }
 						}]
           },
        
