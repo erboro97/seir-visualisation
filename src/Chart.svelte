@@ -24,9 +24,9 @@ let treemapChartData=[];
 $:{
 
   treemapData=chartData[1][day];
-  treemapChartData=[{tag:'Susceptible',num:treemapData[0]},{num:treemapData[1],tag:"Exposed"},{num:treemapData[2],tag:"Infected"},{num:treemapData[3],tag:"Asymptomatic infected"},{num:treemapData[4],tag:"Quarantined susceptible"},{num:treemapData[5],tag:"Quarantined exposed"},{num:treemapData[6],tag:"Hospitalized"},{num:treemapData[7],tag:"Recovered" }];
+  treemapChartData=[{num:treemapData[1],tag:"Exposed"},{num:treemapData[2],tag:"Infected"},{num:treemapData[3],tag:"Asymptomatic infected"},{num:treemapData[4],tag:"Quarantined susceptible"},{num:treemapData[5],tag:"Quarantined exposed"},{num:treemapData[6],tag:"Hospitalized"},{num:treemapData[7],tag:"Recovered" }];
 
-  console.log(treemapChartData)
+  console.log(chartData[2])
 
 }
 
@@ -36,6 +36,7 @@ function getData(index){
         return arr[index];
     });
 }
+
 
 window.chartColors = {
       red: 'rgb(255, 99, 132)',

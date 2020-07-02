@@ -86,12 +86,9 @@ $:{
     }
 
 }
-
 let getLabels= function(){
-    for (var i=0;i<RRdata.length;i++){
-        labels[i]=i;
-    }
-    return labels;
+    
+    return data.days;
 }
 function createChart(){
     if(globalChartRef){

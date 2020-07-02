@@ -1,6 +1,7 @@
 
 
 <script>
+	import rungeKutta from 'runge-kutta';
 	import ode45 from 'ode45-cash-karp';
 	import Chart from './Chart.svelte';
 	import betaCh from './betaChart.svelte';
@@ -11,67 +12,52 @@
 	import Spline from 'cubic-spline';
 	import SvelteTooltip from 'svelte-tooltip';
 
-	let days=99;
+	let days=[];
 	let ev=1;
 
-	/Function initial values/ 
-	let N=52740000;
-	let S0=52740000;
-	let E0=11800;
-	let I0=2220;
-	let A0=2220;
-	let Sq0=0;
-	let Eq0=0;
-	let H0=444;
-	let R0=28;
+
 
 	/Parameter initial values/ 
-	let c1=14.781;  //!
-	let c2=35.162037286751705; 
-	let c3=14.781; //!
-	let beta1=1.5789*Math.pow(10,-8); //!
-	let beta2=1.5789*Math.pow(10,-8); //!
-	let beta3=1.5789*Math.pow(10,-8); //!
-	let gammaI=0.33029;
-	let gammaA=0.13978;
-	let gammaH=0.11624;
-	let sigma=1/10;
-	let rho =0.86834; //!
-	let tau = 0.5 //!
-	let alfa=0.4239; //!
-	let deltaI=0.13266 //!
-
-	let w=1.2;
-	let lambda=1/14;
-	let f=1.2;
-	let gammaR=3*Math.pow(10,-5);;
-	let g=1.2;
-	let deltaq=0.12589;
-	let h=1.2;
-	let q1=1.28*Math.pow(10,-5); // nem fog kelleni
-	let theta=0.001;
-	let ca=1.5;
-	let c0=14.781;
-	let b=0.25;
-	let q0=5.631*Math.pow(10,-6);;
-	let alfab=0.4239;
-	let beta0=1.57*Math.pow(10,-8);;
-	let eps=0.82;
-	let xi=0.0000000000001
-
-
+	
+	let S0=52740000.0;
+	let		E0=19.220820541214668;
+		let	I0=16.925617788469424;
+	let		A0=17.99157876590649;
+	let		Sq0=15.538827852131071;
+	let		Eq0=1.7173986822830976;
+	let		H0=46.0107243219873;
+	let		R0=3.0748316104908433;
+	let		c0=41.852549488391446;
+	let		beta0=2.1031894440837713*Math.pow(10,-12);
+	let		q0=1.484170130317585*Math.pow(10,-7);
+	let		sigma=0.3333;
+	let		lambda=0.071428;
+	let		eps=0.88;
+	let		deltaI=0.121;
+	let		deltaq=0.03363;
+	let		gammaI=0.1351146;
+	let		gammaA=0.0117950;
+	let		gammaH=0.028635;
+	let		alfa=0.0021171;
+	let		theta=0.00016357;
+	let		c2=1.712150*Math.pow(10,-7);
+	let		b=0.908;
+	let		alfab=0.0012209;
+	let		xi=0.1127126;
+	let		gammaR=1.714578192*Math.pow(10,-6);
+	let		ca=1.287039726
 	let result=[];
-	let ct=Array.apply(null, Array(days)).map(Number.prototype.valueOf,0);; // tempreture
-	let qt=Array.apply(null, Array(days)).map(Number.prototype.valueOf,0);; // humidity
+	let tFunc=[]
+	
 	let pointsC=[];
 	let pointsq=[];
 
 	let cStep=10;
 
-	let RR=[];
-	let betam=[];
-	let q=[];
-	let c=[];
+	let RRFunc=[];
+	let betamFunc=[];
+	let qFunc=[];
+	let cFunc=[];
 
 	let data={};
 	let countries = [
@@ -103,117 +89,79 @@
 		if (Array.isArray(xCoordC) && xCoordC.length) {
 			const spline = new Spline(xCoordC, yCoordC);
 			for (let i = 0; i < 90; i++) {
-				 ct[i]=spline.at(i);
-				 if (ct[i]==NaN && ct[i]==undefined){
-					 ct[i]=0;
+				 tempreture[i]=spline.at(i);
+				 if (tempreture[i]==NaN && tempreture[i]==undefined){
+					 tempreture[i]=0;
 				 }
 			}
 		}
 		if (Array.isArray(xCoordq) && xCoordq.length) {
 			const spline = new Spline(xCoordq, yCoordq);
 			for (let i = 0; i < 90; i++) {
- 				qt[i]=spline.at(i);
-				 if (qt[i]==NaN && qt[i]==undefined){
-					 qt[i]=0;
+ 				relativeHumidity[i]=spline.at(i);
+				 if (relativeHumidity[i]==NaN && relativeHumidity[i]==undefined){
+					 relativeHumidity[i]=0;
 				 }
 			}
 		}
-			let AH=function(){
-				if (ct[ev]!=undefined || qt[ev]!=undefined){
-					return 6.112*Math.exp(17.67*ct[ev]/(ct[ev]+243.5))*qt[ev]*2.1674/(273.15+ct[ev]);
-				}
-				return 6.112*Math.exp(17.67*c1/(c1+243.5))*q1*2.1674/(273.15+c1);
-			}
 
-			let betaFunc = function(y){
-				return (1-alfab)*beta0*(1+xi*AH())*Math.pow((1-(y[2]+y[3])/(y[0]+y[7])),2);
-			}
-			let cFunc = function(){
-				return ca+3*(c0-ca)/(1+Math.pow(b,-ev));
-			}
-			let qFunc = function(){
-				return (q1*ev+q0)/(ev+1);
-			}
-			let RRFunc = function(y){
-				return (betaFunc(y)*eps*cFunc()*(1-qFunc())/(deltaI+alfa+gammaI)+betaFunc(y)*cFunc()*theta*(1-eps)*(1-qFunc())/gammaA)*y[0];
-			}
-		// Differential equation solver
-			let wFunct = function(y){
-				// if (ct[ev]!=undefined || qt[ev]!=undefined){
-				// 	return [beta1*ct[ev]+ct[ev]*qt[ev]*(1-beta1)]*y[0]*(y[2]+theta*y[3]);
-				// }
-				// return [beta1*c1+c1*q1*(1-beta1)]*y[0]*(y[2]+theta*y[3]);
-				return (betaFunc(y)*cFunc()+cFunc()*qFunc()*(1-betaFunc(y)))*y[0]*(y[2]+theta*y[3]);
-				//return (betaFunc(y)*c0+c0*qFunc()*(1-betaFunc(y)))*y[0]*(y[2]+theta*y[3]);
-			}
+	
+		let func=function(t,y){
+				tFunc.push(t)
+				let S, E, I, A, Sq, Eq, H, R;
+				let f0, f1, f2, f3, f4, f5, f6, f7;
+				S = y[0];
+    			E = y[1];
+    			I = y[2];
+    			A=y[3];
+    			Sq=y[4];
+    			Eq=y[5];
+   				H=y[6];
+				R = y[7];
 
-			let fFunct= function(y){
+				let AH=6112 * Math.exp(17.67*tempreture[ Math.floor(t)]/(tempreture[Math.floor(t)] + 243.5)) * relativeHumidity[Math.floor(t)] * 2.1674 / (273.15 + relativeHumidity[Math.floor(t)]);
+				let betam=beta0*(1-alfab)*(1 + xi*AH) *  Math.pow((1- (I+A)/(S+R) ), 2);
+				betamFunc.push(betam);
+				let ct=ca + (3*(c0-ca))/(1+2*Math.pow(b,-t));
+				cFunc.push(ct);
+				let qt=(t+q0/c2)/(t+1)*c2; 
+				qFunc.push(qt);
+				RRFunc.push((betam*eps*ct*(1-qt)/(deltaI+alfa+gammaI) + betam*ct*theta*(1-eps)*(1-qt)/gammaA ) * S)
+				f0 =-(betam*ct+ct*qt*(1-betam))*S*(I+theta*A)+lambda*Sq;
+    			f1 = betam*ct*(1-qt)*S*(I+theta*A)-sigma*E;
+    			f2 = sigma*eps*E-(deltaI+alfa+gammaI)*I;
+    			f3= sigma*(1-eps)*E-gammaA*A + gammaR*R;
+    			f4= (1-betam)*ct*qt*S*(I+theta*A)-lambda*Sq;
+    			f5=betam*ct*qt*S*(I+theta*A)-deltaq*Eq;
+    			f6=deltaI*I+deltaq*Eq-(alfa+gammaH)*H;
+				f7=gammaI*I+gammaA*A+gammaH*H - gammaR*R;
 				
-				return betaFunc(y)*cFunc()*(1-qFunc())*y[0]*(y[2]+theta*y[3]);
-				//return betaFunc(y)*c0*(1-qFunc())*y[0]*(y[2]+theta*y[3]);
-			}
-
-			let gFunct=function(y){
-
-				return (1-betaFunc(y))*cFunc()*qFunc()*y[0]*(y[2]+theta*y[3]);
-				//return (1-betaFunc(y))*c0*qFunc()*y[0]*(y[2]+theta*y[3]);
-			}
-			let hFunct=function(y){
+				return [f0,f1,f2,f3,f4,f5,f6,f7]
 				
-				return betaFunc(y)*cFunc()*qFunc()*y[0]*(y[2]+theta*y[3]);
-				//return betaFunc(y)*c0*qFunc()*y[0]*(y[2]+theta*y[3]);
-			}
 
-			
-			let func = function(dydt, y, t) {
-				RR[ev]=RRFunc(y);
-				betam[ev]=betaFunc(y);
-				c[ev]=cFunc();
-				q[ev]=qFunc();
-				dydt[0] =-wFunct(y)+lambda*y[4]; //S
-				dydt[1] = fFunct(y)+sigma*y[1];  //E
-				dydt[2] = sigma*rho*y[1]-(deltaI+alfa+gammaI)*y[2]; //I
-				dydt[3]= sigma*(1-rho)*y[1]-gammaA*y[3]+gammaR*y[7] //A
-				dydt[4]= gFunct(y)-lambda*y[4] //Sq
-				dydt[5]= hFunct(y)-y[4]*y[5] //Eq
-				dydt[6]= deltaI*y[2]+deltaq*y[5]-(alfa+gammaH)*y[6]; //H
-				dydt[7]= gammaI*y[2]+gammaA*y[3]+gammaH*y[6]-gammaR*y[7]; //R
-			}
+		}
 
 			// Initialize:
-			let y0 = [S0, E0,I0,A0,Sq0,Eq0,H0,R0],
-				t0 = 1,
-				dt0 = 1,
-				integrator = ode45( y0, func, t0, dt0, {tol: 5e-5, maxIncreaseFactor: 2} )
-			// // Integrate up to tmax:
-			// let tmax = 40, t = [], y = [], newElement;
-			// //integrator.dtMinMag=0.5
-			// while( integrator.step( tmax ) ) {
-			// // Store the solution at this timestep:
-			// 	integrator.dt=1
-			// 	newElement=clone(integrator.y);
-			// 	t.push( integrator.t )
-			// 	y.push( newElement )
-// }
-			let newElement, y=[], t=[],days=[];
-
-			while (ev<100){
-
-				integrator.steps(1, ev);
-				days.push(ev);
-				ev+=1;
-				newElement=clone(integrator.y);
-				y.push( newElement )
-				t.push(integrator.t)
-			}
+			let y0 = [S0, E0,I0,A0,Sq0,Eq0,H0,R0];
 	
+			let y=rungeKutta(func, y0, [0, 99], 1);
+			days=[]
+			for (let i=0;i<100;i++){
+				days.push(i);
+			}
+			result=[tFunc,y,days];
 
-			result=[t,y,days];
+			
 
-			data.RR=RR;
-			data.beta=betam;
-			data.c=c;
-			data.q=q;
+			console.log(result)
+
+			data.RR=RRFunc;
+			data.beta=betamFunc;
+			data.c=cFunc;
+			data.q=qFunc;
+			data.days=days;
+
+			
 				
 	}
 
@@ -443,9 +391,9 @@ const changeInitialValue=()=>{
 						<tr>
 							<SvelteTooltip tip="Max. quarantined rate under control strategies" left ><td>$$q_1$$</td></SvelteTooltip>
 							<td class="slidecontainer">
-								<input type="range" min="0.00000000000015" max="0.000012" step="0.00000000005" bind:value={q1} class="slider" id="myRange">
+								<input type="range" min="0.00000000000015" max="0.000012" step="0.00000000005" bind:value={q0} class="slider" id="myRange">
 							</td>
-							<td>{q1}</td>
+							<td>{q0}</td>
 						</tr>
 
 						<tr>
