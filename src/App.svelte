@@ -273,7 +273,7 @@
 			// Initialize:
 			let y0 = [S0, E0,I0,A0,Sq0,Eq0,H0,R0];
 	
-			let y=rungeKutta(func, y0, [0, 99], 1);
+			let y=rungeKutta(func, y0, [0, 99], 0.1);
 			days=[]
 			for (let i=0;i<100;i++){
 				days.push(i);
