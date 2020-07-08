@@ -4,7 +4,7 @@
 Select the number of day for more details
 <input type="range" min="0" max="98" step="1" bind:value={day} class="slider" id="myRange">
 {day}. day
-<canvas id="treemap" width="3" height="1"></canvas>
+<canvas id="treemap" width="3" height=""></canvas>
 
 
 

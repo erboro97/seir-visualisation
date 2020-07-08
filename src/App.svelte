@@ -14,7 +14,7 @@
 
 	let days=[];
 	let ev=1;
-
+	let files=[];
 
 
 	/Parameter initial values/ 
@@ -69,7 +69,87 @@
 	let tempreture=[6, 7, 7, 10, 10, 9, 8, 5, 4, 3, 7, 10, 8, 8, 3, 4, 6, 8, 10, 11, 9, 7, 7, 7, 6, 5, 4, 8, 9, 13, 11, 12, 13, 12, 14, 14, 7, 8, 10, 14, 11, 11, 16, 17, 17, 2, 7, 11, 12, 14, 15, 15, 17, 17, 22, 20, 17, 11, 9, 14, 15, 10, 9, 13, 14, 13, 17, 18, 13, 16, 17, 17, 16, 18, 20, 18, 20, 21, 22, 24, 22, 21, 22, 23, 23, 24, 10, 10, 9, 13, 13, 16, 17, 18, 19, 20, 20, 21, 22, 26, 17]
 	let relativeHumidity=[68, 78, 82, 75, 88, 92, 78, 77, 89, 93, 77, 65, 68, 63, 84, 79, 69, 64, 54, 50, 77, 84, 87, 87, 83, 85, 74, 63, 63, 53, 51, 59, 62, 57, 59, 57, 81, 76, 68, 62, 69, 83, 76, 83, 82, 84, 50, 41, 44, 54, 55, 58, 59, 56, 64, 68, 78, 83, 86, 69, 65, 78, 77, 62, 60, 76, 73, 81, 82, 58, 52, 65, 67, 54, 43, 50, 57, 56, 51, 43, 71, 71, 65, 65, 77, 74, 78, 74, 83, 69, 71, 67, 66, 55, 53, 48, 48, 48, 49, 45, 70]
 
-	$:{
+	$:{ 
+		if (files){
+			for (const file of files) {
+    			// Not supported in Safari for iOS.
+    			const reader = new FileReader();
+  				reader.addEventListener('load', (event) => {
+				let result= event.target.result;
+				
+				result = result.replace(/\\"/g,'"');
+				if (result[0]=='"'){
+					result = result.substring(1);
+				result = result.substring(0, result.length - 1)
+				}
+				
+				console.log(result);
+
+				let jsonResult=JSON.parse(result);
+				if (jsonResult.S0!=undefined && !isNaN(jsonResult.S0)){	
+					
+					S0=jsonResult.S0;
+					console.log(jsonResult.S0)
+
+				}
+				if (jsonResult.E0!=undefined && !isNaN(jsonResult.E0))
+					E0=jsonResult.E0
+				if (jsonResult.I0!=undefined && !isNaN(jsonResult.I0))
+					I0=jsonResult.I0
+				if (jsonResult.A0!=undefined && !isNaN(jsonResult.A0))
+					A0=jsonResult.A0
+				if (jsonResult.Sq0!=undefined && !isNaN(jsonResult.Sq0))
+					Sq0=jsonResult.Sq0
+				if (jsonResult.Eq0!=undefined && !isNaN(jsonResult.Eq0))
+					Eq0=jsonResult.Eq0
+				if (jsonResult.H0!=undefined && !isNaN(jsonResult.H0))
+					H0=jsonResult.H0
+				if (jsonResult.R0!=undefined && !isNaN(jsonResult.R0))
+					R0=jsonResult.R0
+				if (jsonResult.c0!=undefined && !isNaN(jsonResult.c0))
+					c0=jsonResult.c0
+				if (jsonResult.ca!=undefined && !isNaN(jsonResult.ca))
+					ca=jsonResult.ca
+				if (jsonResult.eps!=undefined && !isNaN(jsonResult.eps))
+					eps=jsonResult.eps
+				if (jsonResult.beta0!=undefined && !isNaN(jsonResult.beta0))
+					beta0=jsonResult.beta0
+				if (jsonResult.q0!=undefined && !isNaN(jsonResult.q0))
+					q0=jsonResult.q0
+				if (jsonResult.sigma!=undefined && !isNaN(jsonResult.sigma))
+					sigma=jsonResult.sigma
+				if (jsonResult.lambda!=undefined && !isNaN(jsonResult.lambda))
+					lambda=jsonResult.lambda
+				if (jsonResult.deltaI!=undefined && !isNaN(jsonResult.deltaI))
+					deltaI=jsonResult.deltaI
+				if (jsonResult.deltaq!=undefined && !isNaN(jsonResult.deltaq))
+					deltaq=jsonResult.deltaq
+				if (jsonResult.gammaI!=undefined && !isNaN(jsonResult.gammaI))
+					gammaI=jsonResult.gammaI
+				if (jsonResult.gammaA!=undefined && !isNaN(jsonResult.gammaA))
+					gammaA=jsonResult.gammaA
+				if (jsonResult.gammaH!=undefined && !isNaN(jsonResult.gammaH))
+					gammaH=jsonResult.gammaH
+				if (jsonResult.gammaR!=undefined && !isNaN(jsonResult.gammaR))
+					gammaR=jsonResult.gammaR
+				if (jsonResult.theta!=undefined && !isNaN(jsonResult.theta))
+					theta=jsonResult.theta
+				if (jsonResult.alfab!=undefined && !isNaN(jsonResult.alfab))
+					alfab=jsonResult.alfab
+				if (jsonResult.alfa!=undefined && !isNaN(jsonResult.alfa))
+					alfa=jsonResult.alfa
+				if (jsonResult.xi!=undefined && !isNaN(jsonResult.xi))
+					xi=jsonResult.xi
+ 				 });
+				  reader.readAsText(file);
+				files=[]
+
+				  
+	
+
+  }
+  }
+
 
 		console.log(parameterSelection)
 		if (selectedCountry.id==1){
@@ -259,6 +339,20 @@ const changeInitialValue=()=>{
 	}
 }
 
+function handleClick() {
+	let result="{ 'S0':"+S0+", 'E0':"+E0+", 'I0':"+I0+", 'A0':"+A0+", 'Sq0':"+Sq0+", 'Eq0':"+Eq0+", 'H0':"+H0+ ", 'R0':"+R0+", 'c0':"+c0+", 'ca':"+ca+", 'eps':"+eps+", 'beta0':"+beta0+", 'q0':"+q0+", 'sigma':"+sigma+", 'lambda':"+lambda+", 'deltaI':"+deltaI+", 'deltaq':"+deltaq+", 'gammaI':"+gammaI+", 'gammaH':"+gammaH+", 'gammaR':"+gammaR+", 'theta':"+theta+", 'alfab':"+alfab+", 'alfa':"+alfa+", 'xi':"+xi+"}";
+	 result=result.split("'").join('"');
+	 let dataStr = JSON.stringify(result);
+    let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+	dataStr = dataStr.replace(/\\"/g,'"');
+	console.log(dataStr);
+    let exportFileDefaultName = 'data.json';
+
+    let linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+	}
 
 
 
@@ -478,11 +572,11 @@ const changeInitialValue=()=>{
 						</tr>
 
 						<tr>
-							<SvelteTooltip tip="Initial quarantined rate of exposed individuals" left ><td>$$q_0$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Initial quarantined rate of exposed individuals" left ><td>$$\epsilon$$</td></SvelteTooltip>
 							<td class="slidecontainer">
-								<input type="range"  min="0.000000000015" max="0.0012" step="0.000000005" bind:value={q0} class="slider" id="myRange">
+								<input type="range"  min="0.000000000015" max="0.0012" step="0.000000005" bind:value={eps} class="slider" id="myRange">
 							</td>
-							<td>{q0}</td>
+							<td>{eps}</td>
 						</tr>
 
 						<tr>
@@ -601,6 +695,11 @@ const changeInitialValue=()=>{
 </div>
 	</div>
 	</div>
+
+	<input bind:files type='file' >
+	<button on:click={handleClick}>
+	Export
+	</button>
 
 
 	
