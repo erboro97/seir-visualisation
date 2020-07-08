@@ -58,6 +58,7 @@
 	let betamFunc=[];
 	let qFunc=[];
 	let cFunc=[];
+	let parameterSelection=[1,2];
 
 	let data={};
 	let countries = [
@@ -67,7 +68,10 @@
 	let selectedCountry={};
 	let tempreture=[6, 7, 7, 10, 10, 9, 8, 5, 4, 3, 7, 10, 8, 8, 3, 4, 6, 8, 10, 11, 9, 7, 7, 7, 6, 5, 4, 8, 9, 13, 11, 12, 13, 12, 14, 14, 7, 8, 10, 14, 11, 11, 16, 17, 17, 2, 7, 11, 12, 14, 15, 15, 17, 17, 22, 20, 17, 11, 9, 14, 15, 10, 9, 13, 14, 13, 17, 18, 13, 16, 17, 17, 16, 18, 20, 18, 20, 21, 22, 24, 22, 21, 22, 23, 23, 24, 10, 10, 9, 13, 13, 16, 17, 18, 19, 20, 20, 21, 22, 26, 17]
 	let relativeHumidity=[68, 78, 82, 75, 88, 92, 78, 77, 89, 93, 77, 65, 68, 63, 84, 79, 69, 64, 54, 50, 77, 84, 87, 87, 83, 85, 74, 63, 63, 53, 51, 59, 62, 57, 59, 57, 81, 76, 68, 62, 69, 83, 76, 83, 82, 84, 50, 41, 44, 54, 55, 58, 59, 56, 64, 68, 78, 83, 86, 69, 65, 78, 77, 62, 60, 76, 73, 81, 82, 58, 52, 65, 67, 54, 43, 50, 57, 56, 51, 43, 71, 71, 65, 65, 77, 74, 78, 74, 83, 69, 71, 67, 66, 55, 53, 48, 48, 48, 49, 45, 70]
+
 	$:{
+
+		console.log(parameterSelection)
 		if (selectedCountry.id==1){
 
 	}
@@ -154,9 +158,18 @@
     			Eq=y[5];
    				H=y[6];
 				R = y[7];
-
-				let AH=6112 * Math.exp(17.67*tempreture[ Math.floor(t)]/(tempreture[Math.floor(t)] + 243.5)) * relativeHumidity[Math.floor(t)] * 2.1674 / (273.15 + relativeHumidity[Math.floor(t)]);
-				let betam=beta0*(1-alfab)*(1 + xi*AH) *  Math.pow((1- (I+A)/(S+R) ), 2);
+				let betam;
+				if (parameterSelection.includes(1)&&parameterSelection.includes(2)){
+					let AH=6112 * Math.exp(17.67*tempreture[ Math.floor(t)]/(tempreture[Math.floor(t)] + 243.5)) * relativeHumidity[Math.floor(t)] * 2.1674 / (273.15 + relativeHumidity[Math.floor(t)]);
+					betam=beta0*(1-alfab)*(1 + xi*AH) *  Math.pow((1- (I+A)/(S+R) ), 2);
+				}
+				else if (parameterSelection.includes(1)){
+					betam=beta0*(1-alfab)*Math.exp(-xi*tempreture[ Math.floor(t)]) *  Math.pow((1- (I+A)/(S+R) ), 2);
+				}
+				else if (parameterSelection.includes(2)){
+					betam=beta0*(1-alfab)*Math.exp(-xi*tempreture[ Math.floor(t)]) *  Math.pow((1- (I+A)/(S+R) ), 2);
+				}
+				
 				betamFunc.push(betam);
 				let ct=ca + (3*(c0-ca))/(1+2*Math.pow(b,-t));
 				cFunc.push(ct);
@@ -255,23 +268,10 @@ const changeInitialValue=()=>{
 
 <main>
 	<div class="container">
-		<div class="panel-group ">
-			<div class="panel panel-danger" style="display:inline-block;">
-				 <div class="panel-heading">Select a template:</div>
-				 <div class="panel-body">
-					<select bind:value={selectedCountry} on:click={changeInitialValue}>
-						{#each countries as country}
-							<option value={country}>
-								{country.text}
-							</option>
-						{/each}
-					</select>
-				</div>
-			</div>
-		</div>
+	
 
 	<div class="panel-group "  >
-	<div class="panel panel-success  col-md-6 p-2" style="display:inline-block;">
+	<div class="panel panel-success col-md-8 p-2" style="display:inline-block;" >
 	 <div class="panel-heading">Data visualization</div>
 	 <div class="panel-body">
 				<Chart chartData={result} />
@@ -280,39 +280,7 @@ const changeInitialValue=()=>{
 	</div>
 	</div>
 
-	<div class="panel-group col-md-6 p-2 "  style="display:inline-block;">
-	<div class="panel panel-success">
-	 <div class="panel-heading">Data visualization</div>
-	 <div class="panel-body">
-		<RRChart data={data}/>
-
-	</div>
-	</div>
-	</div>
-
-
-		<div class="panel-group col-md-6 p-2 "  style="display:inline-block;">
-	<div class="panel panel-warning">
-	 <div class="panel-heading">Select values of tempreture!</div>
-	 <div class="panel-body">
-<Cubic temp={tempreture} on:myClick={myClickC}/>
-	</div>
-	</div>
-	</div>
-
-		<div class="panel-group col-md-6 p-2 "  style="display:inline-block;">
-	<div class="panel panel-warning">
-	 <div class="panel-heading">Select values of absolute humid!</div>
-	 <div class="panel-body">
-				<CubicTau humidity={relativeHumidity} on:myClick={myClickTau}/>
-
-	</div>
-	</div>
-	</div>
-
-				
-
-		<div class="panel-group col-md-6 p-2 "  style="display:inline-block;">
+		<div class="panel-group col-md-4 p-2 "  style="display:inline-block;">
 	<div class="panel panel-info">
 	 <div class="panel-heading">Change initial conditions!</div>
 	 <div class="panel-body">
@@ -392,8 +360,78 @@ const changeInitialValue=()=>{
 	</div>
 	</div>
 	</div>
+
+	<div class="panel-group col-md-4 p-2 "  style="display:inline-block;">
+	<div class="panel panel-success">
+	 <div class="panel-heading">Select which factors to be included in the model</div>
+	 <div class="panel-body">
+<label><input type="checkbox" bind:group={parameterSelection} value={1} /> Humidity</label>
+	<label><input type="checkbox" bind:group={parameterSelection} value={2} /> Tempreture</label>
+
+	{#if parameterSelection.length === 0}
+	<p>Please select at least one parameter</p>
+{/if}
+	</div>
+	</div>
+	</div>
+
+
+	<div class="panel-group  col-md-4 p-2 " style="display:inline-block;">
+			<div class="panel panel-danger" >
+				 <div class="panel-heading">Select a template:</div>
+				 <div class="panel-body">
+					<select bind:value={selectedCountry} on:click={changeInitialValue}>
+						{#each countries as country}
+							<option value={country}>
+								{country.text}
+							</option>
+						{/each}
+					</select>
+				</div>
+			</div>
+		</div>
+	{#if parameterSelection.includes(2)}
+			<div class="panel-group col-md-5 p-2 "  style="display:inline-block;">
+	<div class="panel panel-warning">
+	 <div class="panel-heading">Select values of tempreture!</div>
+	 <div class="panel-body">
+		<Cubic temp={tempreture} on:myClick={myClickC}/>
+	</div>
+	</div>
+	</div>
+	{/if}
 		
-					<div class="panel-group col-md-6 p-2 "  style="display:inline-block;">
+{#if parameterSelection.includes(1)}
+		<div class="panel-group col-md-5 p-2 "  style="display:inline-block;">
+	<div class="panel panel-warning">
+	 <div class="panel-heading">Select values of absolute humid!</div>
+	 <div class="panel-body">
+				<CubicTau humidity={relativeHumidity} on:myClick={myClickTau}/>
+
+	</div>
+	</div>
+	</div>
+
+	
+	
+		
+	{/if}
+
+
+	
+<div class="panel-group col-md-8 p-2 "  style="display:inline-block;">
+	<div class="panel panel-success">
+	 <div class="panel-heading">Data visualization</div>
+	 <div class="panel-body">
+		<RRChart data={data}/>
+
+	</div>
+	</div>
+	</div>
+			
+
+			
+					<div class="panel-group col-md-4 p-2 "  style="display:inline-block;">
 	<div class="panel panel-info">
 	 <div class="panel-heading">Modify values of parameters!</div>
 	 <div class="panel-body">
@@ -547,8 +585,8 @@ const changeInitialValue=()=>{
 	</div>
 	</div>
 	</div>
-		
-	<div class="panel-group col-md-6 p-2 "  style="display:inline-block;">
+
+		<div class="panel-group col-md-6 p-2 "  style="display:inline-block;">
 	<div class="panel panel-warning">
 	 <div class="panel-heading">Information about model</div>
 	 <div class="panel-body">
@@ -564,12 +602,20 @@ const changeInitialValue=()=>{
 	</div>
 	</div>
 
+
+	
+		
+
+		
+	
+
 		
 			
 		
 
 
 				</div>
+
 
 
 
