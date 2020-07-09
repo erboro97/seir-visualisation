@@ -4,7 +4,6 @@
 	import rungeKutta from 'runge-kutta';
 	import ode45 from 'ode45-cash-karp';
 	import Chart from './Chart.svelte';
-	import betaCh from './betaChart.svelte';
 	import RRChart from './RR.svelte';
 	import Cubic from './Cubic_Interpolation.svelte';
 	import CubicTau from './Cubic_Interpolation_tau.svelte';
@@ -83,13 +82,10 @@
 				result = result.substring(0, result.length - 1)
 				}
 				
-				console.log(result);
-
 				let jsonResult=JSON.parse(result);
 				if (jsonResult.S0!=undefined && !isNaN(jsonResult.S0)){	
 					
 					S0=jsonResult.S0;
-					console.log(jsonResult.S0)
 
 				}
 				if (jsonResult.E0!=undefined && !isNaN(jsonResult.E0))
@@ -151,7 +147,6 @@
   }
 
 
-		console.log(parameterSelection)
 		if (selectedCountry.id==1){
 
 	}
@@ -278,15 +273,39 @@
 			for (let i=0;i<100;i++){
 				days.push(i);
 			}
-			result=[tFunc,y,days];
-
+			
+			let yBiggerStep=[], k=0, RRBiggerStep=[], betaBiggerStep=[], cBiggerStep=[], qBiggerStep=[];
+			for (let i=0;i<y.length;i+=9){
+				yBiggerStep[k]=y[i];
+				k++
+			}
+			result=[tFunc,yBiggerStep,days];
+			k=0;
+			for (let i=0;i<RRFunc.length;i+=40){
+				RRBiggerStep[k]=RRFunc[i];
+				k++
+			}
+			k=0;
+			for (let i=0;i<betamFunc.length;i+=40){
+				betaBiggerStep[k]=betamFunc[i];
+				k++
+			}
+			k=0;
+			for (let i=0;i<cFunc.length;i+=40){
+				cBiggerStep[k]=cFunc[i];
+				k++
+			}
+			k=0;
+			for (let i=0;i<qFunc.length;i+=40){
+				qBiggerStep[k]=qFunc[i];
+				k++
+			}
 			
 
-
-			data.RR=RRFunc;
-			data.beta=betamFunc;
-			data.c=cFunc;
-			data.q=qFunc;
+			data.RR=RRBiggerStep;
+			data.beta=betaBiggerStep;
+			data.c=cBiggerStep;
+			data.q=qBiggerStep;
 			data.days=days;
 
 			
@@ -345,7 +364,6 @@ function handleClick() {
 	 let dataStr = JSON.stringify(result);
     let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
 	dataStr = dataStr.replace(/\\"/g,'"');
-	console.log(dataStr);
     let exportFileDefaultName = 'data.json';
 
     let linkElement = document.createElement('a');
