@@ -13,16 +13,18 @@
 
             <div class="form-check col-md-3 p-2"  style="display:inline-block;">
                  <label class="form-check-label">
-                     <input type="radio" bind:group={selectDiagram} value={3} class="form-check-input" name="optradio">$$q$$
+                     <input type="radio" bind:group={selectDiagram} value={3} class="form-check-input" name="optradio">$$c$$
                 </label>
             </div>
 
             <div class="form-check col-md-3 p-2"  style="display:inline-block;">
                 <label class="form-check-label">
-                    <input type="radio" bind:group={selectDiagram} value={4} class="form-check-input" name="optradio">$$c$$
+                    <input type="radio" bind:group={selectDiagram} value={4} class="form-check-input" name="optradio">$$q$$
                 </label>
         </div>
            <canvas id="myChartRadio" width="3" height="1"></canvas>
+           <button id="downloadPdf" class="btn btn-primary" on:click={downloadPDF}>Download the current chart as PDF</button>
+
          
     
          
@@ -57,6 +59,8 @@ let chartData=[];
 let title;
 let color;
 let myLabel;
+
+
 
 $:{
     if (selectDiagram==1){
@@ -113,8 +117,25 @@ function createChart(){
     }
     });
 }
-afterUpdate(createChart)
 
+function downloadPDF(){
+   var canvas = document.querySelector('#myChartRadio');
+  	var canvasImg = canvas.toDataURL("image/png", '#ffffff');
+
+  var ctx=canvas.getContext("2d");
+   ctx.fillStyle="white";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+	//creates image
+  
+	//creates PDF from img
+	var doc = new jsPDF('landscape');
+	doc.setFontSize(20);
+	doc.addImage(canvasImg, 'PNG', 0, 0 );
+    doc.save(title+'.pdf');
+    createChart();
+}
+
+afterUpdate(createChart)
 
 
 </script>

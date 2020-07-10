@@ -5,6 +5,10 @@ Select the number of day for more details
 <input type="range" min="0" max="98" step="1" bind:value={day} class="slider" id="myRange">
 {day}. day
 <canvas id="treemap" width="3" height=""></canvas>
+<button id="downloadPdf" class="btn btn-primary" on:click={downloadPDF}>Download Bar Chart as PDF</button>
+
+<button id="downloadPdf"  class="btn btn-primary" on:click={downloadPDFTreeMap}>Download Treemap as PDF</button>
+
 
 
 
@@ -12,6 +16,7 @@ Select the number of day for more details
 
 
 import {afterUpdate} from 'svelte';
+import toDataURL from 'canvas-background';
 
 export let chartData;
 
@@ -20,6 +25,8 @@ let globalTreemapRef;
 let day=0;
 let treemapData=chartData[1][0];
 let treemapChartData=[];
+
+
 
 $:{
 
@@ -170,6 +177,41 @@ function createTestChart(){
 });
 
 
+}
+
+function downloadPDF(){
+   var canvas = document.querySelector('#myChart');
+  	var canvasImg = canvas.toDataURL("image/png", '#ffffff');
+
+  var ctx=canvas.getContext("2d");
+   ctx.fillStyle="white";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+	//creates image
+  
+	//creates PDF from img
+	var doc = new jsPDF('landscape');
+	doc.setFontSize(20);
+	doc.addImage(canvasImg, 'PNG', 0, 0 );
+  doc.save('barchart.pdf');
+  
+  createTestChart()
+}
+function downloadPDFTreeMap(){
+   var canvas = document.querySelector('#treemap');
+  	var canvasImg = canvas.toDataURL("image/png", '#ffffff');
+
+  var ctx=canvas.getContext("2d");
+   ctx.fillStyle="white";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+	//creates image
+  
+	//creates PDF from img
+	var doc = new jsPDF('landscape');
+	doc.setFontSize(20);
+	doc.addImage(canvasImg, 'PNG', 0, 0 );
+  doc.save('treemap.pdf');
+  
+  createTreeMap();
 }
 
 afterUpdate(createTestChart)

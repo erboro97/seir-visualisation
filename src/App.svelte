@@ -382,9 +382,9 @@ function handleClick() {
 	<div class="container">
 	
 
-	<div class="panel-group "  >
-	<div class="panel panel-success col-md-8 p-2" style="display:inline-block;" >
-	 <div class="panel-heading">Data visualization</div>
+	<div class="panel-group col-md-8 p-6"  style="display:inline-block;">
+	<div class="panel panel-primary "  >
+	 <div class="panel-heading"><strong>Data visualization </strong></div>
 	 <div class="panel-body">
 				<Chart chartData={result} />
 
@@ -394,7 +394,7 @@ function handleClick() {
 
 		<div class="panel-group col-md-4 p-2 "  style="display:inline-block;">
 	<div class="panel panel-info">
-	 <div class="panel-heading">Change initial conditions!</div>
+	 <div class="panel-heading"><strong>Change initial conditions!</strong></div>
 	 <div class="panel-body">
 <table class="table table-bordered">
 					<thead>
@@ -407,64 +407,64 @@ function handleClick() {
 					<tbody>
 						<tr>
 	
-							<SvelteTooltip tip="Susceptible" left ><td>$$S$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Susceptible" class="alert alert-info" left color="#a0daa2"><td>$$S$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="10000" max="800000000" step="800000" bind:value={S0} class="slider" id="myRange">
 							</td>
 							<td>{S0}</td>
 						</tr>
 						<tr>
-							<SvelteTooltip tip="Exposed" left ><td>$$E$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Exposed" left color="#a0daa2" ><td>$$E$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="10" max="1000000" step="10000" bind:value={E0} class="slider" id="myRange">
 							</td>
-							<td>{E0}</td>
+							<td>{E0.toFixed(2)}</td>
 						</tr>
 						<tr>
-							<SvelteTooltip tip="Infected" left ><td>$$I$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Infected" left color="#a0daa2"><td>$$I$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="10" max="100000" step="1000" bind:value={I0} class="slider" id="myRange">
 							</td>
-							<td>{I0}</td>
+							<td>{I0.toFixed(2)}</td>
 						</tr>
 						<tr>
-							<SvelteTooltip tip="Asymptomatic infected" left ><td>$$A$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Asymptomatic infected" left color="#a0daa2"><td>$$A$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="10" max="100000" step="1000" bind:value={A0} class="slider" id="myRange">
 							</td>
-							<td>{A0}</td>
+							<td>{A0.toFixed(2)}</td>
 						</tr>
 
 						<tr>
-							<SvelteTooltip tip="Quarantined susceptible" left ><td>$$S_q$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Quarantined susceptible" left color="#a0daa2"><td>$$S_q$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="10" max="100000" step="1000" bind:value={Sq0} class="slider" id="myRange">
 							</td>
-							<td>{Sq0}</td>
+							<td>{Sq0.toFixed(2)}</td>
 						</tr>
 
 						<tr>
-							<SvelteTooltip tip="Quarantined exposed" left ><td>$$E_q$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Quarantined exposed" left color="#a0daa2"><td>$$E_q$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 							<input type="range" min="10" max="100000" step="1000" bind:value={Eq0} class="slider" id="myRange">
 							</td>
-							<td>{Eq0}</td>
+							<td>{Eq0.toFixed(2)}</td>
 						</tr>
 
 						<tr>
-						<SvelteTooltip tip="Hospitalized" left ><td>$$H$$</td></SvelteTooltip>
+						<SvelteTooltip tip="Hospitalized" left color="#a0daa2"><td>$$H$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="10" max="100000" step="1000" bind:value={H0} class="slider" id="myRange">
 							</td>
-							<td>{H0}</td>
+							<td>{H0.toFixed(2)}</td>
 						</tr>
 
 						<tr>
-						<SvelteTooltip tip="Recovered" left ><td>$$R$$</td></SvelteTooltip>
+						<SvelteTooltip tip="Recovered" left color="#a0daa2"><td>$$R$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="10" max="100000" step="1000" bind:value={R0} class="slider" id="myRange">
 							</td>
-							<td>{R0}</td>
+							<td>{R0.toFixed(2)}</td>
 						</tr>
 		
 					</tbody>
@@ -475,7 +475,7 @@ function handleClick() {
 
 	<div class="panel-group col-md-4 p-2 "  style="display:inline-block;">
 	<div class="panel panel-success">
-	 <div class="panel-heading">Select which factors to be included in the model</div>
+	 <div class="panel-heading"><strong>Select which factors to be included in the model</strong></div>
 	 <div class="panel-body">
 <label><input type="checkbox" bind:group={parameterSelection} value={1} /> Humidity</label>
 	<label><input type="checkbox" bind:group={parameterSelection} value={2} /> Tempreture</label>
@@ -489,8 +489,8 @@ function handleClick() {
 
 
 	<div class="panel-group  col-md-4 p-2 " style="display:inline-block;">
-			<div class="panel panel-danger" >
-				 <div class="panel-heading">Select a template:</div>
+			<div class="panel panel-success" >
+				 <div class="panel-heading"><strong>Select a template:</strong></div>
 				 <div class="panel-body">
 					<select bind:value={selectedCountry} on:click={changeInitialValue}>
 						{#each countries as country}
@@ -499,13 +499,17 @@ function handleClick() {
 							</option>
 						{/each}
 					</select>
+
+					<div class="alert alert-info"><strong>Information regarding the templates!</strong> The parameters' values are calculated by IPSO algorithm. This is a guidance, it does not necessarily correspond to reality.</div> 
+
 				</div>
 			</div>
 		</div>
+
 	{#if parameterSelection.includes(2)}
 			<div class="panel-group col-md-5 p-2 "  style="display:inline-block;">
 	<div class="panel panel-warning">
-	 <div class="panel-heading">Select values of tempreture!</div>
+	 <div class="panel-heading"><strong>Select values of tempreture!</strong></div>
 	 <div class="panel-body">
 		<Cubic temp={tempreture} on:myClick={myClickC}/>
 	</div>
@@ -516,7 +520,7 @@ function handleClick() {
 {#if parameterSelection.includes(1)}
 		<div class="panel-group col-md-5 p-2 "  style="display:inline-block;">
 	<div class="panel panel-warning">
-	 <div class="panel-heading">Select values of absolute humid!</div>
+	 <div class="panel-heading"><strong>Select values of absolute humid!</strong></div>
 	 <div class="panel-body">
 				<CubicTau humidity={relativeHumidity} on:myClick={myClickTau}/>
 
@@ -530,22 +534,65 @@ function handleClick() {
 	{/if}
 
 
+			<div class="panel-group col-md-4 p-3 "  style="display:inline-block;">
+	<div class="panel panel-info">
+	 <div class="panel-heading"><strong>Parameter import and parameter export</strong></div>
+	 <div class="panel-body">
+	<input class="btn btn-primary" bind:files type='file' >
+	<div class="alert alert-info"><strong>Information regarding importing files!</strong> For importing data you need to upload JSON file. You do not need to upload every parameter, just those one, which you want to modify. Other parameters will have same value as they had previously. If you need a proper JSON structure, you can find it by exporting the current one.</div> 
+	<button class="btn btn-primary" on:click={handleClick}>
+	Export
+	</button>
+</div>
+	</div>
+	</div>
 	
 <div class="panel-group col-md-8 p-2 "  style="display:inline-block;">
-	<div class="panel panel-success">
-	 <div class="panel-heading">Data visualization</div>
+	<div class="panel panel-primary">
+	 <div class="panel-heading"><strong>Data visualization </strong></div>
 	 <div class="panel-body">
 		<RRChart data={data}/>
 
 	</div>
 	</div>
 	</div>
+
+			<div class="panel-group col-md-6 p-2 "  style="display:inline-block;">
+	<div class="panel panel-warning">
+	 <div class="panel-heading"><strong>Information about model</strong></div>
+	 <div class="panel-body" style="text-align:centre">
+	 <strong>Differential equation system:</strong>
+	 <div class="alert alert-info">
+	$$S'=-\left[\beta(t) c(t)+c(t)q(t)\left(1-\beta(t)\right)\right]S\left(I+\theta A\right)+\lambda S_q$$
+			$$E'=\beta(t) c(t)\left(1-q(t)\right)S\left(I+\theta A\right)-\sigma E$$
+			$$I'=\sigma\varrho E-\left(\delta_I+\alpha+\gamma_I\right)I$$
+			$$A'=\sigma\left(1-\varrho\right)E-\gamma_A A+\gamma_R R$$
+			$$S_q'=\left(1-\beta(t)\right)c(t)q(t)S\left(I+\theta A\right)-\lambda S_q$$
+			$$E_q'=\beta(t) c(t)q(t)S\left(I+\theta A\right)-S_q E_q$$
+			$$H'=\delta_I I+\delta_q E_q -\left(\alpha+\gamma_H \right)H$$
+			$$R'=\gamma_I I+\gamma_A A+\gamma_H H-\gamma_R R$$
+			</div>
+
+			<strong>Other functions in the system:</strong>
+			<div  class="alert alert-info">
+			$$c(t)=c_a+3(c_0-c_a)/(1+2b^-t)$$
+			$$q(t)=(q_1t+q_0)/(t+1)$$
+			<strong>In case of the presence of humidity and tempreture:</strong>
+			$$\beta(t)=(1-\alpha_\beta)\beta_0\cdot(1+\xi AH(t))\cdot \left(1-(I(t)+A(t))/(S(t)+R(t))\right)^2$$
+			<strong>In case of the presence of tempreture:</strong>
+			$$\beta(t)=(1-\alpha_\beta)\beta_0\cdot(1+\xi AH(t))\cdot \left(1-(I(t)+A(t))/(S(t)+R(t))\right)^2.$$
+
+			
+			</div>
+</div>
+	</div>
+	</div>
 			
 
 			
-					<div class="panel-group col-md-4 p-2 "  style="display:inline-block;">
+					<div class="panel-group col-md-6 p-2 "  style="display:inline-block;">
 	<div class="panel panel-info">
-	 <div class="panel-heading">Modify values of parameters!</div>
+	 <div class="panel-heading"><strong>Modify values of parameters!</strong></div>
 	 <div class="panel-body">
 
 			<table class="table table-bordered">
@@ -558,15 +605,15 @@ function handleClick() {
 					</thead>
 					<tbody>
 						<tr>
-							<SvelteTooltip tip="Initial contact rate" left ><td>$$c_0$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Initial contact rate" left color="#a0daa2"><td>$$c_0$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="12.48" max="45" step="0.3252" bind:value={c0} class="slider" id="myRange">
 							</td>
-							<td>{c0}</td>
+							<td>{c0.toFixed(2)}</td>
 						</tr>
 
 						<tr>
-							<SvelteTooltip tip="Min. contact rate under control strategies" left ><td>$$c_a$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Min. contact rate under control strategies" left color="#a0daa2"><td>$$c_a$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="1.0" max="6.0" step="0.05" bind:value={ca} class="slider" id="myRange">
 							</td>
@@ -574,7 +621,7 @@ function handleClick() {
 						</tr>
 
 						<tr>
-							<SvelteTooltip tip="Max. quarantined rate under control strategies" left ><td>$$q_1$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Max. quarantined rate under control strategies" left color="#a0daa2"><td>$$q_1$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.00000000000015" max="0.000012" step="0.00000000005" bind:value={q0} class="slider" id="myRange">
 							</td>
@@ -582,7 +629,7 @@ function handleClick() {
 						</tr>
 
 						<tr>
-							<SvelteTooltip tip="Probability of transmission per contact" left ><td>$$\beta_0$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Probability of transmission per contact" left color="#a0daa2"><td>$$\beta_0$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.00000000000015" max="0.000012" step="0.00000000005" bind:value={beta0} class="slider" id="myRange">
 							</td>
@@ -590,7 +637,7 @@ function handleClick() {
 						</tr>
 
 						<tr>
-							<SvelteTooltip tip="Initial quarantined rate of exposed individuals" left ><td>$$\epsilon$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Initial quarantined rate of exposed individuals" left color="#a0daa2"><td>$$\epsilon$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range"  min="0.000000000015" max="0.0012" step="0.000000005" bind:value={eps} class="slider" id="myRange">
 							</td>
@@ -598,7 +645,7 @@ function handleClick() {
 						</tr>
 
 						<tr>
-							<SvelteTooltip tip="Transition rate of exposed individuals to the infected class" left ><td>$$\sigma$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Transition rate of exposed individuals to the infected class" left color="#a0daa2"><td>$$\sigma$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.0666" max="0.333" step="0.02" bind:value={sigma} class="slider" id="myRange">
 							</td>
@@ -607,7 +654,7 @@ function handleClick() {
 
 
 						<tr>
-							<SvelteTooltip tip="Rate at which the quarantined uninfects were released into the wider community" left ><td>$$\lambda$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Rate at which the quarantined uninfects were released into the wider community" left color="#a0daa2"><td>$$\lambda$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.02" max="1" step="0.1" bind:value={lambda} class="slider" id="myRange">
 							</td>
@@ -616,14 +663,14 @@ function handleClick() {
 
 				
 						<tr>
-							<SvelteTooltip tip="Transition rate of symptomatic infected individuals to the quarantined infected class" left ><td>$$\delta_I$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Transition rate of symptomatic infected individuals to the quarantined infected class" left color="#a0daa2"><td>$$\delta_I$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.01" max="0.95" step="0.0094" bind:value={deltaI} class="slider" id="myRange">
 							</td>
 							<td>{deltaI}</td>
 						</tr>
 						<tr>
-							<SvelteTooltip tip="Transition rate of quarantined exposed individuals to the quarantined infected class" left ><td>$$\delta_q$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Transition rate of quarantined exposed individuals to the quarantined infected class" left color="#a0daa2"><td>$$\delta_q$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.01" max="0.4" step="0.0074" bind:value={deltaq} class="slider" id="myRange">
 							</td>
@@ -631,7 +678,7 @@ function handleClick() {
 						</tr>
 
 						<tr>
-							<SvelteTooltip tip="Recovery rate of symptomatic infected individuals" left ><td>$$\gamma_I$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Recovery rate of symptomatic infected individuals" left color="#a0daa2"><td>$$\gamma_I$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.01" max="0.75" step="0.0074" bind:value={gammaI} class="slider" id="myRange">
 							</td>
@@ -639,7 +686,7 @@ function handleClick() {
 						</tr>
 
 						<tr>
-							<SvelteTooltip tip="Recovery rate of asymptomatic infected individuals" left ><td>$$\gamma_A$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Recovery rate of asymptomatic infected individuals" left color="#a0daa2"><td>$$\gamma_A$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.01" max="0.36" step="0.0035"  bind:value={gammaA} class="slider" id="myRange">
 							</td>
@@ -647,21 +694,21 @@ function handleClick() {
 						</tr>
 
 						<tr>
-							<SvelteTooltip tip="Gamma h" left ><td>$$\gamma_H$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Gamma h" left color="#a0daa2"><td>$$\gamma_H$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.01" max="0.1" step="0.001" bind:value={gammaH} class="slider" id="myRange">
 							</td>
 							<td>{gammaH}</td>
 						</tr>
 						<tr>
-						<SvelteTooltip tip="Rate at which recovered individuals move into pre-symptomatic class" left ><td>$$\gamma_R$$</td></SvelteTooltip>
+						<SvelteTooltip tip="Rate at which recovered individuals move into pre-symptomatic class" left color="#a0daa2"><td>$$\gamma_R$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.0000003" max="0.00001" step="0.001" bind:value={gammaR} class="slider" id="myRange">
 							</td>
 							<td>{gammaR}</td>
 						</tr>
 						<tr>
-						<SvelteTooltip tip="Relative transmission probability of A compared with I" left ><td>$$\theta$$</td></SvelteTooltip>
+						<SvelteTooltip tip="Relative transmission probability of A compared with I" left color="#a0daa2"><td>$$\theta$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.0000003" max="0.1" step="0.0001" bind:value={theta} class="slider" id="myRange">
 							</td>
@@ -669,14 +716,14 @@ function handleClick() {
 						</tr>
 
 						<tr>
-						<SvelteTooltip tip="Governmental action strength" left ><td>$$\alpha_b$$</td></SvelteTooltip>
+						<SvelteTooltip tip="Governmental action strength" left color="#a0daa2"><td>$$\alpha_b$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0" max="1" step="0.001" bind:value={alfab} class="slider" id="myRange">
 							</td>
 							<td>{alfab}</td>
 						</tr>
 						<tr>
-						<SvelteTooltip tip="Alfa" left ><td>$$\alpha$$</td></SvelteTooltip>
+						<SvelteTooltip tip="Alfa" left color="#a0daa2"><td>$$\alpha$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0" max="1" step="0.001" bind:value={alfa} class="slider" id="myRange">
 							</td>
@@ -684,7 +731,7 @@ function handleClick() {
 						</tr>
 
 						<tr>
-						<SvelteTooltip tip="The intensity of the effect of tempreture variation" left ><td>$$\epsilon$$</td></SvelteTooltip>
+						<SvelteTooltip tip="The intensity of the effect of tempreture variation" left color="#a0daa2"><td>$$\epsilon$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.001" max="0.9999" step="0.001" bind:value={eps} class="slider" id="myRange">
 							</td>
@@ -698,26 +745,11 @@ function handleClick() {
 	</div>
 	</div>
 
-		<div class="panel-group col-md-6 p-2 "  style="display:inline-block;">
-	<div class="panel panel-warning">
-	 <div class="panel-heading">Information about model</div>
-	 <div class="panel-body">
-	 <SvelteTooltip tip=$$w()$$ left ><td>$$S'=-w(S,I,A)+\lambda S_q$$
-			$$E'=f(S,I,A)-\sigma E$$
-			$$I'=\sigma\varrho E-\left(\delta_I+\alpha+\gamma_I\right)I$$
-			$$A'=\sigma\left(1-\varrho\right)E-\gamma_A A+\gamma_R R$$
-			$$S_q'=g(S,I,A)-\lambda S_q$$
-			$$E_q'=h(S,I,A)-S_q E_q$$
-			$$H'=\delta_I I+\delta_q E_q -\left(\alpha+\gamma_H \right)H$$
-			$$R'=\gamma_I I+\gamma_A A+\gamma_H H-\gamma_R R$$</td></SvelteTooltip>
-</div>
-	</div>
-	</div>
 
-	<input bind:files type='file' >
-	<button on:click={handleClick}>
-	Export
-	</button>
+
+	
+
+	
 
 
 	
@@ -793,7 +825,7 @@ function handleClick() {
 .slider::-moz-range-thumb {
   width: 25px; /* Set a specific slider handle width */
   height: 25px; /* Slider handle height */
-  background: #4CAF50; /* Green background */
+  background: #a0daa2; /* Green background */
   cursor: pointer; /* Cursor on hover */
 }
 </style>
