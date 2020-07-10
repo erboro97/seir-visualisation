@@ -32,6 +32,15 @@
 
 
 <script>
+
+
+
+import {afterUpdate} from 'svelte';
+import SvelteTooltip from 'svelte-tooltip';
+
+
+export let data={};
+
 let rrRadio=0;
 let betaRadio=0;
 let cRadio=0;
@@ -39,17 +48,10 @@ let qRadio=0;
 
 let selectDiagram=1;
 
-
-import {afterUpdate} from 'svelte';
-import SvelteTooltip from 'svelte-tooltip';
-
-
-export let data;
-
-let RRdata=data.RR;
-let betaData=data.beta;
-let cData=data.c;
-let qData=data.q;
+$: RRdata=data.RR;
+$: betaData=data.beta;
+$: cData=data.c;
+$: qData=data.q;
 
 let globalChartRef;
 
@@ -63,6 +65,7 @@ let myLabel;
 
 
 $:{
+
     if (selectDiagram==1){
         chartData=RRdata;
         title='Reproduction number';

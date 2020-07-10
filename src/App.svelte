@@ -1317,12 +1317,14 @@
 			}
 			result=[tFunc,yBiggerStep,days];
 			k=0;
+			RRBiggerStep=[]
+			let newElement;
 			for (let i=0;i<RRFunc.length;i+=40){
+				newElement=clone(RRFunc[i]);
 				RRBiggerStep[k]=RRFunc[i];
-				k++
+				k++;
 			}
 			k=0;
-			console.log(betamFunc)
 
 			for (let i=0;i<betamFunc.length;i+=40){
 				betaBiggerStep[k]=betamFunc[i];
@@ -1338,9 +1340,8 @@
 				qBiggerStep[k]=qFunc[i];
 				k++
 			}
-			
-
 			data.RR=RRBiggerStep;
+
 			data.beta=betaBiggerStep;
 			data.c=cBiggerStep;
 			data.q=qBiggerStep;
@@ -1556,7 +1557,7 @@ function handleClick() {
 						{/each}
 					</select>
 
-					<div class="alert alert-info"><strong>Information regarding the countries' population!</strong> You can modify the susceptible parameter's value by selecting a specific country. These data were updated on 27/05/2020.</div> 
+					<div class="alert alert-info"><strong>Information regarding the countries' population</strong> You can modify the susceptible parameter's value by selecting a specific country. These data were updated on 27/05/2020.</div> 
 
 				</div>
 			</div>
@@ -1576,7 +1577,7 @@ function handleClick() {
 {#if parameterSelection.includes(18)}
 		<div class="panel-group col-md-5 p-2 "  style="display:inline-block;">
 	<div class="panel panel-warning">
-	 <div class="panel-heading"><strong>Select values of absolute humid!</strong></div>
+	 <div class="panel-heading"><strong>Select values of absolute humidity</strong></div>
 	 <div class="panel-body">
 				<CubicTau humidity={relativeHumidity} on:myClick={myClickTau}/>
 
@@ -1595,7 +1596,7 @@ function handleClick() {
 	 <div class="panel-heading"><strong>Parameter import and parameter export</strong></div>
 	 <div class="panel-body">
 	<input class="btn btn-primary" bind:files type='file' >
-	<div class="alert alert-info"><strong>Information regarding importing files!</strong> For importing data you need to upload JSON file. You do not need to upload every parameter, just those one, which you want to modify. Other parameters will have same value as they had previously. If you need a proper JSON structure, you can find it by exporting the current one.</div> 
+	<div class="alert alert-info"><strong>Information regarding importing files!</strong> For importing data you need to upload a JSON file. You do not need to upload every parameter, just those one, which you want to modify. Other parameters will have the same value as they had previously. If you need a proper JSON structure, you can dowload the current parameter setup.</div> 
 	<button class="btn btn-primary" on:click={handleClick}>
 	Export
 	</button>
@@ -1607,7 +1608,8 @@ function handleClick() {
 	<div class="panel panel-primary">
 	 <div class="panel-heading"><strong>Data visualization </strong></div>
 	 <div class="panel-body">
-		<RRChart data={data}/>
+		<RRChart data={data} />
+
 
 	</div>
 	</div>
