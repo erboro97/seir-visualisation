@@ -104,7 +104,7 @@ function createGraph() {
                 click(element,dataAtClick, this);
             },
             title: {
-                display: true,
+                display: false,
                 text: "Relative humidity"
             },
             scales: {
@@ -113,7 +113,7 @@ function createGraph() {
                     display: true,
                     scaleLabel: {
                         display: true,
-                        labelString: 'X-Axis'
+                        labelString: 'Days'
                     },
                     ticks: {
                         min: 0,
@@ -124,7 +124,7 @@ function createGraph() {
                     display: true,
                     scaleLabel: {
                         display: true,
-                        labelString: 'Y-Axis'
+                        labelString: 'Relative humidity [%]'
                     },
                     ticks: {
                         beginAtZero: true,
@@ -161,7 +161,8 @@ afterUpdate(createGraph)
 </script>
 
 <main>
+   
     <div class="form-group">
-        <input type="number" name="tau" class="form-control" on:change|stopPropagation ={changeStep} value={step}>
+        <strong style="display:inline-block;"> Stepsize:</strong><input type="number" name="tau" class="form-control" on:change|stopPropagation ={changeStep} value={step}>
     </div>
 </main>

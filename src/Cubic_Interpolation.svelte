@@ -98,7 +98,7 @@ function createGraph() {
                 click(element,dataAtClick, this);
             },
             title: {
-                display: true,
+                display: false,
                 text: "Tempreture"
             },
             scales: {
@@ -107,7 +107,7 @@ function createGraph() {
                     display: true,
                     scaleLabel: {
                         display: true,
-                        labelString: 'X-Axis'
+                        labelString: 'Days'
                     },
                     ticks: {
                         min: 0,
@@ -118,7 +118,7 @@ function createGraph() {
                     display: true,
                     scaleLabel: {
                         display: true,
-                        labelString: 'Y-Axis'
+                        labelString: 'Temperature [C]'
                     },
                     ticks: {
                         beginAtZero: true,
@@ -154,6 +154,6 @@ afterUpdate(createGraph)
 
 <main>
     <div class="form-group">
-        <input type="number" name="c" class="form-control" on:change|stopPropagation ={changeStep} value={step}>
+         <strong style="display:inline-block;"> Stepsize:</strong><input type="number" name="c" class="form-control" on:change|stopPropagation ={changeStep} value={step}>
     </div>
 </main>

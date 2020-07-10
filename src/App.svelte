@@ -1433,14 +1433,14 @@ function handleClick() {
 
 		<div class="panel-group col-md-4 p-2 "  style="display:inline-block;">
 	<div class="panel panel-info">
-	 <div class="panel-heading"><strong>Change initial conditions!</strong></div>
+	 <div class="panel-heading"><strong>Set initial conditions</strong></div>
 	 <div class="panel-body">
-<table class="table table-bordered">
+<table class="table table-bordered ">
 					<thead>
 						<tr>
-							<th>Definition:</th>
-							<th>Range of value:</th>
-							<th>Selected value:</th>
+							<th class="small">Definition:</th>
+							<th class="small">Range of value:</th>
+							<th class="small">Selected value:</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -1513,8 +1513,8 @@ function handleClick() {
 	</div>
 
 	<div class="panel-group col-md-4 p-2 "  style="display:inline-block;">
-	<div class="panel panel-success">
-	 <div class="panel-heading"><strong>Select which factors to be included in the model</strong></div>
+	<div class="panel panel-info">
+	 <div class="panel-heading"><strong>Set up which factors to be included in the model</strong></div>
 	 <div class="panel-body">
 <label><input type="checkbox" bind:group={parameterSelection} value={17} /> Humidity</label>
 	<label><input type="checkbox" bind:group={parameterSelection} value={18} /> Tempreture</label>
@@ -1527,26 +1527,8 @@ function handleClick() {
 	</div>
 	</div>
 
-
-	<!-- <div class="panel-group  col-md-4 p-2 " style="display:inline-block;">
-			<div class="panel panel-success" >
-				 <div class="panel-heading"><strong>Select a template:</strong></div>
-				 <div class="panel-body">
-					<select bind:value={selectedCountry} on:click={changeInitialValue}>
-						{#each countries as country}
-							<option value={country}>
-								{country.text}
-							</option>
-						{/each}
-					</select>
-
-					<div class="alert alert-info"><strong>Information regarding the templates!</strong> The parameters' values are calculated by IPSO algorithm. This is a guidance, it does not necessarily correspond to reality.</div> 
-
-				</div>
-			</div>
-		</div> -->
-	<div class="panel-group  col-md-4 p-2 " style="display:inline-block;">
-			<div class="panel panel-success" >
+		<div class="panel-group  col-md-4 p-2 " style="display:inline-block;">
+			<div class="panel panel-info" >
 				 <div class="panel-heading"><strong>Select population of a country:</strong></div>
 				 <div class="panel-body">
 					<select bind:value={S0} >
@@ -1557,108 +1539,24 @@ function handleClick() {
 						{/each}
 					</select>
 
-					<div class="alert alert-info"><strong>Information regarding the countries' population</strong> You can modify the susceptible parameter's value by selecting a specific country. These data were updated on 27/05/2020.</div> 
+					<div class="alert alert-info small"><strong>Information regarding the countries' population</strong> You can modify the susceptible parameter's value by selecting a specific country. These data were updated on 27/05/2020.</div> 
 
 				</div>
 			</div>
 		</div>
 
-	{#if parameterSelection.includes(17)}
-			<div class="panel-group col-md-5 p-2 "  style="display:inline-block;">
-	<div class="panel panel-warning">
-	 <div class="panel-heading"><strong>Select values of tempreture!</strong></div>
-	 <div class="panel-body">
-		<Cubic temp={tempreture} on:myClick={myClickC}/>
-	</div>
-	</div>
-	</div>
-	{/if}
-		
-{#if parameterSelection.includes(18)}
-		<div class="panel-group col-md-5 p-2 "  style="display:inline-block;">
-	<div class="panel panel-warning">
-	 <div class="panel-heading"><strong>Select values of absolute humidity</strong></div>
-	 <div class="panel-body">
-				<CubicTau humidity={relativeHumidity} on:myClick={myClickTau}/>
-
-	</div>
-	</div>
-	</div>
-
-	
-	
-		
-	{/if}
-
-
-			<div class="panel-group col-md-4 p-3 "  style="display:inline-block;">
+			<div class="panel-group col-md-7 p-1"  style="display:inline-block;">
 	<div class="panel panel-info">
-	 <div class="panel-heading"><strong>Parameter import and parameter export</strong></div>
-	 <div class="panel-body">
-	<input class="btn btn-primary" bind:files type='file' >
-	<div class="alert alert-info"><strong>Information regarding importing files!</strong> For importing data you need to upload a JSON file. You do not need to upload every parameter, just those one, which you want to modify. Other parameters will have the same value as they had previously. If you need a proper JSON structure, you can dowload the current parameter setup.</div> 
-	<button class="btn btn-primary" on:click={handleClick}>
-	Export
-	</button>
-</div>
-	</div>
-	</div>
-	
-<div class="panel-group col-md-8 p-2 "  style="display:inline-block;">
-	<div class="panel panel-primary">
-	 <div class="panel-heading"><strong>Data visualization </strong></div>
-	 <div class="panel-body">
-		<RRChart data={data} />
-
-
-	</div>
-	</div>
-	</div>
-
-			<div class="panel-group col-md-6 p-2 "  style="display:inline-block;">
-	<div class="panel panel-warning">
-	 <div class="panel-heading"><strong>Information about model</strong></div>
-	 <div class="panel-body" style="text-align:centre">
-	 <strong>Differential equation system:</strong>
-	 <div class="alert alert-info">
-	$$S'=-\left[\beta(t) c(t)+c(t)q(t)\left(1-\beta(t)\right)\right]S\left(I+\theta A\right)+\lambda S_q$$
-			$$E'=\beta(t) c(t)\left(1-q(t)\right)S\left(I+\theta A\right)-\sigma E$$
-			$$I'=\sigma\varrho E-\left(\delta_I+\alpha+\gamma_I\right)I$$
-			$$A'=\sigma\left(1-\varrho\right)E-\gamma_A A+\gamma_R R$$
-			$$S_q'=\left(1-\beta(t)\right)c(t)q(t)S\left(I+\theta A\right)-\lambda S_q$$
-			$$E_q'=\beta(t) c(t)q(t)S\left(I+\theta A\right)-S_q E_q$$
-			$$H'=\delta_I I+\delta_q E_q -\left(\alpha+\gamma_H \right)H$$
-			$$R'=\gamma_I I+\gamma_A A+\gamma_H H-\gamma_R R$$
-			</div>
-
-			<strong>Other functions in the system:</strong>
-			<div  class="alert alert-info">
-			$$c(t)=c_a+3(c_0-c_a)/(1+2b^-t)$$
-			$$q(t)=(q_1t+q_0)/(t+1)$$
-			<strong>In case of the presence of humidity and tempreture:</strong>
-			$$\beta(t)=(1-\alpha_\beta)\beta_0\cdot(1+\xi AH(t))\cdot \left(1-(I(t)+A(t))/(S(t)+R(t))\right)^2$$
-			<strong>In case of the presence of tempreture:</strong>
-			$$\beta(t)=(1-\alpha_\beta)\beta_0\cdot(1+\xi AH(t))\cdot \left(1-(I(t)+A(t))/(S(t)+R(t))\right)^2.$$
-
-			
-			</div>
-</div>
-	</div>
-	</div>
-			
-
-			
-					<div class="panel-group col-md-6 p-2 "  style="display:inline-block;">
-	<div class="panel panel-info">
-	 <div class="panel-heading"><strong>Modify values of parameters!</strong></div>
+	 <div class="panel-heading"><strong>Set values of parameters</strong></div>
 	 <div class="panel-body">
 
 			<table class="table table-bordered">
 					<thead>
 					<tr>
-						<th>Definition:</th>
-						<th>Range of value:</th>
-						<th>Selected value:</th>
+						<th class="small">Definition:</th>
+						<th class="small">Range of value:</th>
+						<th class="small">Selected value:</th>
+						<th class="small">Included in model:</th>
 					</tr>
 					</thead>
 					<tbody>
@@ -1822,6 +1720,118 @@ function handleClick() {
 	</div>
 
 
+	<!-- <div class="panel-group  col-md-4 p-2 " style="display:inline-block;">
+			<div class="panel panel-success" >
+				 <div class="panel-heading"><strong>Select a template:</strong></div>
+				 <div class="panel-body">
+					<select bind:value={selectedCountry} on:click={changeInitialValue}>
+						{#each countries as country}
+							<option value={country}>
+								{country.text}
+							</option>
+						{/each}
+					</select>
+
+					<div class="alert alert-info"><strong>Information regarding the templates!</strong> The parameters' values are calculated by IPSO algorithm. This is a guidance, it does not necessarily correspond to reality.</div> 
+
+				</div>
+			</div>
+		</div> -->
+
+
+	{#if parameterSelection.includes(17)}
+			<div class="panel-group col-md-5 p-2 "  style="display:inline-block;">
+	<div class="panel panel-info">
+	 <div class="panel-heading"><strong>Set values of tempreture</strong></div>
+	 <div class="panel-body">
+		<Cubic temp={tempreture} on:myClick={myClickC}/>
+	</div>
+	</div>
+	</div>
+	{/if}
+		
+{#if parameterSelection.includes(18)}
+		<div class="panel-group col-md-5 p-2 "  style="display:inline-block;">
+	<div class="panel panel-info">
+	 <div class="panel-heading"><strong>Set values of absolute humidity</strong></div>
+	 <div class="panel-body">
+				<CubicTau humidity={relativeHumidity} on:myClick={myClickTau}/>
+
+	</div>
+	</div>
+	</div>
+
+	
+	
+		
+	{/if}
+
+	<div class="panel-group col-md-8 p-2 "  style="display:inline-block;">
+	<div class="panel panel-primary">
+	 <div class="panel-heading"><strong>Data visualization </strong></div>
+	 <div class="panel-body">
+		<RRChart data={data} />
+
+
+	</div>
+	</div>
+	</div>
+
+
+			<div class="panel-group col-md-4 p-3 "  style="display:inline-block;">
+	<div class="panel panel-info">
+	 <div class="panel-heading"><strong>Parameter import/parameter export</strong></div>
+	 <div class="panel-body">
+	 <div  class="alert alert-info" style="display:inline-block;" >Import JSON file:</div>
+	<input class="btn btn-primary" bind:files type='file' >
+	<div class="alert alert-info small"><strong>Information regarding importing files</strong> For importing data you need to upload a JSON file. You do not need to upload every parameter, just those one, which you want to modify. Other parameters will have the same value as they had previously. If you need a proper JSON structure, you can dowload the current parameter setup.</div> 
+	<button class="btn btn-primary" on:click={handleClick}>
+	Export
+	</button>
+</div>
+	</div>
+	</div>
+	
+
+
+			<div class="panel-group col-md-12 p-2 "  style="display:inline-block;">
+	<div class="panel panel-success">
+	 <div class="panel-heading"><strong>Information about model</strong></div>
+	 <div class="panel-body" style="text-align:centre">
+	
+	 <div class="alert alert-warning col-md-6 p-2"  style="display:inline-block;">
+	  <strong>Differential equation system:</strong>
+	$$S'=-\left[\beta(t) c(t)+c(t)q(t)\left(1-\beta(t)\right)\right]S\left(I+\theta A\right)+\lambda S_q$$
+			$$E'=\beta(t) c(t)\left(1-q(t)\right)S\left(I+\theta A\right)-\sigma E$$
+			$$I'=\sigma\varrho E-\left(\delta_I+\alpha+\gamma_I\right)I$$
+			$$A'=\sigma\left(1-\varrho\right)E-\gamma_A A+\gamma_R R$$
+			$$S_q'=\left(1-\beta(t)\right)c(t)q(t)S\left(I+\theta A\right)-\lambda S_q$$
+			$$E_q'=\beta(t) c(t)q(t)S\left(I+\theta A\right)-S_q E_q$$
+			$$H'=\delta_I I+\delta_q E_q -\left(\alpha+\gamma_H \right)H$$
+			$$R'=\gamma_I I+\gamma_A A+\gamma_H H-\gamma_R R$$
+			</div>
+
+			
+			<div  class="alert alert-warning col-md-6 p-2"  style="display:inline-block;">
+			<strong>Other functions in the system:</strong>
+			$$c(t)=c_a+3(c_0-c_a)/(1+2b^-t)$$
+			$$q(t)=(q_1t+q_0)/(t+1)$$
+			<strong>In case of the presence of humidity and tempreture:</strong>
+			$$\beta(t)=(1-\alpha_\beta)\beta_0\cdot(1+\xi AH(t))\cdot \left(1-(I(t)+A(t))/(S(t)+R(t))\right)^2$$
+			<strong>In case of the presence of tempreture:</strong>
+			$$\beta(t)=(1-\alpha_\beta)\beta_0\cdot(1+\xi AH(t))\cdot \left(1-(I(t)+A(t))/(S(t)+R(t))\right)^2.$$
+
+			
+			</div>
+</div>
+	</div>
+	</div>
+			
+
+			
+			
+
+
 
 	
 
@@ -1867,7 +1877,7 @@ function handleClick() {
 	}
 
 	.slidecontainer {
-  width: 50%; /* Width of the outside container */
+  width: 40%; /* Width of the outside container */
 }
 
 /* The slider itself */
@@ -1875,7 +1885,7 @@ function handleClick() {
   -webkit-appearance: none;  /* Override default CSS styles */
   appearance: none;
   width: 100%; /* Full-width */
-  height: 25px; /* Specified height */
+  height: 10px; /* Specified height */
   background: #d3d3d3; /* Grey background */
   outline: none; /* Remove outline */
   opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
@@ -1892,15 +1902,15 @@ function handleClick() {
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none; /* Override default look */
   appearance: none;
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
+  width: 13px; /* Set a specific slider handle width */
+  height: 13px; /* Slider handle height */
   background: #4CAF50; /* Green background */
   cursor: pointer; /* Cursor on hover */
 }
 
 .slider::-moz-range-thumb {
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
+  width: 13px; /* Set a specific slider handle width */
+  height: 13px; /* Slider handle height */
   background: #a0daa2; /* Green background */
   cursor: pointer; /* Cursor on hover */
 }

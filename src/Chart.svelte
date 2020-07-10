@@ -4,7 +4,7 @@
 Select the number of day for more details
 <input type="range" min="0" max="98" step="1" bind:value={day} class="slider" id="myRange">
 {day}. day
-<canvas id="treemap" width="3" height=""></canvas>
+<canvas id="treemap" width="3" height="1"></canvas>
 <button id="downloadPdf" class="btn btn-primary" on:click={downloadPDF}>Download Bar Chart as PDF</button>
 
 <button id="downloadPdf"  class="btn btn-primary" on:click={downloadPDFTreeMap}>Download Treemap as PDF</button>
@@ -92,33 +92,33 @@ function createTestChart(){
       labels: chartData[2],
 			datasets: [   
       {
-        label: 'E',
+        label: 'Exposed',
          backgroundColor: window.chartColors.yellow,
 				data: 
 					getData(1)				
 			}, {
-        label: 'I',
+        label: 'Infected',
         backgroundColor: window.chartColors.green,
 				data: 
 					getData(2)
 				
       },
       {
-        label: 'A',
+        label: 'Asymptomatic',
         backgroundColor: window.chartColors.orange,
 				data: 
 					getData(3)
 				
       },
       {
-        label: 'Sq',
+        label: 'Quarantined susceptible',
         backgroundColor: window.chartColors.blue,
 				data: 
 					getData(4)
 				
       },
       {
-        label: 'Eq',
+        label: 'Quarantined exposed',
         backgroundColor: window.chartColors.purple,
 				data: 
 					getData(5)
@@ -126,22 +126,22 @@ function createTestChart(){
       },
 
       {
-        label: 'H',
-        backgroundColor: window.chartColors.grey,
+        label: 'Hospitalized',
+        backgroundColor: window.chartColors.red,
 				data: 
 					getData(6)
 				
       },
       {
-        label: 'R',
+        label: 'Recovered',
         backgroundColor: window.chartColors.aqua,
 				data: 
 					getData(7)
 				
       },
       {
-        label: 'S',
-        backgroundColor: window.chartColors.red,
+        label: 'Susceptible',
+        backgroundColor: window.chartColors.grey,
 				data: 
           getData(0)
 				
@@ -243,7 +243,7 @@ afterUpdate(createTestChart)
   -webkit-appearance: none;  /* Override default CSS styles */
   appearance: none;
   width: 100%; /* Full-width */
-  height: 25px; /* Specified height */
+  height: 13px; /* Specified height */
   background: #d3d3d3; /* Grey background */
   outline: none; /* Remove outline */
   opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
@@ -260,8 +260,8 @@ afterUpdate(createTestChart)
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none; /* Override default look */
   appearance: none;
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
+  width: 13px; /* Set a specific slider handle width */
+  height: 13px; /* Slider handle height */
   background: #4CAF50; /* Green background */
   cursor: pointer; /* Cursor on hover */
 }
