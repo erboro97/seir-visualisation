@@ -1517,7 +1517,7 @@ function handleClick() {
 	 <div class="panel-heading"><strong>Set up which factors to be included in the model</strong></div>
 	 <div class="panel-body">
 <label><input type="checkbox" bind:group={parameterSelection} value={17} /> Humidity</label>
-	<label><input type="checkbox" bind:group={parameterSelection} value={18} /> Tempreture</label>
+	<label style="visibility: hidden;"><input type="checkbox" bind:group={parameterSelection} value={18} /> Tempreture</label>
 	
 
 	{#if parameterSelection.length === 0}
@@ -1739,7 +1739,7 @@ function handleClick() {
 		</div> -->
 
 
-	{#if parameterSelection.includes(17)}
+	{#if parameterSelection.includes(18)}
 			<div class="panel-group col-md-5 p-2 "  style="display:inline-block;">
 	<div class="panel panel-info">
 	 <div class="panel-heading"><strong>Set values of tempreture</strong></div>
@@ -1750,7 +1750,7 @@ function handleClick() {
 	</div>
 	{/if}
 		
-{#if parameterSelection.includes(18)}
+{#if parameterSelection.includes(17)}
 		<div class="panel-group col-md-5 p-2 "  style="display:inline-block;">
 	<div class="panel panel-info">
 	 <div class="panel-heading"><strong>Set values of absolute humidity</strong></div>
