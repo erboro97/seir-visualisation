@@ -19,6 +19,10 @@
 	/Parameter initial values/ 
 	let countriesPopulation=
 [
+	{
+        "country": "Hubei",
+        "population": 52740000
+    },
     {
         "country": "Afghanistan",
         "population": 37172386
@@ -1112,7 +1116,7 @@
 				
 				let jsonResult=JSON.parse(result);
 				if (jsonResult.S0!=undefined && !isNaN(jsonResult.S0)){	
-					
+					console.log("bement")
 					S0=jsonResult.S0;
 
 				}
@@ -1158,12 +1162,14 @@
 					gammaR=jsonResult.gammaR
 				if (jsonResult.theta!=undefined && !isNaN(jsonResult.theta))
 					theta=jsonResult.theta
-				if (jsonResult.alfab!=undefined && !isNaN(jsonResult.alfab))
-					alfab=jsonResult.alfab
-				if (jsonResult.alfa!=undefined && !isNaN(jsonResult.alfa))
-					alfa=jsonResult.alfa
+				if (jsonResult.alphab!=undefined && !isNaN(jsonResult.alphab))
+					alfab=jsonResult.alphab
+				if (jsonResult.alpha!=undefined && !isNaN(jsonResult.alpha))
+					alfa=jsonResult.alpha
 				if (jsonResult.xi!=undefined && !isNaN(jsonResult.xi))
 					xi=jsonResult.xi
+				if (jsonResult.c2!=undefined && !isNaN(jsonResult.c2))
+					c2=jsonResult.c2
  				 });
 				  reader.readAsText(file);
 				files=[]
@@ -1398,7 +1404,7 @@ const changeInitialValue=()=>{
 }
 
 function handleClick() {
-	let result="{ 'S0':"+S0+", 'E0':"+E0+", 'I0':"+I0+", 'A0':"+A0+", 'Sq0':"+Sq0+", 'Eq0':"+Eq0+", 'H0':"+H0+ ", 'R0':"+R0+", 'c0':"+c0+", 'ca':"+ca+", 'eps':"+eps+", 'beta0':"+beta0+", 'q0':"+q0+", 'sigma':"+sigma+", 'lambda':"+lambda+", 'deltaI':"+deltaI+", 'deltaq':"+deltaq+", 'gammaI':"+gammaI+", 'gammaH':"+gammaH+", 'gammaR':"+gammaR+", 'theta':"+theta+", 'alfab':"+alfab+", 'alfa':"+alfa+", 'xi':"+xi+"}";
+	let result="{ 'S0':"+S0+", 'E0':"+E0+", 'I0':"+I0+", 'A0':"+A0+", 'Sq0':"+Sq0+", 'Eq0':"+Eq0+", 'H0':"+H0+ ", 'R0':"+R0+", 'c0':"+c0+", 'ca':"+ca+", 'eps':"+eps+", 'beta0':"+beta0+", 'q0':"+q0+", 'sigma':"+sigma+", 'lambda':"+lambda+", 'deltaI':"+deltaI+", 'deltaq':"+deltaq+", 'gammaI':"+gammaI+", 'gammaH':"+gammaH+", 'gammaR':"+gammaR+", 'theta':"+theta+", 'alphab':"+alfab+", 'alpha':"+alfa+", 'xi':"+xi+", 'c2':"+c2+"}";
 	 result=result.split("'").join('"');
 	 let dataStr = JSON.stringify(result);
     let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
@@ -1512,21 +1518,6 @@ function handleClick() {
 	</div>
 	</div>
 
-	<div class="panel-group col-md-4 p-2 "  style="display:inline-block;">
-	<div class="panel panel-info">
-	 <div class="panel-heading"><strong>Set up which factors to be included in the model</strong></div>
-	 <div class="panel-body">
-<label><input type="checkbox" bind:group={parameterSelection} value={17} /> Humidity</label>
-	<label style="visibility: hidden;"><input type="checkbox" bind:group={parameterSelection} value={18} /> Tempreture</label>
-	
-
-	{#if parameterSelection.length === 0}
-	<p>Please select at least one parameter</p>
-{/if}
-	</div>
-	</div>
-	</div>
-
 		<div class="panel-group  col-md-4 p-2 " style="display:inline-block;">
 			<div class="panel panel-info" >
 				 <div class="panel-heading"><strong>Select population of a country:</strong></div>
@@ -1544,6 +1535,23 @@ function handleClick() {
 				</div>
 			</div>
 		</div>
+
+	<div class="panel-group col-md-4 p-2 "  style="display:inline-block;">
+	<div class="panel panel-info">
+	 <div class="panel-heading"><strong>Set up which factors to be included in the model</strong></div>
+	 <div class="panel-body">
+<label><input type="checkbox" bind:group={parameterSelection} value={17} /> Humidity</label>
+	<label style="visibility: hidden;"><input type="checkbox" bind:group={parameterSelection} value={18} /> Tempreture</label>
+	
+
+	{#if parameterSelection.length === 0}
+	<p>Please select at least one parameter</p>
+{/if}
+	</div>
+	</div>
+	</div>
+
+	
 
 			<div class="panel-group col-md-7 p-1"  style="display:inline-block;">
 	<div class="panel panel-info">
@@ -1579,7 +1587,7 @@ function handleClick() {
 						</tr>
 
 						<tr>
-							<SvelteTooltip tip="Max. quarantined rate under control strategies" left color="#a0daa2"><td>$$q_1$$</td></SvelteTooltip>
+							<SvelteTooltip tip="Initial quarantined rate under control strategies" left color="#a0daa2"><td>$$q_1$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="0.00000000000015" max="0.000012" step="0.00000000005" bind:value={q0} class="slider" id="myRange">
 							</td>
@@ -1704,11 +1712,11 @@ function handleClick() {
 						</tr>
 
 						<tr>
-						<SvelteTooltip tip="The intensity of the effect of tempreture variation" left color="#a0daa2"><td>$$\epsilon$$</td></SvelteTooltip>
+						<SvelteTooltip tip="Maximum quarantined rate of exposed individuals" left color="#a0daa2"><td>$$c_2$$</td></SvelteTooltip>
 							<td class="slidecontainer">
-								<input type="range" min="0.001" max="0.9999" step="0.001" bind:value={eps} class="slider" id="myRange">
+								<input type="range" min="0.00000000000015" max="0.000012" step="0.00000000005" bind:value={c2} class="slider" id="myRange">
 							</td>
-							<td>{eps}</td>
+							<td>{c2}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={16} /></label></td>
 						</tr>
 						
@@ -1740,6 +1748,7 @@ function handleClick() {
 
 
 	{#if parameterSelection.includes(18)}
+	
 			<div class="panel-group col-md-5 p-2 "  style="display:inline-block;">
 	<div class="panel panel-info">
 	 <div class="panel-heading"><strong>Set values of tempreture</strong></div>
@@ -1780,7 +1789,7 @@ function handleClick() {
 
 			<div class="panel-group col-md-4 p-3 "  style="display:inline-block;">
 	<div class="panel panel-info">
-	 <div class="panel-heading"><strong>Parameter import/parameter export</strong></div>
+	 <div class="panel-heading"><strong>Parameter import/export</strong></div>
 	 <div class="panel-body">
 	 <div  class="alert alert-info" style="display:inline-block;" >Import JSON file:</div>
 	<input class="btn btn-primary" bind:files type='file' >
