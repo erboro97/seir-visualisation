@@ -3,7 +3,8 @@
 <script>
 	import rungeKutta from 'runge-kutta';
 	import ode45 from 'ode45-cash-karp';
-	import Chart from './Chart.svelte';
+    import Chart from './Chart.svelte';
+    import ChartSIR from './SIR_Chart.svelte';
 	import RRChart from './RR.svelte';
 	import Cubic from './Cubic_Interpolation.svelte';
 	import CubicTau from './Cubic_Interpolation_tau.svelte';
@@ -1049,7 +1050,8 @@
 	let		xi1=0.1127126;
 	let		gammaR1=1.714578192*Math.pow(10,-6);
 	let		ca1=1.287039726
-	let result=[];
+    let result=[];
+    let result_SIR=[]
 	let tFunc=[]
 	
 	let pointsC=[];
@@ -1103,7 +1105,6 @@
 
 		if (files){
 			for (const file of files) {
-    			// Not supported in Safari for iOS.
     			const reader = new FileReader();
   				reader.addEventListener('load', (event) => {
 				let result= event.target.result;
@@ -1257,7 +1258,73 @@
 		RRFunc=[];
 		betamFunc=[];
 		qFunc=[];
-		cFunc=[];
+        cFunc=[];
+        
+        let func_SEIR=function(t,y){
+            tFunc.push(t)
+				let S, E, I, A, Sq, Eq, H, R;
+				let f0, f1, f2, f3, f4, f5, f6, f7;
+				S = y[0];
+    			E = y[1];
+    			I = y[2];
+				R = y[3];
+			
+	
+				
+			
+				let betam=beta0
+				let ct=ca1 + (3*(c01-ca1))/(1+2*Math.pow(b1,-t));
+				cFunc.push(ct);
+				let qt=(t+q01/c21)/(t+1)*c21; 
+				qFunc.push(qt);
+				RRFunc.push((betam*eps1*ct*(1-qt)/(deltaI1+alfa1+gammaI1) + betam*ct*theta1*(1-eps1)*(1-qt)/gammaA1 ) * S)
+				f0 =-(betam*ct+ct*qt*(1-betam))*S*I;
+    			f1 = betam*ct*(1-qt)*S*I-sigma1*E;
+    			f2 = sigma1*eps1*E-(deltaI1+alfa1+gammaI1)*I;
+				f7=gammaI1*I- gammaR1*R;
+
+				
+				
+				return [f0,f1,f2,f7]
+				
+
+        }
+        let func_SIR=function(t,y){
+            tFunc.push(t)
+				let S, E, I, A, Sq, Eq, H, R;
+				let f0, f1, f2, f3, f4, f5, f6, f7;
+				S = y[0];
+    			I = y[1];
+				R = y[2];
+			
+	
+				
+			
+				let betam;
+				// if (parameterSelection.includes(17)&&parameterSelection.includes(18)){
+				// 	let AH=6.112 * Math.exp(17.67*tempreture[ Math.floor(t)]/(tempreture[Math.floor(t)] + 243.5)) * relativeHumidity[Math.floor(t)] * 2.1674 / (273.15 + tempreture[Math.floor(t)]);
+				// 	betam=beta0*(1-alfab)*(1 + xi*AH) *  Math.pow((1- (I+A)/(S+R) ), 2);
+				// }
+			
+				// else if (parameterSelection.includes(18)){
+				// 	betam=beta0*(1-alfab)*Math.exp(-xi*tempreture[ Math.floor(t)]) *  Math.pow((1- (I+A)/(S+R) ), 2);
+				// }
+				
+				// let ct=ca1 + (3*(c01-ca1))/(1+2*Math.pow(b1,-t));
+                // let qt=(t+q01/c21)/(t+1)*c21; 
+                
+                betam=beta0;
+			
+				f0 =-betam*S*I;
+    			f2 = betam*S*I-(deltaI1+alfa1+gammaI1)*I;
+				f7=(deltaI1+alfa1+gammaI1)*I;
+
+				
+				
+				return [f0,f2,f7]
+				
+
+        }
 		let func=function(t,y){
 				tFunc.push(t)
 				let S, E, I, A, Sq, Eq, H, R;
@@ -1275,12 +1342,10 @@
 				
 				let betam;
 				if (parameterSelection.includes(17)&&parameterSelection.includes(18)){
-					let AH=6112 * Math.exp(17.67*tempreture[ Math.floor(t)]/(tempreture[Math.floor(t)] + 243.5)) * relativeHumidity[Math.floor(t)] * 2.1674 / (273.15 + relativeHumidity[Math.floor(t)]);
+					let AH=6.112 * Math.exp(17.67*tempreture[ Math.floor(t)]/(tempreture[Math.floor(t)] + 243.5)) * relativeHumidity[Math.floor(t)] * 2.1674 / (273.15 + tempreture[Math.floor(t)]);
 					betam=beta0*(1-alfab)*(1 + xi*AH) *  Math.pow((1- (I+A)/(S+R) ), 2);
 				}
-				else if (parameterSelection.includes(17)){
-					betam=beta0*(1-alfab)*Math.exp(-xi*tempreture[ Math.floor(t)]) *  Math.pow((1- (I+A)/(S+R) ), 2);
-				}
+			
 				else if (parameterSelection.includes(18)){
 					betam=beta0*(1-alfab)*Math.exp(-xi*tempreture[ Math.floor(t)]) *  Math.pow((1- (I+A)/(S+R) ), 2);
 				}
@@ -1308,20 +1373,34 @@
 		}
 
 			// Initialize:
-			let y0 = [S0, E0,I0,A0,Sq0,Eq0,H0,R0];
+            let y0 = [S0, E0,I0,A0,Sq0,Eq0,H0,R0];
+            
+            let y0_SIR=[S0,I0,R0];
+
 	
 			let y=rungeKutta(func, y0, [0, 99], 0.1);
 			days=[]
 			for (let i=0;i<100;i++){
 				days.push(i);
 			}
-			
+            
+            let y_SIR=rungeKutta(func_SIR, y0_SIR, [0, 99], 0.1);
+            console.log(y_SIR)
 			let yBiggerStep=[], k=0, RRBiggerStep=[], betaBiggerStep=[], cBiggerStep=[], qBiggerStep=[];
 			for (let i=0;i<y.length;i+=9){
 				yBiggerStep[k]=y[i];
 				k++
-			}
-			result=[tFunc,yBiggerStep,days];
+            }
+            k=0
+            let yBiggerStep_SIR=[];
+
+            for (let i=0;i<y_SIR.length;i+=9){
+				yBiggerStep_SIR[k]=y_SIR[i];
+				k++
+            }
+            result=[tFunc,yBiggerStep,days];
+            result_SIR=[tFunc,yBiggerStep_SIR,days];
+
 			k=0;
 			RRBiggerStep=[]
 			let newElement;
@@ -1432,6 +1511,7 @@ function handleClick() {
 	 <div class="panel-heading"><strong>Data visualization </strong></div>
 	 <div class="panel-body">
 				<Chart chartData={result} />
+                <!-- <ChartSIR chartData_SIR={result_SIR} /> -->
 
 	</div>
 	</div>
