@@ -5,6 +5,7 @@
 	import ode45 from 'ode45-cash-karp';
     import Chart from './Chart.svelte';
     import ChartSIR from './SIR_Chart.svelte';
+    import ChartSEIR from './SEIR_Chart.svelte';
 	import RRChart from './RR.svelte';
 	import Cubic from './Cubic_Interpolation.svelte';
 	import CubicTau from './Cubic_Interpolation_tau.svelte';
@@ -1052,6 +1053,7 @@
 	let		ca1=1.287039726
     let result=[];
     let result_SIR=[]
+    let result_SEIR=[]
 	let tFunc=[]
 	
 	let pointsC=[];
@@ -1376,6 +1378,7 @@
             let y0 = [S0, E0,I0,A0,Sq0,Eq0,H0,R0];
             
             let y0_SIR=[S0,I0,R0];
+            let y0_SEIR=[S0,E0,I0,R0];
 
 	
 			let y=rungeKutta(func, y0, [0, 99], 0.1);
@@ -1385,21 +1388,24 @@
 			}
             
             let y_SIR=rungeKutta(func_SIR, y0_SIR, [0, 99], 0.1);
-            console.log(y_SIR)
+            let y_SEIR=rungeKutta(func_SEIR, y0_SEIR, [0, 99], 0.1);
+
 			let yBiggerStep=[], k=0, RRBiggerStep=[], betaBiggerStep=[], cBiggerStep=[], qBiggerStep=[];
 			for (let i=0;i<y.length;i+=9){
 				yBiggerStep[k]=y[i];
 				k++
             }
             k=0
-            let yBiggerStep_SIR=[];
+            let yBiggerStep_SIR=[],  yBiggerStep_SEIR=[];
 
             for (let i=0;i<y_SIR.length;i+=9){
-				yBiggerStep_SIR[k]=y_SIR[i];
+                yBiggerStep_SIR[k]=y_SIR[i];
+                yBiggerStep_SEIR[k]=y_SEIR[i];
 				k++
             }
             result=[tFunc,yBiggerStep,days];
             result_SIR=[tFunc,yBiggerStep_SIR,days];
+            result_SEIR=[tFunc,yBiggerStep_SEIR,days];
 
 			k=0;
 			RRBiggerStep=[]
@@ -1511,7 +1517,7 @@ function handleClick() {
 	 <div class="panel-heading"><strong>Data visualization </strong></div>
 	 <div class="panel-body">
 				<Chart chartData={result} />
-                <!-- <ChartSIR chartData_SIR={result_SIR} /> -->
+                <ChartSEIR chartData_SEIR={result_SEIR} />
 
 	</div>
 	</div>
