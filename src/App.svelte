@@ -11,7 +11,8 @@
 	import CubicTau from './Cubic_Interpolation_tau.svelte';
 	import clone from 'clone';
 	import Spline from 'cubic-spline';
-	import SvelteTooltip from 'svelte-tooltip';
+    import SvelteTooltip from 'svelte-tooltip';
+    import Overall from './OverallComparison.svelte';
 
 	let days=[];
 	let ev=1;
@@ -1050,10 +1051,13 @@
 	let		alfab1=0.0012209;
 	let		xi1=0.1127126;
 	let		gammaR1=1.714578192*Math.pow(10,-6);
-	let		ca1=1.287039726
+    let		ca1=1.287039726
+    
     let result=[];
     let result_SIR=[]
     let result_SEIR=[]
+    let result_Overal=[];
+
 	let tFunc=[]
 	
 	let pointsC=[];
@@ -1371,7 +1375,9 @@
 				return [f0,f1,f2,f3,f4,f5,f6,f7]
 				
 
-		}
+        }
+        
+     
 
 			// Initialize:
             let y0 = [S0, E0,I0,A0,Sq0,Eq0,H0,R0];
@@ -1402,9 +1408,21 @@
                 yBiggerStep_SEIR[k]=y_SEIR[i];
 				k++
             }
+               function getData(index, array){
+            return array.map(function (arr){
+                return arr[index];
+            });
+        }
+
+            let yOverall_S=[getData(0,yBiggerStep),getData(0,yBiggerStep_SEIR),getData(0,yBiggerStep_SIR)];
+            let yOverall_I=[getData(2,yBiggerStep),getData(2,yBiggerStep_SEIR),getData(1,yBiggerStep_SIR)];
+            let yOverall_R=[getData(7,yBiggerStep),getData(3,yBiggerStep_SEIR),getData(2,yBiggerStep_SIR)];
+            console.log(yOverall_R)
             result=[tFunc,yBiggerStep,days];
             result_SIR=[tFunc,yBiggerStep_SIR,days];
             result_SEIR=[tFunc,yBiggerStep_SEIR,days];
+            result_Overal=[tFunc,yOverall_S,yOverall_I,yOverall_R,days];
+            
 
 			k=0;
 			RRBiggerStep=[]
@@ -1515,16 +1533,20 @@ function SEIR(){
 function SIR(){
     chosenModel=3;
 }
+function OverallView(){
+    chosenModel=4;
+}
 
 </script>
 
 
 
 <main>
-
+    
     <button id="SEIRplus" class="btn btn-primary" on:click={SEIRplus}>SEIR plus</button>
     <button id="SEIR" class="btn btn-primary" on:click={SEIR}>SEIR</button>
     <button id="SIR" class="btn btn-primary" on:click={SIR}>SIR</button>
+    <button id="OverallView" class="btn btn-primary" on:click={OverallView}>Overall Trend</button>
 	<div class="container">
 	
 
@@ -1542,6 +1564,10 @@ function SIR(){
     {/if}      
      {#if chosenModel===3}
 				<ChartSIR chartData_SIR={result_SIR} />
+    
+    {/if}      
+     {#if chosenModel===4}
+				<Overall resultsOverall={result_Overal}/>
     
     {/if}      
 	</div>
@@ -1569,7 +1595,7 @@ function SIR(){
 							</td>
 							<td>{S0}</td>
 						</tr>
-                        {#if chosenModel===1 || chosenModel===2 }
+                        {#if chosenModel===1 || chosenModel===2 || chosenModel===4 }
 						<tr>
 							<SvelteTooltip tip="Exposed" left color="#a0daa2" ><td>$$E$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1586,7 +1612,7 @@ function SIR(){
 							</td>
 							<td>{I0.toFixed(2)}</td>
 						</tr>
-                         {#if chosenModel===1 }
+                         {#if chosenModel===1 || chosenModel===4 }
 						<tr>
 							<SvelteTooltip tip="Asymptomatic infected" left color="#a0daa2"><td>$$A$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1595,7 +1621,7 @@ function SIR(){
 							<td>{A0.toFixed(2)}</td>
 						</tr>
                         {/if}
-                        {#if chosenModel===1 }
+                        {#if chosenModel===1 || chosenModel===4}
 						<tr>
 							<SvelteTooltip tip="Quarantined susceptible" left color="#a0daa2"><td>$$S_q$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1604,7 +1630,7 @@ function SIR(){
 							<td>{Sq0.toFixed(2)}</td>
 						</tr>
                         {/if}
-                        {#if chosenModel===1 }
+                        {#if chosenModel===1 || chosenModel===4}
 						<tr>
 							<SvelteTooltip tip="Quarantined exposed" left color="#a0daa2"><td>$$E_q$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1613,7 +1639,7 @@ function SIR(){
 							<td>{Eq0.toFixed(2)}</td>
 						</tr>
                         {/if}
-                        {#if chosenModel===1 }
+                        {#if chosenModel===1 || chosenModel===4}
 						<tr>
 						<SvelteTooltip tip="Hospitalized" left color="#a0daa2"><td>$$H$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1653,7 +1679,7 @@ function SIR(){
 				</div>
 			</div>
 		</div>
-  {#if chosenModel===1 }
+  {#if chosenModel===1 || chosenModel===4}
 	<div class="panel-group col-md-4 p-2 "  style="display:inline-block;">
 	<div class="panel panel-info">
 	 <div class="panel-heading"><strong>Set up which factors to be included in the model</strong></div>
@@ -1688,7 +1714,7 @@ function SIR(){
 					</tr>
 					</thead>
 					<tbody>
-                    {#if chosenModel===1 || chosenModel===2}
+                    {#if chosenModel===1 || chosenModel===2 || chosenModel===4}
 						<tr>
 							<SvelteTooltip tip="Initial contact rate" left color="#a0daa2"><td>$$c_0$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1698,7 +1724,7 @@ function SIR(){
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={0} /></label></td>
 						</tr>
                     {/if}
-                    {#if chosenModel===1 || chosenModel===2}
+                    {#if chosenModel===1 || chosenModel===2 || chosenModel===4}
 						<tr>
 							<SvelteTooltip tip="Min. contact rate under control strategies" left color="#a0daa2"><td>$$c_a$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1708,7 +1734,7 @@ function SIR(){
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={1} /></label></td>
 						</tr>
                     {/if}
-                     {#if chosenModel===1 || chosenModel===2}
+                     {#if chosenModel===1 || chosenModel===2 || chosenModel===4}
 						<tr>
 							<SvelteTooltip tip="Initial quarantined rate under control strategies" left color="#a0daa2"><td>$$q_1$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1726,7 +1752,7 @@ function SIR(){
 							<td>{beta0}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={3} /></label></td>
 						</tr>
-                    {#if chosenModel===1 || chosenModel===2}
+                    {#if chosenModel===1 || chosenModel===2 || chosenModel===4}
 						<tr>
 							<SvelteTooltip tip="Initial quarantined rate of exposed individuals" left color="#a0daa2"><td>$$\epsilon$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1736,7 +1762,7 @@ function SIR(){
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={4} /></label></td>
 						</tr>
                     {/if}
-                    {#if chosenModel===1 || chosenModel===2}
+                    {#if chosenModel===1 || chosenModel===2 || chosenModel===4}
 						<tr>
 							<SvelteTooltip tip="Transition rate of exposed individuals to the infected class" left color="#a0daa2"><td>$$\sigma$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1746,7 +1772,7 @@ function SIR(){
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={5} /></label></td>
 						</tr>
                     {/if}
-                    {#if chosenModel===1}
+                    {#if chosenModel===1 || chosenModel===4}
 
 						<tr>
 							<SvelteTooltip tip="Rate at which the quarantined uninfects were released into the wider community" left color="#a0daa2"><td>$$\lambda$$</td></SvelteTooltip>
@@ -1766,7 +1792,7 @@ function SIR(){
 							<td>{deltaI}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={7} /></label></td>
 						</tr>
-                        {#if chosenModel===1}
+                        {#if chosenModel===1 || chosenModel===4}
 						<tr>
 							<SvelteTooltip tip="Transition rate of quarantined exposed individuals to the quarantined infected class" left color="#a0daa2"><td>$$\delta_q$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1784,7 +1810,7 @@ function SIR(){
 							<td>{gammaI}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={9} /></label></td>
 						</tr>
-                        {#if chosenModel===1}
+                        {#if chosenModel===1 || chosenModel===4}
 						<tr>
 							<SvelteTooltip tip="Recovery rate of asymptomatic infected individuals" left color="#a0daa2"><td>$$\gamma_A$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1794,7 +1820,7 @@ function SIR(){
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={10} /></label></td>
 						</tr>
                         {/if}
-                        {#if chosenModel===1}
+                        {#if chosenModel===1 || chosenModel===4}
 						<tr>
 							<SvelteTooltip tip="Gamma h" left color="#a0daa2"><td>$$\gamma_H$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1812,7 +1838,7 @@ function SIR(){
 							<td>{gammaR}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={12} /></label></td>
 						</tr>
-                        {#if chosenModel===1}
+                        {#if chosenModel===1 || chosenModel===4}
 						<tr>
 						<SvelteTooltip tip="Relative transmission probability of A compared with I" left color="#a0daa2"><td>$$\theta$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1822,7 +1848,7 @@ function SIR(){
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={13} /></label></td>
 						</tr>
                         {/if}
-                        {#if chosenModel===1}
+                        {#if chosenModel===1 || chosenModel===4}
 						<tr>
 						<SvelteTooltip tip="Governmental action strength" left color="#a0daa2"><td>$$\alpha_b$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1840,7 +1866,7 @@ function SIR(){
 							<td>{alfa}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={15} /></label></td>
 						</tr>
-                        {#if chosenModel===1 || chosenModel===2}
+                        {#if chosenModel===1 || chosenModel===2 || chosenModel===4}
 						<tr>
 						<SvelteTooltip tip="Maximum quarantined rate of exposed individuals" left color="#a0daa2"><td>$$c_2$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1877,7 +1903,7 @@ function SIR(){
 			</div>
 		</div> -->
 
-    {#if chosenModel===1}
+    {#if chosenModel===1 || chosenModel===4} 
 	{#if parameterSelection.includes(18)}
 	
 			<div class="panel-group col-md-5 p-2 "  style="display:inline-block;">
