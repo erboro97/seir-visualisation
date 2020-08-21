@@ -1279,7 +1279,6 @@
 				cFunc.push(ct);
 				let qt=(t+q01/c21)/(t+1)*c21; 
 				qFunc.push(qt);
-				RRFunc.push((betam*eps1*ct*(1-qt)/(deltaI1+alfa1+gammaI1) + betam*ct*theta1*(1-eps1)*(1-qt)/gammaA1 ) * S)
 				f0 =-(betam*ct+ct*qt*(1-betam))*S*I;
     			f1 = betam*ct*(1-qt)*S*I-sigma1*E;
     			f2 = sigma1*eps1*E-(deltaI1+alfa1+gammaI1)*I;
@@ -1438,7 +1437,8 @@
 			data.q=qBiggerStep;
 			data.days=days;
 
-			
+	console.log(chosenModel)
+
 				
 	}
 
@@ -1502,13 +1502,29 @@ function handleClick() {
     linkElement.click();
 	}
 
+let chosenModel=1;
 
+function SEIRplus(){
+    chosenModel=1;
+}
+
+function SEIR(){
+    chosenModel=2;
+}
+
+function SIR(){
+    chosenModel=3;
+}
 
 </script>
 
 
 
 <main>
+
+    <button id="SEIRplus" class="btn btn-primary" on:click={SEIRplus}>SEIR plus</button>
+    <button id="SEIR" class="btn btn-primary" on:click={SEIR}>SEIR</button>
+    <button id="SIR" class="btn btn-primary" on:click={SIR}>SIR</button>
 	<div class="container">
 	
 
@@ -1516,9 +1532,18 @@ function handleClick() {
 	<div class="panel panel-primary "  >
 	 <div class="panel-heading"><strong>Data visualization </strong></div>
 	 <div class="panel-body">
+     {#if chosenModel===1}
 				<Chart chartData={result} />
-                <ChartSEIR chartData_SEIR={result_SEIR} />
-
+    
+    {/if}      
+     {#if chosenModel===2}
+				<ChartSEIR chartData_SEIR={result_SEIR} />
+    
+    {/if}      
+     {#if chosenModel===3}
+				<ChartSIR chartData_SIR={result_SIR} />
+    
+    {/if}      
 	</div>
 	</div>
 	</div>
@@ -1536,14 +1561,15 @@ function handleClick() {
 						</tr>
 					</thead>
 					<tbody>
+
 						<tr>
-	
 							<SvelteTooltip tip="Susceptible" class="alert alert-info" left color="#a0daa2"><td>$$S$$</td></SvelteTooltip>
 							<td class="slidecontainer">
 								<input type="range" min="10000" max="800000000" step="800000" bind:value={S0} class="slider" id="myRange">
 							</td>
 							<td>{S0}</td>
 						</tr>
+                        {#if chosenModel===1 || chosenModel===2 }
 						<tr>
 							<SvelteTooltip tip="Exposed" left color="#a0daa2" ><td>$$E$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1551,6 +1577,8 @@ function handleClick() {
 							</td>
 							<td>{E0.toFixed(2)}</td>
 						</tr>
+                        {/if}
+
 						<tr>
 							<SvelteTooltip tip="Infected" left color="#a0daa2"><td>$$I$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1558,6 +1586,7 @@ function handleClick() {
 							</td>
 							<td>{I0.toFixed(2)}</td>
 						</tr>
+                         {#if chosenModel===1 }
 						<tr>
 							<SvelteTooltip tip="Asymptomatic infected" left color="#a0daa2"><td>$$A$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1565,7 +1594,8 @@ function handleClick() {
 							</td>
 							<td>{A0.toFixed(2)}</td>
 						</tr>
-
+                        {/if}
+                        {#if chosenModel===1 }
 						<tr>
 							<SvelteTooltip tip="Quarantined susceptible" left color="#a0daa2"><td>$$S_q$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1573,7 +1603,8 @@ function handleClick() {
 							</td>
 							<td>{Sq0.toFixed(2)}</td>
 						</tr>
-
+                        {/if}
+                        {#if chosenModel===1 }
 						<tr>
 							<SvelteTooltip tip="Quarantined exposed" left color="#a0daa2"><td>$$E_q$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1581,7 +1612,8 @@ function handleClick() {
 							</td>
 							<td>{Eq0.toFixed(2)}</td>
 						</tr>
-
+                        {/if}
+                        {#if chosenModel===1 }
 						<tr>
 						<SvelteTooltip tip="Hospitalized" left color="#a0daa2"><td>$$H$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1589,7 +1621,7 @@ function handleClick() {
 							</td>
 							<td>{H0.toFixed(2)}</td>
 						</tr>
-
+                        {/if}
 						<tr>
 						<SvelteTooltip tip="Recovered" left color="#a0daa2"><td>$$R$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1621,7 +1653,7 @@ function handleClick() {
 				</div>
 			</div>
 		</div>
-
+  {#if chosenModel===1 }
 	<div class="panel-group col-md-4 p-2 "  style="display:inline-block;">
 	<div class="panel panel-info">
 	 <div class="panel-heading"><strong>Set up which factors to be included in the model</strong></div>
@@ -1629,13 +1661,15 @@ function handleClick() {
 <label><input type="checkbox" bind:group={parameterSelection} value={17} /> Humidity</label>
 	<label style="visibility: hidden;"><input type="checkbox" bind:group={parameterSelection} value={18} /> Tempreture</label>
 	
-
 	{#if parameterSelection.length === 0}
 	<p>Please select at least one parameter</p>
 {/if}
 	</div>
 	</div>
 	</div>
+
+    {/if}
+
 
 	
 
@@ -1654,6 +1688,7 @@ function handleClick() {
 					</tr>
 					</thead>
 					<tbody>
+                    {#if chosenModel===1 || chosenModel===2}
 						<tr>
 							<SvelteTooltip tip="Initial contact rate" left color="#a0daa2"><td>$$c_0$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1662,7 +1697,8 @@ function handleClick() {
 							<td>{c0.toFixed(2)}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={0} /></label></td>
 						</tr>
-
+                    {/if}
+                    {#if chosenModel===1 || chosenModel===2}
 						<tr>
 							<SvelteTooltip tip="Min. contact rate under control strategies" left color="#a0daa2"><td>$$c_a$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1671,7 +1707,8 @@ function handleClick() {
 							<td>{ca}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={1} /></label></td>
 						</tr>
-
+                    {/if}
+                     {#if chosenModel===1 || chosenModel===2}
 						<tr>
 							<SvelteTooltip tip="Initial quarantined rate under control strategies" left color="#a0daa2"><td>$$q_1$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1680,7 +1717,7 @@ function handleClick() {
 							<td>{q0}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={2} /></label></td>
 						</tr>
-
+                    {/if}
 						<tr>
 							<SvelteTooltip tip="Probability of transmission per contact" left color="#a0daa2"><td>$$\beta_0$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1689,7 +1726,7 @@ function handleClick() {
 							<td>{beta0}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={3} /></label></td>
 						</tr>
-
+                    {#if chosenModel===1 || chosenModel===2}
 						<tr>
 							<SvelteTooltip tip="Initial quarantined rate of exposed individuals" left color="#a0daa2"><td>$$\epsilon$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1698,8 +1735,8 @@ function handleClick() {
 							<td>{eps}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={4} /></label></td>
 						</tr>
-
-
+                    {/if}
+                    {#if chosenModel===1 || chosenModel===2}
 						<tr>
 							<SvelteTooltip tip="Transition rate of exposed individuals to the infected class" left color="#a0daa2"><td>$$\sigma$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1708,7 +1745,8 @@ function handleClick() {
 							<td>{sigma}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={5} /></label></td>
 						</tr>
-
+                    {/if}
+                    {#if chosenModel===1}
 
 						<tr>
 							<SvelteTooltip tip="Rate at which the quarantined uninfects were released into the wider community" left color="#a0daa2"><td>$$\lambda$$</td></SvelteTooltip>
@@ -1718,7 +1756,7 @@ function handleClick() {
 							<td>{lambda}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={6} /></label></td>
 						</tr>
-
+                    {/if}
 				
 						<tr>
 							<SvelteTooltip tip="Transition rate of symptomatic infected individuals to the quarantined infected class" left color="#a0daa2"><td>$$\delta_I$$</td></SvelteTooltip>
@@ -1728,6 +1766,7 @@ function handleClick() {
 							<td>{deltaI}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={7} /></label></td>
 						</tr>
+                        {#if chosenModel===1}
 						<tr>
 							<SvelteTooltip tip="Transition rate of quarantined exposed individuals to the quarantined infected class" left color="#a0daa2"><td>$$\delta_q$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1736,7 +1775,7 @@ function handleClick() {
 							<td>{deltaq}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={8} /></label></td>
 						</tr>
-
+                        {/if}
 						<tr>
 							<SvelteTooltip tip="Recovery rate of symptomatic infected individuals" left color="#a0daa2"><td>$$\gamma_I$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1745,7 +1784,7 @@ function handleClick() {
 							<td>{gammaI}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={9} /></label></td>
 						</tr>
-
+                        {#if chosenModel===1}
 						<tr>
 							<SvelteTooltip tip="Recovery rate of asymptomatic infected individuals" left color="#a0daa2"><td>$$\gamma_A$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1754,7 +1793,8 @@ function handleClick() {
 							<td>{gammaA}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={10} /></label></td>
 						</tr>
-
+                        {/if}
+                        {#if chosenModel===1}
 						<tr>
 							<SvelteTooltip tip="Gamma h" left color="#a0daa2"><td>$$\gamma_H$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1763,6 +1803,7 @@ function handleClick() {
 							<td>{gammaH}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={11} /></label></td>
 						</tr>
+                        {/if}
 						<tr>
 						<SvelteTooltip tip="Rate at which recovered individuals move into pre-symptomatic class" left color="#a0daa2"><td>$$\gamma_R$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1771,6 +1812,7 @@ function handleClick() {
 							<td>{gammaR}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={12} /></label></td>
 						</tr>
+                        {#if chosenModel===1}
 						<tr>
 						<SvelteTooltip tip="Relative transmission probability of A compared with I" left color="#a0daa2"><td>$$\theta$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1779,7 +1821,8 @@ function handleClick() {
 							<td>{theta}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={13} /></label></td>
 						</tr>
-
+                        {/if}
+                        {#if chosenModel===1}
 						<tr>
 						<SvelteTooltip tip="Governmental action strength" left color="#a0daa2"><td>$$\alpha_b$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1788,6 +1831,7 @@ function handleClick() {
 							<td>{alfab}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={14} /></label></td>
 						</tr>
+                        {/if}
 						<tr>
 						<SvelteTooltip tip="Alfa" left color="#a0daa2"><td>$$\alpha$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1796,7 +1840,7 @@ function handleClick() {
 							<td>{alfa}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={15} /></label></td>
 						</tr>
-
+                        {#if chosenModel===1 || chosenModel===2}
 						<tr>
 						<SvelteTooltip tip="Maximum quarantined rate of exposed individuals" left color="#a0daa2"><td>$$c_2$$</td></SvelteTooltip>
 							<td class="slidecontainer">
@@ -1805,6 +1849,7 @@ function handleClick() {
 							<td>{c2}</td>
 							<td><label><input type="checkbox" bind:group={parameterSelection} value={16} /></label></td>
 						</tr>
+                        {/if}
 						
 
 					</tbody>
@@ -1832,7 +1877,7 @@ function handleClick() {
 			</div>
 		</div> -->
 
-
+    {#if chosenModel===1}
 	{#if parameterSelection.includes(18)}
 	
 			<div class="panel-group col-md-5 p-2 "  style="display:inline-block;">
@@ -1844,6 +1889,7 @@ function handleClick() {
 	</div>
 	</div>
 	{/if}
+    
 		
 {#if parameterSelection.includes(17)}
 		<div class="panel-group col-md-5 p-2 "  style="display:inline-block;">
@@ -1854,12 +1900,9 @@ function handleClick() {
 
 	</div>
 	</div>
-	</div>
-
-	
-	
-		
+	</div>	
 	{/if}
+    {/if}
 
 	<div class="panel-group col-md-8 p-2 "  style="display:inline-block;">
 	<div class="panel panel-primary">
