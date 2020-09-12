@@ -62,10 +62,10 @@ function createTestChart(){
 					scales: {
 
 						xAxes: [{
-							stacked: true,
+							stacked: false,
 						}],
 						yAxes: [{
-              stacked: true,
+              stacked: false,
               ticks: {
                     suggestedMin: 0
                 }

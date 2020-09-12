@@ -1006,52 +1006,54 @@
 	let parameterNumber=17;
 	let parametersIncluded=Array.apply(null, Array(parameterNumber)).map(Number.prototype.valueOf,1);
 	let parameterSelection=Array.from(Array(parameterNumber+2).keys())
-	let S0=52740000.0;
-	let		E0=19.220820541214668;
-	let	I0=16.925617788469424;
-	let		A0=17.99157876590649;
-	let		Sq0=15.538827852131071;
-	let		Eq0=1.7173986822830976;
-	let		H0=46.0107243219873;
-	let		R0=3.0748316104908433;
-	let		c0=41.852549488391446;
-	let		beta0=2.1031894440837713*Math.pow(10,-12);
-	let		q0=1.484170130317585*Math.pow(10,-7);
-	let		sigma=0.3333;
+    let N=60461826.0;
+    let S0=60461744.0;
+	let		E0=206.244150;
+	let	I0=10;
+	let		A0=87.7013984;
+	let		Sq0=188.209957;
+	let		Eq0=105.490777	;
+	let		H0=2;
+	let		R0=0;
+	let		c0=34.3975139	;
+	let		beta0=0.11276927;
+	let		q0=0.31360782;
+	let		sigma=0.17211704;
 	let		lambda=0.071428;
-	let		eps=0.88;
-	let		deltaI=0.121;
-	let		deltaq=0.03363;
-	let		gammaI=0.1351146;
-	let		gammaA=0.0117950;
-	let		gammaH=0.028635;
-	let		alfa=0.0021171;
-	let		theta=0.00016357;
+	let		eps=0.20827168;
+	let		deltaI=	0.03802606;
+	let		deltaq=0.23285469;
+	let		gammaI=0.21033547;
+	let		gammaA=0.20736207;
+	let		gammaH=0.31349165;
+	let		alfa=0.85701154;
+	let		theta=0.45246560;
 	let		c2=1.712150*Math.pow(10,-7);
-	let		b=0.908;
+	let		b=0.95984154;
 	let		alfab=0.0012209;
 	let		xi=0.1127126;
 	let		gammaR=1.714578192*Math.pow(10,-6);
-	let		ca=1.287039726
-	let		c01=41.852549488391446;
-	let		beta01=2.1031894440837713*Math.pow(10,-12);
-	let		q01=1.484170130317585*Math.pow(10,-7);
-	let		sigma1=0.3333;
-	let		lambda1=0.071428;
-	let		eps1=0.88;
-	let		deltaI1=0.121;
-	let		deltaq1=0.03363;
-	let		gammaI1=0.1351146;
-	let		gammaA1=0.0117950;
-	let		gammaH1=0.028635;
-	let		alfa1=0.0021171;
-	let		theta1=0.00016357;
-	let		c21=1.712150*Math.pow(10,-7);
-	let		b1=0.908;
-	let		alfab1=0.0012209;
-	let		xi1=0.1127126;
-	let		gammaR1=1.714578192*Math.pow(10,-6);
-    let		ca1=1.287039726
+    let		ca=10.3145021
+    
+	let		c01=c0;
+	let		beta01=beta0;
+	let		q01=q0;
+	let		sigma1=sigma;
+	let		lambda1=lambda;
+	let		eps1=eps;
+	let		deltaI1=deltaI;
+	let		deltaq1=deltaq;
+	let		gammaI1=gammaI;
+	let		gammaA1=gammaA;
+	let		gammaH1=gammaH;
+	let		alfa1=alfa;
+	let		theta1=	theta;
+	let		c21=c2;
+	let		b1=b;
+	let		alfab1=alfa;
+	let		xi1=xi;
+	let		gammaR1=gammaR;
+    let		ca1=ca;
     
     let result=[];
     let result_SIR=[]
@@ -1187,38 +1189,35 @@
   }
   }
 
-
-		if (selectedCountry.id==1){
-
-	}
 	if (selectedCountry.id==2){
-			S0=52740000.0;
-			E0=19.220820541214668;
-			I0=16.925617788469424;
-			A0=17.99157876590649;
-			Sq0=15.538827852131071;
-			Eq0=1.7173986822830976;
-			H0=46.0107243219873;
-			R0=3.0748316104908433;
-			c0=41.852549488391446;
-			beta0=2.1031894440837713*Math.pow(10,-12);
-			q0=1.484170130317585*Math.pow(10,-7);
-			sigma=0.3333;
-			lambda=0.071428;
-			eps=0.88;
-			deltaI=0.121;
-			deltaq=0.03363;
-			gammaI=0.1351146;
-			gammaA=0.0117950;
-			gammaH=0.028635;
-			alfa=0.0021171;
-			theta=0.00016357;
-			c2=1.712150*Math.pow(10,-7);
-			b=0.908;
-			alfab=0.0012209;
-			xi=0.1127126;
-			gammaR=1.714578192*Math.pow(10,-6);
-			ca=1.287039726
+		    let N=60461826.0;
+    let S0=60461744.0;
+	let		E0=206.244150;
+	let	I0=10;
+	let		A0=87.7013984;
+	let		Sq0=188.209957;
+	let		Eq0=105.490777	;
+	let		H0=2;
+	let		R0=0;
+	let		c0=34.3975139	;
+	let		beta0=0.11276927;
+	let		q0=0.31360782;
+	let		sigma=0.17211704;
+	let		lambda=0.071428;
+	let		eps=0.20827168;
+	let		deltaI=	0.03802606;
+	let		deltaq=0.23285469;
+	let		gammaI=0.21033547;
+	let		gammaA=0.20736207;
+	let		gammaH=0.31349165;
+	let		alfa=0.85701154;
+	let		theta=0.45246560;
+	let		c2=1.712150*Math.pow(10,-7);
+	let		b=0.95984154;
+	let		alfab=0.0012209;
+	let		xi=0.1127126;
+	let		gammaR=1.714578192*Math.pow(10,-6);
+    let		ca=10.3145021
 			tempreture=[6, 7, 7, 10, 10, 9, 8, 5, 4, 3, 7, 10, 8, 8, 3, 4, 6, 8, 10, 11, 9, 7, 7, 7, 6, 5, 4, 8, 9, 13, 11, 12, 13, 12, 14, 14, 7, 8, 10, 14, 11, 11, 16, 17, 17, 2, 7, 11, 12, 14, 15, 15, 17, 17, 22, 20, 17, 11, 9, 14, 15, 10, 9, 13, 14, 13, 17, 18, 13, 16, 17, 17, 16, 18, 20, 18, 20, 21, 22, 24, 22, 21, 22, 23, 23, 24, 10, 10, 9, 13, 13, 16, 17, 18, 19, 20, 20, 21, 22, 26,17]
 			relativeHumidity=[68, 78, 82, 75, 88, 92, 78, 77, 89, 93, 77, 65, 68, 63, 84, 79, 69, 64, 54, 50, 77, 84, 87, 87, 83, 85, 74, 63, 63, 53, 51, 59, 62, 57, 59, 57, 81, 76, 68, 62, 69, 83, 76, 83, 82, 84, 50, 41, 44, 54, 55, 58, 59, 56, 64, 68, 78, 83, 86, 69, 65, 78, 77, 62, 60, 76, 73, 81, 82, 58, 52, 65, 67, 54, 43, 50, 57, 56, 51, 43, 71, 71, 65, 65, 77, 74, 78, 74, 83, 69, 71, 67, 66, 55, 53, 48, 48, 48, 49, 45, 70]
 
@@ -1281,14 +1280,13 @@
 				let betam=beta0
 				let ct=ca1 + (3*(c01-ca1))/(1+2*Math.pow(b1,-t));
 				cFunc.push(ct);
-				let qt=(t+q01/c21)/(t+1)*c21; 
-				qFunc.push(qt);
-				f0 =-(betam*ct+ct*qt*(1-betam))*S*I;
-    			f1 = betam*ct*(1-qt)*S*I-sigma1*E;
-    			f2 = sigma1*eps1*E-(deltaI1+alfa1+gammaI1)*I;
-				f7=gammaI1*I- gammaR1*R;
+				let qt=q01; 
+                qFunc.push(qt);
+				f0 =-(betam*ct+ct*qt*(1-betam))*S*I/N;
+    			f1 = (betam*ct+ct*qt*(1-betam))*S*I/N-sigma1*eps*E;
+    			f2 = sigma1*eps*E-(deltaI1+alfa1+gammaI1)*I;
+				f7=(deltaI1+alfa1+gammaI1)*I- gammaR1*R;
 
-				
 				
 				return [f0,f1,f2,f7]
 				
@@ -1315,13 +1313,19 @@
 				// 	betam=beta0*(1-alfab)*Math.exp(-xi*tempreture[ Math.floor(t)]) *  Math.pow((1- (I+A)/(S+R) ), 2);
 				// }
 				
-				// let ct=ca1 + (3*(c01-ca1))/(1+2*Math.pow(b1,-t));
-                // let qt=(t+q01/c21)/(t+1)*c21; 
+				let ct=ca1 + (3*(c01-ca1))/(1+2*Math.pow(b1,-t));
+                let qt=q01
                 
                 betam=beta0;
+
+                // 	f0 =-(betam*ct+ct*qt*(1-betam))*S*I/N;
+    			// f1 = (betam*ct+ct*qt*(1-betam))*S*I/N-sigma1*eps*E;
+    			// f2 = sigma1*eps*E-(deltaI1+alfa1+gammaI1)*I;
+				// f7=(deltaI1+alfa1+gammaI1)*I- gammaR1*R;
+
 			
-				f0 =-betam*S*I;
-    			f2 = betam*S*I-(deltaI1+alfa1+gammaI1)*I;
+				f0 =-beta0*ct*(1-q01)*S*I/N;
+    			f2 =beta0*ct*(1-q01)*S*I/N-(deltaI1+alfa1+gammaI1)*I;
 				f7=(deltaI1+alfa1+gammaI1)*I;
 
 				
@@ -1343,32 +1347,29 @@
    				H=y[6];
 				R = y[7];
 			
-	
 				
-				let betam;
-				if (parameterSelection.includes(17)&&parameterSelection.includes(18)){
-					let AH=6.112 * Math.exp(17.67*tempreture[ Math.floor(t)]/(tempreture[Math.floor(t)] + 243.5)) * relativeHumidity[Math.floor(t)] * 2.1674 / (273.15 + tempreture[Math.floor(t)]);
-					betam=beta0*(1-alfab)*(1 + xi*AH) *  Math.pow((1- (I+A)/(S+R) ), 2);
-				}
-			
-				else if (parameterSelection.includes(18)){
-					betam=beta0*(1-alfab)*Math.exp(-xi*tempreture[ Math.floor(t)]) *  Math.pow((1- (I+A)/(S+R) ), 2);
-				}
-				
-				betamFunc.push(betam);
+                let betam=beta0;
+		
 				let ct=ca1 + (3*(c01-ca1))/(1+2*Math.pow(b1,-t));
 				cFunc.push(ct);
 				let qt=(t+q01/c21)/(t+1)*c21; 
 				qFunc.push(qt);
-				RRFunc.push((betam*eps1*ct*(1-qt)/(deltaI1+alfa1+gammaI1) + betam*ct*theta1*(1-eps1)*(1-qt)/gammaA1 ) * S)
-				f0 =-(betam*ct+ct*qt*(1-betam))*S*(I+theta1*A)+lambda1*Sq;
-    			f1 = betam*ct*(1-qt)*S*(I+theta1*A)-sigma1*E;
+                RRFunc.push((betam*eps1*ct*(1-qt)/(deltaI1+alfa1+gammaI1) + betam*ct*theta1*(1-eps1)*(1-qt)/gammaA1 ) * S)
+                
+                // f0 =-(betam*ct+ct*qt*(1-betam))*S*I/N;
+    			// f1 = betam*ct*(1-qt)*S*I/N-sigma1*E;
+    			// f2 = sigma1*eps1*E-(deltaI1+alfa1+gammaI1)*I;
+				// f7=gammaI1*I- gammaR1*R;
+
+				f0 =-(beta0*ct+ct*q01*(1-beta0))*S*(I+theta1*A)/N+lambda1*Sq;
+    			f1 = beta0*ct*(1-q01)*S*(I+theta1*A)/N-sigma1*E;
     			f2 = sigma1*eps1*E-(deltaI1+alfa1+gammaI1)*I;
-    			f3= sigma1*(1-eps1)*E-gammaA1*A + gammaR1*R;
-    			f4= (1-betam)*ct*qt*S*(I+theta1*A)-lambda1*Sq;
-    			f5=betam*ct*qt*S*(I+theta1*A)-deltaq1*Eq;
+    			f3= sigma1*(1-eps1)*E-gammaA1*A;
+    			f4= (1-beta0)*ct*q01*S*(I+theta1*A)/N-lambda1*Sq;
+    			f5=beta0*ct*q01*S*(I+theta1*A)/N-deltaq1*Eq;
     			f6=deltaI1*I+deltaq1*Eq-(alfa1+gammaH1)*H;
-				f7=gammaI1*I+gammaA1*A+gammaH1*H - gammaR1*R;
+                f7=(deltaI1+alfa1+gammaI1)*I+gammaA1*A+gammaH1*H
+                
 
 				
 				
@@ -1413,9 +1414,17 @@
                 return arr[index];
             });
         }
+               function getDataSum(array1,array2,array3){
+            return array1.map(function (num,index){
+                let sum=num+array2[index]+array3[index]
+                console.log(num+"+"+array2[index]+"+"+array3[index]+"="+sum)
+                return num+array2[index]+array3[index];
+            });
+        }
+    
 
             let yOverall_S=[getData(0,yBiggerStep),getData(0,yBiggerStep_SEIR),getData(0,yBiggerStep_SIR)];
-            let yOverall_I=[getData(2,yBiggerStep),getData(2,yBiggerStep_SEIR),getData(1,yBiggerStep_SIR)];
+            let yOverall_I=[ getDataSum(getData(2,yBiggerStep),getData(3,yBiggerStep),getData(6,yBiggerStep)),getData(2,yBiggerStep_SEIR),getData(1,yBiggerStep_SIR)];
             let yOverall_R=[getData(7,yBiggerStep),getData(3,yBiggerStep_SEIR),getData(2,yBiggerStep_SIR)];
             console.log(yOverall_R)
             result=[tFunc,yBiggerStep,days];
