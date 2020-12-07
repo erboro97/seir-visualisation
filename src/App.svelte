@@ -1751,7 +1751,7 @@ function handleClick() {
 	
 			<div class="panel-group col-md-5 p-2 "  style="display:inline-block;">
 	<div class="panel panel-info">
-	 <div class="panel-heading"><strong>Set values of tempreture</strong></div>
+	 <div class="panel-heading"><strong>Set values of temperature</strong></div>
 	 <div class="panel-body">
 		<Cubic temp={tempreture} on:myClick={myClickC}/>
 	</div>

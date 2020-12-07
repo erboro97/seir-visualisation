@@ -113,6 +113,7 @@ function createChart(){
         ]
     },
     options: {
+        devicePixelRatio: 4,
         title: {
         display: true,
         text: title

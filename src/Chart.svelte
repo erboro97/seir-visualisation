@@ -74,6 +74,7 @@ function createTreeMap(){
         }]
     },
      options: {
+       devicePixelRatio: 4,
     legend: { display: false },
     tooltips: { enabled: false }
   }
@@ -155,7 +156,7 @@ function createTestChart(){
  	      type: 'bar',
         data: barChartData,
 				options: {
-				
+				devicePixelRatio: 4,
 			
 					scales: {
 

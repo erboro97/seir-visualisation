@@ -94,12 +94,13 @@ function createGraph() {
             }]
         },
         options: {
+            devicePixelRatio: 4,
             onClick: function (element, dataAtClick) {
                 click(element,dataAtClick, this);
             },
             title: {
                 display: false,
-                text: "Tempreture"
+                text: "Temperature"
             },
             scales: {
                  xAxes: [{
