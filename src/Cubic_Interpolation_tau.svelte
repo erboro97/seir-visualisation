@@ -92,7 +92,7 @@ function createGraph() {
         labels: ['10','20','30','40','50','60'],
         data: {
             datasets: [{
-                label: "Dataset Made of Clicked Points",
+                label: "Adjustable Interpolation with Control Points",
                 data:  linearPoints(),               
                 fill: false,
                 showLine: true,

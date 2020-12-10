@@ -161,10 +161,18 @@ function createTestChart(){
 					scales: {
 
 						xAxes: [{
-							stacked: true,
+              stacked: true,
+              scaleLabel: {
+                        display: true,
+                        labelString: 'Days since outbrake'
+                    },
 						}],
 						yAxes: [{
               stacked: true,
+              scaleLabel: {
+                        display: true,
+                        labelString: 'Count'
+                    },
               ticks: {
                     suggestedMin: 0
                 }
