@@ -164,7 +164,7 @@ function createTestChart(){
               stacked: true,
               scaleLabel: {
                         display: true,
-                        labelString: 'Days since outbrake'
+                        labelString: 'Days since outbreak'
                     },
 						}],
 						yAxes: [{
