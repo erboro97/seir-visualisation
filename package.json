@@ -21,7 +21,7 @@
     "chartjs-chart-treemap": "^0.2.3",
     "clone": "^2.1.2",
     "cubic-spline": "^3.0.3",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.3.1",
     "mathjax": "^3.0.5",
     "ode45-cash-karp": "^1.1.0",
     "runge-kutta": "0.0.1",
